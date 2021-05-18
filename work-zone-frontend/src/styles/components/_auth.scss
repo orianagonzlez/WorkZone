@@ -1,0 +1,116 @@
+
+.login_main{
+    background-image:
+        linear-gradient(to bottom, rgba(100, 135, 165, 0.5), rgba(100, 135, 165, 0)), 
+        url("../../images/paper-pencil-work-touch-business-usb.jpg");
+
+    background-repeat: no-repeat;
+    height: 100vh;
+    margin: 0px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+
+    .login_container{
+        padding-top: 150px;
+        margin-left: 70px;
+        height: 80vh;
+
+        .auth_title{
+            width: 350px;
+            font-weight: 700;
+            font-size: 50px;
+            color: #3c3c3c
+        }
+        
+        .login_form{
+            margin-left: 20px;
+            color: #3B566E;
+            font-weight: 700;
+
+            .input{
+
+                background-color: transparent;
+                outline: 0;
+                border-width: 0 0 2px;
+                border-color: #3c3c3c;
+                border-radius: 0;
+            }
+        }
+    }
+
+
+
+}
+
+.register_main{
+    background-image:
+        linear-gradient(to bottom, rgba(100, 135, 165, 0.5), rgba(100, 135, 165, 0)), 
+        url("../../images/neat-desktop-with-office-appliances_23-2147833239.jpg");
+
+    background-repeat: no-repeat;
+    height: 110vh;
+    margin: 0px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+
+    .register_container{
+        padding-top: 150px;
+        margin-left: 70px;
+        height: 80vh;
+
+        .auth_title{
+            padding-bottom: 30px;
+            font-weight: 700;
+            font-size: 50px;
+            color: #3c3c3c
+        }
+
+        .auth_subtitle{
+            padding-left: 20px;
+            font-weight: 500;
+            font-size: 30px;
+            color: #3B566E;
+        }
+        
+        .register_form{
+            margin: 20px 0px 0px 20px;
+            color: #3c3c3c;
+            font-weight: 700;
+
+            .input{
+
+                background-color: transparent;
+                outline: 0;
+                border-width: 0 0 2px;
+                border-color: #3c3c3c;
+                border-radius: 0;
+            }
+        }
+    }
+
+}
+
+.auth_link{
+    color: #6487A5;
+    font-weight: 300;
+    padding: 10px;
+    text-align: center;
+}
+
+.auth_button {
+
+    justify-self: center;
+    width:30vw;
+    height: 5.5vh;
+    border-radius: 25px;
+    color: #F2F2F2;
+    background-color: #22B4DE;
+    border: none;
+    font-weight: 500;
+
+}
+
