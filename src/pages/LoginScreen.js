@@ -20,58 +20,69 @@ export const LoginScreen = () => {
 
 
     return (
-        <Container className="login-main">
+        <div className="login_main">
 
-            <h1 className="auth_title">¡BIENVENIDO DE VUELTA!</h1>
-            <Row>
-                <Form className="login_form" onSubmit={handleLogin}>
+            <Container className="login_container">
 
-                    <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Email address</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Email"
-                            name="email"
-                            autoComplete="off"
-                            value={email}
-                            onChange={handleInputChange} />
-                    </Form.Group>
+                <h1 className="auth_title">¡BIENVENIDO DE VUELTA!</h1>
+                <Row className="justify-content-start">
+                    <Form className="login_form" onSubmit={handleLogin}>
 
-                    <Form.Group controlId="formBasicPassword">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control
-                            type="password"
-                            placeholder="Password"
-                            name="password"
-                            value={password}
-                            onChange={handleInputChange} />
-                    </Form.Group>
 
-                    <Form.Group>
-                        <div className="auth_link">
-                            <Link
-                                to="/auth/register"
-                                className="link" >
-                                ¿Todavía no tienes cuenta? ¡Registrate!
-                            </Link>
-                        </div>
+                        <Form.Group controlId="formBasicEmail">
+                            <Form.Label>Correo electrónico</Form.Label>
+                            <Form.Control className="input"
+                                type="text"
+                                placeholder="example@gmail.com"
+                                name="email"
+                                autoComplete="off"
+                                value={email}
+                                onChange={handleInputChange} />
+                        </Form.Group>
 
-                    </Form.Group>
+                        <Form.Group controlId="formBasicPassword">
+                            <Form.Label>Contraseña</Form.Label>
+                            <Form.Control className="input"
+                                type="password"
+                                placeholder="**********"
+                                name="password"
+                                value={password}
+                                onChange={handleInputChange} />
+                        </Form.Group>
 
-                    <Button
-                        className="auth_botton"
-                        variant="primary"
-                        type="submit"
-                    >
-                        Ingresar
-                    </Button>
+                        <Container className="justify-content-center">
 
-                    <Form.Group>
-                        <div className="register_link">¿Olvidaste tu contraseña?</div>
-                    </Form.Group>
+                            <Form.Group>
+                                <div className="auth_link">
+                                    <Link
+                                        to="/auth/register"
+                                        className="link" >
+                                        ¿Todavía no tienes cuenta? ¡Registrate!
+                                </Link>
+                                </div>
 
-                </Form>
-            </Row>
-        </Container>
+                            </Form.Group>
+
+
+                            <Button
+                                className="auth_button"
+                                variant="primary"
+                                type="submit"
+                            >
+                                INGRESAR
+                            </Button>
+
+
+                            <Form.Group>
+                                <div className="auth_link"> ¿Olvidaste tu contraseña?</div>
+                            </Form.Group>
+
+                        </Container>
+
+                    </Form>
+                </Row>
+            </Container>
+
+        </div>
     )
 }

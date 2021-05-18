@@ -41,104 +41,109 @@ export const RegisterScreen = () => {
     }
 
     return (
-        <Container className="register-main">
 
-            <h1 className="auth_title">¡BIENVENIDO A WORK ZONE!</h1>
-            <h2 className="auth_subtitle">Información Personal</h2>
+        <div className="register_main">
 
-            <Form className="login_form" onSubmit={handleRegister}>
+            <Container className="register_container">
 
-                <Form.Row className="align-items-center">
-                    <Form.Group as={Col} lg="4" xs="12">
-                        <Form.Group>
-                            <Form.Label>Nombre</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="name"
-                                placeholder="Ingrese su Nombre"
-                                autoComplete="off"
-                                value={name}
-                                onChange={handleInputChange} />
+                <h1 className="auth_title">¡BIENVENIDO A WORK ZONE!</h1>
+                <h2 className="auth_subtitle">Información Personal</h2>
+
+
+                <Form className="register_form" onSubmit={handleRegister}>
+
+                    <Form.Row className="align-items-center">
+                        <Form.Group as={Col} lg="4" md="6" s="12">
+                            <Form.Group>
+                                <Form.Label>Nombre</Form.Label>
+                                <Form.Control className="input"
+                                    type="text"
+                                    name="name"
+                                    autoComplete="off"
+                                    value={name}
+                                    onChange={handleInputChange} />
+                            </Form.Group>
+
+                            <Form.Group>
+                                <Form.Label>Apellido</Form.Label>
+                                <Form.Control className="input"
+                                    type="text"
+                                    name="lastname"
+                                    autoComplete="off"
+                                    value={lastname}
+                                    onChange={handleInputChange} />
+                            </Form.Group>
                         </Form.Group>
 
-                        <Form.Group>
-                            <Form.Label>Apellido</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="lastname"
-                                placeholder="Ingrese su Apellido"
-                                autoComplete="off"
-                                value={lastname}
-                                onChange={handleInputChange} />
-                        </Form.Group>
-                    </Form.Group>
+                        <Form.Group as={Col} lg="4" md="6" s="12">
+                            <Form.Group>
+                                <Form.Label>Email address</Form.Label>
+                                <Form.Control className="input"
+                                    type="text"
+                                    name="email"
+                                    autoComplete="off"
+                                    value={email}
+                                    onChange={handleInputChange} />
+                            </Form.Group>
 
-                    <Form.Group as={Col} lg="4" xs="12">
-                        <Form.Group>
-                            <Form.Label>Email address</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="email"
-                                placeholder="Email"
-                                autoComplete="off"
-                                value={email}
-                                onChange={handleInputChange} />
+                            <Form.Group>
+                                <Form.Label>Usuario</Form.Label>
+                                <Form.Control className="input"
+                                    type="text"
+                                    name="username"
+                                    autoComplete="off"
+                                    value={username}
+                                    onChange={handleInputChange} />
+                            </Form.Group>
                         </Form.Group>
 
-                        <Form.Group>
-                            <Form.Label>Usuario</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="username"
-                                placeholder="Ingrese su Usuario"
-                                autoComplete="off"
-                                value={username}
-                                onChange={handleInputChange} />
-                        </Form.Group>
-                    </Form.Group>
+                        <Form.Group as={Col} lg="4" md="6" s="12">
+                            <Form.Group>
+                                <Form.Label>Contraseña</Form.Label>
+                                <Form.Control className="input"
+                                    type="password"
+                                    name="password"
+                                    value={password}
+                                    onChange={handleInputChange} />
+                            </Form.Group>
 
-                    <Form.Group as={Col} lg="4" xs="12">
-                        <Form.Group>
-                            <Form.Label>Contraseña</Form.Label>
-                            <Form.Control
-                                type="password"
-                                name="password"
-                                placeholder="Ingrese una Contraseña"
-                                value={password}
-                                onChange={handleInputChange} />
+                            <Form.Group>
+                                <Form.Label>Confirme su Contraseña</Form.Label>
+                                <Form.Control className="input"
+                                    type="password"
+                                    name="password2"
+                                    value={password2}
+                                    onChange={handleInputChange} />
+                            </Form.Group>
                         </Form.Group>
 
-                        <Form.Group>
-                            <Form.Label>Confirme su Contraseña</Form.Label>
-                            <Form.Control
-                                type="password"
-                                name="password2"
-                                placeholder="Ingrese nuevamente su Contraseña"
-                                value={password2}
-                                onChange={handleInputChange} />
-                        </Form.Group>
-                    </Form.Group>
+                    </Form.Row>
 
-                </Form.Row>
-
-                <Form.Group>
-                    <div className="auth_link">
-                        <Link
-                            to="/auth/login"
-                            className="link" >
-                            ¿Ya tienes cuenta? Inicia Sesión!
+                    <Form.Group>
+                        <div className="auth_link">
+                            <Link
+                                to="/auth/login"
+                                className="link" >
+                                ¿Ya tienes cuenta? Inicia Sesión!
                         </Link>
-                    </div>
-                </Form.Group>
+                        </div>
+                    </Form.Group>
 
-                <Button
-                    className="auth_botton"
-                    variant="primary"
-                    type="submit"
-                >
-                    Registrarse
-                </Button>
-            </Form>
-        </Container>
+                    <div className="button">
+                        <Button
+                            className="auth_button"
+                            variant="primary"
+                            type="submit"
+                        >
+                            REGISTRAR
+                        </Button>
+
+                    </div>
+
+                </Form>
+
+            </Container>
+
+        </div>
     )
 }
