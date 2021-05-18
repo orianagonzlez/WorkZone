@@ -42,7 +42,7 @@ export default function Projects() {
                     <ProjectCard project={project} />
                 ))}               
             </div>
-            <Button className="archivedProjects" >Mostrar proyectos achivados</Button>
+            <Button className="archivedProjects" >Mostrar proyectos archivados</Button>
 
         </Container>
     )
