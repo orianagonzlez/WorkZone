@@ -1,0 +1,51 @@
+.componentContainer {
+    background-color: $neutral-100;
+    padding: 5rem;
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    h1 {
+        color: $primary-gray-500;
+        font-weight: bold;
+        font-size: 2.75rem;
+        padding-bottom: 4.5rem;
+    }
+    li {
+        list-style: none;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+    .attributeNames {
+        color: $primary-blue-500;
+    }
+    .newProject {
+        background-color: $primary-mint-500;
+        border: 0rem;
+        border-radius: 1rem;
+        color: $neutral-50;
+        font-weight: bolder;
+        align-self: flex-end;
+        padding: 0.5rem 1rem;
+        &:hover {
+            background-color: $font;
+        }
+    }
+    .archivedProjects {
+        background-color: $primary-gray-400;
+        font-weight: bolder;
+        border: 0rem;
+        border-radius: 1rem;
+        padding: 0.5rem 1rem;
+        width: 25vw;
+        align-self: center;
+        margin: 2rem 0;
+        color: $neutral-50;
+        &:hover {
+            background-color: $font;
+        }
+    }
+}
