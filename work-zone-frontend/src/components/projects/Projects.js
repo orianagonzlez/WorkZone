@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { FaTag, FaThList, FaUsers, FaChartLine } from 'react-icons/fa';
 import ProjectCard from './ProjectCard';
+import { ProjectTable } from './ProjectTable';
 
 export default function Projects() {
     const attributes = [
@@ -43,7 +44,7 @@ export default function Projects() {
                 ))}               
             </div>
             <Button className="archivedProjects" >Mostrar proyectos archivados</Button>
-
+            <ProjectTable></ProjectTable>
         </Container>
     )
 }
