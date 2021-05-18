@@ -48,13 +48,13 @@ export const ProjectTable = ({show}) => {
               </li>
               
               {projects.map((project) => {
-                if (!project.archived && !show) {
+                if (!project.archived) {
                   return (
                     <li className="Preview__table-row">
                       <ProjectCard project={project} /> 
                     </li>
                   )}
-                else if (show) {
+                if (show && project.archived) {
                   return (
                     <li className="Preview__table-row">
                       <ProjectCard project={project} /> 
