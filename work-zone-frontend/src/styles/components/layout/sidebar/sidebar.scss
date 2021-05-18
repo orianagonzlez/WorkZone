@@ -42,9 +42,23 @@
     }
 
     .userContainer {
-        text-align: center;
-        span {
-            padding-left: 0.5rem;
+        Button {
+            padding: 1rem;
+            border-radius: 1rem;
+            width: 100%;
+            border: 0;
+            color: $neutral-100;
+            font-weight: bold;
+            background-color: transparent;
+            outline: none;
+            text-align: center;
+            &:hover {
+                background: $neutral-100;
+                color: $font;
+            }
+            span {
+                padding-left: 0.5rem;
+            }
         }
     }
 

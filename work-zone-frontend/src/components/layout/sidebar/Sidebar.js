@@ -35,7 +35,9 @@ export default function Sidebar() {
                 </li>
             </div>
             <div className="userContainer">
+            <Button >
                 <FaUserCircle size={28} /><span>User</span>
+            </Button>
             </div>
         </Container>
     )
