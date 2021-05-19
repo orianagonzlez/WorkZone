@@ -35,7 +35,7 @@ export default function ProjectCard({project}) {
             <div className="column column-3" data-label="Tareas"> 0</div>
             <div className="column column-3" data-label="Miembros">{miembros}</div>
             <div className="column column-3" data-label="Progreso">0</div>
-            <div className="column column-1" id="archiveIcon" data-label="Archive" onClick={() => archive()}><FaArchive /></div>
+            <div className="column column-3" id="archiveIcon" data-label="Archive" onClick={() => archive()}><FaArchive /></div>
         </>
     )
 }
