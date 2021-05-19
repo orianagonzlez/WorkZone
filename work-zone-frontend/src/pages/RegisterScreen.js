@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Container, Form, Button, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
+import { AppContext } from '../context/AppContext';
+import { postData } from '../helpers/postData';
 import { useForm } from '../hooks/useForm';
 
 export const RegisterScreen = () => {
 
-    const [formValues, handleInputChange] = useForm({
+  const {setUser, user} = useContext(AppContext);
+
+  const [formValues, handleInputChange] = useForm({
         name: '',
         lastname: '',
         email: '',
@@ -22,7 +26,33 @@ export const RegisterScreen = () => {
 
         if (isFormValid()) {
             console.log("Formulario Valido");
-            //Acá va el API para registrar
+
+            let body = {
+              nombre: name,
+              apellido: lastname,
+              contrasena: password,
+              fecha_nacimiento: new Date(),
+              email: email,
+              username: username
+            }
+            
+            postData('/users/signup', body).then( r => {
+            console.log('me respondio' + r);
+            if (r.status === 'success') {
+              const {email, id_usuario, nombre, apellido, fecha_nacimiento, username } = r.data;
+              setUser({
+                  ...user,
+                  email: email,
+                  id: id_usuario,
+                  nombre: `${nombre} ${apellido}`,
+                  username: username,
+                  fechaNacimiento: fecha_nacimiento,
+                  isLogged: true,
+                });
+            } else {
+              console.log('error');
+            }
+        });
         }
     }
 
@@ -52,7 +82,7 @@ export const RegisterScreen = () => {
 
                 <Form className="register_form" onSubmit={handleRegister}>
 
-                    <Form.Row className="align-items-center">
+                    <Form.Row className="d-flex  align-items-center">
                         <Form.Group as={Col} lg="4" md="6" s="12">
                             <Form.Group>
                                 <Form.Label>Nombre</Form.Label>

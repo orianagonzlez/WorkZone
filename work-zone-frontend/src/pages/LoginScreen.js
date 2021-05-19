@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Container, Form, Row, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
+import { AppContext } from '../context/AppContext';
+import { postData } from '../helpers/postData';
 import { useForm } from '../hooks/useForm';
 
 export const LoginScreen = () => {
+  
+    const {setUser, user} = useContext(AppContext);
 
     const [formValues, handleInputChange] = useForm({
         email: '',
@@ -16,6 +20,30 @@ export const LoginScreen = () => {
         e.preventDefault();
         console.log("Login Sirve")
         console.log(email, password)
+
+        let body = {
+          email: email, 
+          contrasena: password
+          }
+        
+        postData('/users/login', body).then( r => {
+            console.log('me respondio' + r);
+            if (r.status === 'success') {
+              const {email, id_usuario, nombre, apellido, fecha_nacimiento, username } = r.data;
+              setUser({
+                  ...user,
+                  email: email,
+                  id: id_usuario,
+                  nombre: `${nombre} ${apellido}`,
+                  username: username,
+                  fechaNacimiento: fecha_nacimiento,
+                  isLogged: true,
+                });
+            } else {
+              console.log('error');
+            }
+        });
+        
     }
 
 

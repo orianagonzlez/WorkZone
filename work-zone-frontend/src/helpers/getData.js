@@ -2,7 +2,8 @@ export const getData = async(path) => {
     
     const requestOptions = {
         method: 'GET',
-        redirect: 'follow'
+        redirect: 'follow',
+        
     };
       
     const response = await fetch(`http://localhost:8000/${path}`, requestOptions);
