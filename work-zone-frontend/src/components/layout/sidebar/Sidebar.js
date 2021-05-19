@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { FaUserCircle, FaBoxes, FaCog } from 'react-icons/fa';
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
 function useGetWindowSize() {
     const [windowSize, setWindowSize] = React.useState({
@@ -49,9 +49,11 @@ export default function Sidebar() {
                 </div>
                 <li>
                     <ul>
-                        <Button onCLick={history.push("/projects")}>
-                            <FaBoxes /><span>Proyectos</span>
-                        </Button>
+                        <Link to="/">
+                            <Button>
+                                <FaBoxes /><span>Proyectos</span>
+                            </Button>
+                        </Link>
                     </ul>
                     <ul>
                         <Button >
