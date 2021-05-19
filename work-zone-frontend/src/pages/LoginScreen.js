@@ -92,13 +92,16 @@ export const LoginScreen = () => {
                             </Form.Group>
 
 
-                            <Button
-                                className="auth_button"
-                                variant="primary"
-                                type="submit"
-                            >
-                                INGRESAR
-                            </Button>
+                            <div className="button">
+                                <Button
+                                    className="auth_button"
+                                    variant="primary"
+                                    type="submit"
+                                >
+                                    INGRESAR
+                                </Button>
+            
+                            </div>
 
 
                             <Form.Group>

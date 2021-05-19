@@ -154,7 +154,7 @@ export const RegisterScreen = () => {
                             <Link
                                 to="/auth/login"
                                 className="link" >
-                                ¿Ya tienes cuenta? Inicia Sesión!
+                                ¿Ya tienes cuenta? ¡Inicia Sesión!
                         </Link>
                         </div>
                     </Form.Group>
