@@ -1,52 +1,19 @@
 import React from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { FaUserCircle, FaBoxes, FaCog } from 'react-icons/fa';
-import { useHistory, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-function useGetWindowSize() {
-    const [windowSize, setWindowSize] = React.useState({
-      width: undefined,
-      height: undefined,
-    });
-  
-    React.useEffect(() => {
-      if (typeof window !== 'undefined') {
-        const resize = () => {
-          setWindowSize({
-            width: window.innerWidth,
-            height: window.innerHeight,
-          });
-        };
-        window.addEventListener('resize', resize);
-        resize();
-        return () => window.removeEventListener('resize', resize);
-      }
-    }, []);
-    return windowSize;
-  }
 
-  function changeBg(navStyle, setNavStyle) {
-    if (navStyle.includes('bg-primary-dark-blue h-screen')) {
-      setNavStyle(navStyle.replace('bg-primary-dark-blue h-screen', ''));
-    } else {
-      setNavStyle(navStyle.concat(' bg-primary-dark-blue h-screen'));
-    }
-    return navStyle;
-  }
 
 export default function Sidebar() {
-    const history = useHistory();
     const [visible, setVisible] = React.useState(false);
-    const windowSize = useGetWindowSize();
-    const [navStyle, setNavStyle] = React.useState('');
     return (
         <Container fluid className="sidebarContainer">
             <button
                 type="button"
                 className="burgerMenu"
-                onClick={() => {
+                onClick={(e) => {
                     setVisible(!visible);
-                    changeBg(navStyle, setNavStyle);
                 }}
             >
                 <svg
@@ -57,42 +24,44 @@ export default function Sidebar() {
                     <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
                 </svg>
             </button>
-            <div className="sidebarMobile">
-                <div>
-                    <div className="logo">
-                        LOGO HERE
-                    </div>
-                    <li>
-                        <ul>
-                            <Link to="/">
-                                <Button>
-                                    <FaBoxes /><span>Proyectos</span>
+            {visible ?
+                <div className="sidebarMobile">
+                    <div>
+                        <div className="logo">
+                            LOGO HERE
+                        </div>
+                        <li>
+                            <ul>
+                                <Link to="/">
+                                    <Button>
+                                        <FaBoxes /><span>Proyectos</span>
+                                    </Button>
+                                </Link>
+                            </ul>
+                            <ul>
+                                <Button >
+                                    <FaCog /><span>Otro</span>
                                 </Button>
-                            </Link>
-                        </ul>
-                        <ul>
-                            <Button >
-                                <FaCog /><span>Otro</span>
-                            </Button>
-                        </ul>
-                        <ul>
-                            <Button >
-                                <FaCog /><span>Otro</span>
-                            </Button>
-                        </ul>
-                        <ul>
-                            <Button >
-                                <FaCog /><span>Ajustes</span>
-                            </Button>
-                        </ul>
-                        <ul>
-                            <Button >
-                                <FaUserCircle size={28} /><span>User</span>
-                            </Button>
-                        </ul>
-                    </li>
+                            </ul>
+                            <ul>
+                                <Button >
+                                    <FaCog /><span>Otro</span>
+                                </Button>
+                            </ul>
+                            <ul>
+                                <Button >
+                                    <FaCog /><span>Ajustes</span>
+                                </Button>
+                            </ul>
+                            <ul>
+                                <Button >
+                                    <FaUserCircle size={28} /><span>User</span>
+                                </Button>
+                            </ul>
+                        </li>
+                    </div>
                 </div>
-            </div>
+            : null}
 
             <div className="sidebarVisible">
                 <div>
