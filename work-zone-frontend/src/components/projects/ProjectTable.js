@@ -10,7 +10,7 @@ export const ProjectTable = ({show}) => {
   useEffect(() => {
     getData('projects/1').then( r => {
       console.log('me respondio' + r);
-      if (r.status = 'success') {
+      if (r.status == 'success') {
         setProjects1(r.data);
       } else {
         console.log('error');
@@ -29,11 +29,11 @@ export const ProjectTable = ({show}) => {
                 <div className="column column-3 "><FaThList /> Tareas</div>
                 <div className="column column-3 "><FaUsers /> Miembros</div>
                 <div className="column column-3"><FaChartLine /> Progreso</div>
-                <div className="column column-1"><FaArchive /> {show ? 'Devolver': 'Archivar'} </div>
+                <div className="column column-3"><FaArchive /> {show ? 'Devolver': 'Archivar'} </div>
               </li>
               
               {projects1.map((project) => {
-                if (!project.archivado) {
+                if (!show && !project.archivado) {
                   return (
                     <li className="Preview__table-row" key={project.id_proyecto}>
                       <ProjectCard project={project} /> 

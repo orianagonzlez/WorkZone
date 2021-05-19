@@ -43,39 +43,57 @@ export default function Sidebar() {
     );
     return (
         <Container fluid className="sidebarContainer">
-            <div>
-                <div className="logo">
-                    LOGO HERE
-                </div>
-                <li>
-                    <ul>
-                        <Link to="/">
-                            <Button>
-                                <FaBoxes /><span>Proyectos</span>
+            <button
+                type="button"
+                className="burgerMenu"
+                onClick={() => {
+                    setVisible(!visible);
+                    changeBg(navStyle, setNavStyle);
+                }}
+            >
+                <svg
+                    className="fill-current h-6 w-6"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+                </svg>
+            </button>
+            <div className="sidebarVisible">
+                <div>
+                    <div className="logo">
+                        LOGO HERE
+                    </div>
+                    <li>
+                        <ul>
+                            <Link to="/">
+                                <Button>
+                                    <FaBoxes /><span>Proyectos</span>
+                                </Button>
+                            </Link>
+                        </ul>
+                        <ul>
+                            <Button >
+                                <FaCog /><span>Otro</span>
                             </Button>
-                        </Link>
-                    </ul>
-                    <ul>
-                        <Button >
-                            <FaCog /><span>Otro</span>
-                        </Button>
-                    </ul>
-                    <ul>
-                        <Button >
-                            <FaCog /><span>Otro</span>
-                        </Button>
-                    </ul>
-                    <ul>
-                        <Button >
-                            <FaCog /><span>Ajustes</span>
-                        </Button>
-                    </ul>
-                </li>
-            </div>
-            <div className="userContainer">
-            <Button >
-                <FaUserCircle size={28} /><span>User</span>
-            </Button>
+                        </ul>
+                        <ul>
+                            <Button >
+                                <FaCog /><span>Otro</span>
+                            </Button>
+                        </ul>
+                        <ul>
+                            <Button >
+                                <FaCog /><span>Ajustes</span>
+                            </Button>
+                        </ul>
+                    </li>
+                </div>
+                <div className="userContainer">
+                <Button >
+                    <FaUserCircle size={28} /><span>User</span>
+                </Button>
+                </div>
             </div>
         </Container>
     )
@@ -111,7 +129,7 @@ export default function Sidebar() {
           </svg>
         </button>
       </div>
-      {visible || windowSize.width >= 768 ? (
+      {visible || windowSize.width >= 970 ? (
         <ul className="flex flex-col md:flex-row justify-evenly md:items-center text-white list-none font-title font-bold md:bg-transparent text-shadow-sm toggle text-center h-5/6 md:h-12">
           <li className="hover:text-primary-golden hover:bg-primary-dark-blue md:hover:bg-transparent p-8 text-4xl md:text-base md:p-0">
             <a
