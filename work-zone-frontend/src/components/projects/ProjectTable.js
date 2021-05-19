@@ -1,23 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FaTag, FaThList, FaUsers, FaChartLine, FaArchive } from 'react-icons/fa';
+import { AppContext } from '../../context/AppContext';
 import { getData } from '../../helpers/getData';
 import ProjectCard from './ProjectCard';
 
 export const ProjectTable = ({show}) => {
 
-  const [projects1, setProjects1] = useState([]);
+  const {setUser, user} = useContext(AppContext);
+
+  const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    getData('projects/1').then( r => {
+    //Una vez que se tenga el id del usuario, se buscan los proyectos donde participa
+    if (user?.id) {
+      getData(`projects/${user.id}`).then( r => {
       console.log('me respondio' + r);
       if (r.status == 'success') {
-        setProjects1(r.data);
+        setProjects(r.data);
       } else {
         console.log('error');
       }
     }
     )
-  }, [show]);
+    }
+    
+  }, [user, show]);
   
   return (
     <div>
@@ -32,7 +39,7 @@ export const ProjectTable = ({show}) => {
                 <div className="column column-3"><FaArchive /> {show ? 'Devolver': 'Archivar'} </div>
               </li>
               
-              {projects1.map((project) => {
+              {projects.map((project) => {
                 if (!show && !project.archivado) {
                   return (
                     <li className="Preview__table-row" key={project.id_proyecto}>

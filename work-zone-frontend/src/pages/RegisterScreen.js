@@ -37,7 +37,7 @@ export const RegisterScreen = () => {
               username: username
             }
             
-            postData('/users/signup', body).then( r => {
+            postData('users/signup', body).then( r => {
             console.log('me respondio' + r);
             if (r.status === 'success') {
               const {email, id_usuario, nombre, apellido, fecha_nacimiento, username } = r.data;
