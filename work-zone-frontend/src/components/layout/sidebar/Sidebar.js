@@ -38,9 +38,7 @@ export default function Sidebar() {
     const history = useHistory();
     const [visible, setVisible] = React.useState(false);
     const windowSize = useGetWindowSize();
-    const [navStyle, setNavStyle] = React.useState(
-        'md:bg-transparent bg-opacity-75 h-auto md:absolute fixed w-full py-3'
-    );
+    const [navStyle, setNavStyle] = React.useState('');
     return (
         <Container fluid className="sidebarContainer">
             <button
@@ -52,13 +50,50 @@ export default function Sidebar() {
                 }}
             >
                 <svg
-                    className="fill-current h-6 w-6"
+                    className=""
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
                 </svg>
             </button>
+            <div className="sidebarMobile">
+                <div>
+                    <div className="logo">
+                        LOGO HERE
+                    </div>
+                    <li>
+                        <ul>
+                            <Link to="/">
+                                <Button>
+                                    <FaBoxes /><span>Proyectos</span>
+                                </Button>
+                            </Link>
+                        </ul>
+                        <ul>
+                            <Button >
+                                <FaCog /><span>Otro</span>
+                            </Button>
+                        </ul>
+                        <ul>
+                            <Button >
+                                <FaCog /><span>Otro</span>
+                            </Button>
+                        </ul>
+                        <ul>
+                            <Button >
+                                <FaCog /><span>Ajustes</span>
+                            </Button>
+                        </ul>
+                        <ul>
+                            <Button >
+                                <FaUserCircle size={28} /><span>User</span>
+                            </Button>
+                        </ul>
+                    </li>
+                </div>
+            </div>
+
             <div className="sidebarVisible">
                 <div>
                     <div className="logo">
@@ -90,9 +125,9 @@ export default function Sidebar() {
                     </li>
                 </div>
                 <div className="userContainer">
-                <Button >
-                    <FaUserCircle size={28} /><span>User</span>
-                </Button>
+                    <Button >
+                        <FaUserCircle size={28} /><span>User</span>
+                    </Button>
                 </div>
             </div>
         </Container>
