@@ -1,118 +1,132 @@
+.login_main {
+  background-image: linear-gradient(
+      to bottom,
+      rgba(100, 135, 165, 0.5),
+      rgba(100, 135, 165, 0)
+    ),
+    url("../../images/paper-pencil-work-touch-business-usb.jpg");
 
-.login_main{
-    background-image:
-        linear-gradient(to bottom, rgba(100, 135, 165, 0.5), rgba(100, 135, 165, 0)), 
-        url("../../images/paper-pencil-work-touch-business-usb.jpg");
+  background-repeat: no-repeat;
+  height: 100vh;
+  margin: 0px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
 
-    background-repeat: no-repeat;
-    height: 100vh;
-    margin: 0px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
+  .login_container {
+    padding-top: 150px;
+    margin-left: 70px;
+    height: 80vh;
 
-    .login_container{
-        padding-top: 150px;
-        margin-left: 70px;
-        height: 80vh;
-
-        .auth_title{
-            width: 350px;
-            font-weight: 700;
-            font-size: 50px;
-            color: $font
-        }
-        
-        .login_form{
-            margin-left: 20px;
-            color: $primary-gray-500;
-            font-weight: 700;
-
-            .input{
-
-                background-color: transparent;
-                outline: 0;
-                border-width: 0 0 2px;
-                border-color: $font;
-                border-radius: 0;
-            }
-        }
+    .auth_title {
+      width: 350px;
+      font-weight: 700;
+      font-size: 50px;
+      color: $font;
     }
 
+    .login_form {
+      margin-left: 20px;
+      color: $primary-gray-500;
+      font-weight: 700;
+      width: 40vw;
 
-
+      .input {
+        background-color: transparent;
+        outline: 0;
+        border-width: 0 0 2px;
+        border-color: $font;
+        border-radius: 0;
+      }
+    }
+  }
 }
 
-.register_main{
-    background-image:
-        linear-gradient(to bottom, rgba(100, 135, 165, 0.5), rgba(100, 135, 165, 0)), 
-        url("../../images/neat-desktop-with-office-appliances_23-2147833239.jpg");
+.register_main {
+  background-image: linear-gradient(
+      to bottom,
+      rgba(100, 135, 165, 0.5),
+      rgba(100, 135, 165, 0)
+    ),
+    url("../../images/neat-desktop-with-office-appliances_23-2147833239.jpg");
 
-    background-repeat: no-repeat;
-    height: 110vh;
-    margin: 0px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
+  background-repeat: no-repeat;
+  height: 110vh;
+  margin: 0px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
 
-    .register_container{
-        padding-top: 150px;
-        margin-left: 70px;
-        height: 80vh;
+  .register_container {
+    padding-top: 150px;
+    margin-left: 70px;
+    height: 80vh;
 
-        .auth_title{
-            padding-bottom: 30px;
-            font-weight: 700;
-            font-size: 50px;
-            color: $font
-        }
-
-        .auth_subtitle{
-            padding-left: 20px;
-            font-weight: 500;
-            font-size: 30px;
-            color: $primary-gray-500;
-        }
-        
-        .register_form{
-            margin: 20px 0px 0px 20px;
-            color: $font;
-            font-weight: 700;
-
-            .input{
-
-                background-color: transparent;
-                outline: 0;
-                border-width: 0 0 2px;
-                border-color: $font;
-                border-radius: 0;
-            }
-        }
+    .auth_title {
+      padding-bottom: 30px;
+      font-weight: 700;
+      font-size: 50px;
+      color: $font;
     }
 
+    .auth_subtitle {
+      padding-left: 20px;
+      font-weight: 500;
+      font-size: 30px;
+      color: $primary-gray-500;
+    }
+
+    .register_form {
+      margin: 20px 0px 0px 20px;
+      color: $font;
+      font-weight: 700;
+      width: 80vw;
+
+      .input {
+        background-color: transparent;
+        outline: 0;
+        border-width: 0 0 2px;
+        border-color: $font;
+        border-radius: 0;
+        margin-top: 0px;
+        margin: 0px 10px 10px 0px;
+      }
+    }
+  }
 }
 
-.auth_link{
-    color: $primary-gray-400;
-    font-weight: 300;
-    padding: 10px;
-    text-align: center;
+.auth_link {
+  color: $primary-gray-400;
+  font-weight: 300;
+  padding: 10px;
+  text-align: center;
 }
 
 .button {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    .auth_button {
-        width:30vw;
-        height: 5.5vh;
-        border-radius: 25px;
-        color: $neutral-100;
-        background-color: $primary-blue-500;
-        border: none;
-        font-weight: 500;
-    }
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  .auth_button {
+    width: 30vw;
+    height: 5.5vh;
+    border-radius: 25px;
+    color: $neutral-100;
+    background-color: $primary-blue-500;
+    border: none;
+    font-weight: 500;
+  }
+
+  .auth_button:hover {
+    transition: 0.1s ease;
+    box-shadow: #003c3c3c 0px 5px 10px 0px;
+  }
 }
+
+.form-control:focus {
+  box-shadow: none;
+}
+
 
