@@ -26,7 +26,7 @@ export const LoginScreen = () => {
           contrasena: password
           }
         
-        postData('/users/login', body).then( r => {
+        postData('users/login', body).then( r => {
             console.log('me respondio' + r);
             if (r.status === 'success') {
               const {email, id_usuario, nombre, apellido, fecha_nacimiento, username } = r.data;
