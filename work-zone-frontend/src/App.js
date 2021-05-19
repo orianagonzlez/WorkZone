@@ -5,10 +5,10 @@ function App() {
   return (
 
     <div className="main-container">
-      
-      <AppProvider>
-        <AppRouter />
-      </AppProvider>
+
+        <AppProvider>
+          <AppRouter />
+        </AppProvider>
 
       <div className="footer"></div>
 

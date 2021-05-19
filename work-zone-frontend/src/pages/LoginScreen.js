@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Container, Form, Row, Button } from 'react-bootstrap'
+import { Container, Form, Button, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import { postData } from '../helpers/postData';
@@ -26,7 +26,7 @@ export const LoginScreen = () => {
           contrasena: password
           }
         
-        postData('/users/login', body).then( r => {
+        postData('users/login', body).then( r => {
             console.log('me respondio' + r);
             if (r.status === 'success') {
               const {email, id_usuario, nombre, apellido, fecha_nacimiento, username } = r.data;
@@ -53,11 +53,12 @@ export const LoginScreen = () => {
             <Container className="login_container">
 
                 <h1 className="auth_title">¡BIENVENIDO DE VUELTA!</h1>
-                <Row className="justify-content-start">
-                    <Form className="login_form" onSubmit={handleLogin}>
+                
+                <Form className="login_form" onSubmit={handleLogin}>
 
+                    <Form.Row className="d-flex align-items-center justify-content-start">
 
-                        <Form.Group controlId="formBasicEmail">
+                        <Form.Group as={Col}>
                             <Form.Label>Correo electrónico</Form.Label>
                             <Form.Control className="input"
                                 type="text"
@@ -68,7 +69,10 @@ export const LoginScreen = () => {
                                 onChange={handleInputChange} />
                         </Form.Group>
 
-                        <Form.Group controlId="formBasicPassword">
+                    </Form.Row>
+                    <Form.Row className="d-flex align-items-center justify-content-start">
+
+                        <Form.Group as={Col}>
                             <Form.Label>Contraseña</Form.Label>
                             <Form.Control className="input"
                                 type="password"
@@ -77,6 +81,9 @@ export const LoginScreen = () => {
                                 value={password}
                                 onChange={handleInputChange} />
                         </Form.Group>
+
+                    </Form.Row>
+
 
                         <Container className="justify-content-center">
 
@@ -110,8 +117,8 @@ export const LoginScreen = () => {
 
                         </Container>
 
-                    </Form>
-                </Row>
+                </Form>
+                
             </Container>
 
         </div>
