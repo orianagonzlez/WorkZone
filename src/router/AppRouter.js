@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     BrowserRouter as Router,
     Switch,
@@ -6,14 +6,16 @@ import {
 } from 'react-router-dom';
 
 import { AuthRouter } from './AuthRouter';
+import { ProjectsRouter } from './ProjectsRouter';
 import { PrivateRoute } from './PrivateRoute';
 
 import { PublicRoute } from './PublicRoute';
-import { HomeScreen } from '../pages/HomeScreen';
+import { AppContext } from '../context/AppContext';
+
 
 export const AppRouter = () => {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { user } = useContext(AppContext);
 
     return (
         <Router>
@@ -22,14 +24,14 @@ export const AppRouter = () => {
                     <PublicRoute
                         path="/auth"
                         component={AuthRouter}
-                        isAuthenticated={isLoggedIn}
+                        isAuthenticated={user.isLogged}
                     />
 
                     <PrivateRoute
                         exact
-                        isAuthenticated={isLoggedIn}
+                        isAuthenticated={user.isLogged}
                         path="/"
-                        component={HomeScreen}
+                        component={ProjectsRouter}
                     />
 
                     <Redirect to="/auth/login" />
