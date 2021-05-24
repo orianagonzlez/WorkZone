@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { Container, Form, Button, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import { AppContext } from '../context/AppContext';
 import { postData } from '../helpers/postData';
 import { useForm } from '../hooks/useForm';
@@ -32,26 +33,34 @@ export const RegisterScreen = () => {
               nombre: name,
               apellido: lastname,
               contrasena: password,
-              fecha_nacimiento: new Date(),
+              fechaNacimiento: new Date(),
               email: email,
               username: username
             }
-            
-            postData('users/signup', body).then( r => {
+            const url = "https://workzone-backend-mdb.herokuapp.com/api/auth/create";
+            postData(url, body).then( r => {
             console.log('me respondio' + r);
-            if (r.status === 'success') {
-              const {email, id_usuario, nombre, apellido, fecha_nacimiento, username } = r.data;
+            if (r.ok) {
+              const {email, uid, nombre, apellido, fechaNacimiento, username } = r.data;
               setUser({
                   ...user,
                   email: email,
-                  id: id_usuario,
+                  id: uid,
                   nombre: `${nombre} ${apellido}`,
                   username: username,
-                  fechaNacimiento: fecha_nacimiento,
+                  fechaNacimiento: fechaNacimiento,
                   isLogged: true,
                 });
             } else {
               console.log('error');
+
+              
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'Credenciales Invalidad',
+                  confirmButtonColor: "#22B4DE"
+                })
             }
         });
         }
@@ -59,7 +68,7 @@ export const RegisterScreen = () => {
 
     const isFormValid = () => {
 
-        //Falta verificar todos los campos
+        //TODO Falta verificar todos los campos
 
         if (name.trim().length === 0) {
             console.log('Por favor ingrese su Nombre y su Apellido')
