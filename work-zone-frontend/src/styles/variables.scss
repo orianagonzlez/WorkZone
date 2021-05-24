@@ -1,10 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap");
+
 //Primary colors//
-$primary-blue-500: #22B4DE;
-$primary-mint-500: #2ED199;
-$primary-gray-500: #3B566E;
-$primary-gray-400: #6487A5;
+$primary-blue-500: #22b4de;
+$primary-mint-500: #2ed199;
+$primary-gray-500: #3b566e;
+$primary-gray-400: #6487a5;
+$font-family: "Lato", sans-serif;
 
 //Neutrals//
-$neutral-100: #F2F2F2;
-$neutral-50: #FAFAFA;
-$font: #3C3C3C;
+$neutral-100: #f2f2f2;
+$neutral-50: #fafafa;
+$font: #3c3c3c;
+
+body {
+  font-family: $font-family;
+  color: $font;
+  box-sizing: border-box;
+}
