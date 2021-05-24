@@ -18,7 +18,7 @@ export default function Projects() {
         let body = {
             nombre: 'Proyecto Informatica Creativa 2',
             descripcion: 'En scratch',
-            plan: "60abdc872e21bbe44cc09599",
+            id_plan: "60abdc872e21bbe44cc09599",
             owner: user.id,
             miembros: [user.id],
             lideres: [user.id]
