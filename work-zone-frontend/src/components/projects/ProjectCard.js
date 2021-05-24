@@ -5,22 +5,18 @@ import { postData } from '../../helpers/postData';
 
 export default function ProjectCard({project}) {
     console.log(project);
-    const { id_proyecto, nombre, descripcion, id_plan, archivado, miembros} = project;
+    const { id_proyecto: _id, nombre, archivado, miembros} = project;
     const archive = () => {
         console.log('ejecutandome')
         {/* Actualizar DB */}
         const p = {
             id_proyecto,
-            nombre,
-            descripcion,
-            id_plan,
-            archivado: !archivado,
-            activo: true
+            archivado: !archivado
         };
 
         postData('projects/update', p).then( r => {
             console.log('me respondio' + r);
-            if (r.status = 'success') {
+            if (r.ok) {
                 console.log('todo bien')
            
             } else {
