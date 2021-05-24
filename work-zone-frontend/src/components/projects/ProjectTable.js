@@ -13,7 +13,7 @@ export const ProjectTable = ({show}) => {
   useEffect(() => {
     //Una vez que se tenga el id del usuario, se buscan los proyectos donde participa
     if (user?.id) {
-      getData(`projects/by/${user.id}`).then( r => {
+      getData(`https://workzone-backend-mdb.herokuapp.com/api/projects/by/${user.id}`).then( r => {
       console.log('me respondio' + r);
       if (r.ok) {
         setProjects(r.data);

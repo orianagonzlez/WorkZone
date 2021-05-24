@@ -16,15 +16,15 @@ export default function Projects() {
     //TEMPORAL MIENTRAS SE HACE EL FORMULARIO. PUEDE CAMBIAR DE LOCACION, PERO ASI SERIA LA FUNCION
     const handleCreateProject = () => {
         let body = {
-            nombre: 'Proyecto Bases de datos 1',
-            descripcion: 'En mysql',
+            nombre: 'Proyecto Bases de datos 2',
+            descripcion: 'En mongoDB',
             id_plan: "60abdc872e21bbe44cc09599",
             owner: user.id,
             miembros: [user.id],
             lideres: [user.id]
           }
           
-        postData('http://localhost:8080/api/projects/create', body).then( r => {
+        postData('https://workzone-backend-mdb.herokuapp.com/api/projects/create', body).then( r => {
         console.log('me respondio' + r);
         if (r.ok) {
             console.log('todo bien', r.data);

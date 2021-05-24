@@ -14,7 +14,7 @@ export default function ProjectCard({project}) {
             archivado: !archivado
         };
 
-        postData('http://localhost:8080/api/projects/update', p).then( r => {
+        postData('https://workzone-backend-mdb.herokuapp.com/api/projects/update', p).then( r => {
             console.log('me respondio' + r);
             if (r.ok) {
                 console.log('todo bien')
