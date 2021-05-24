@@ -7,10 +7,12 @@ import {
 
 import { AuthRouter } from './AuthRouter';
 import { ProjectsRouter } from './ProjectsRouter';
+import { ProjectDeetsRouter } from './ProjectDeetsRouter';
 import { PrivateRoute } from './PrivateRoute';
 
 import { PublicRoute } from './PublicRoute';
 import { AppContext } from '../context/AppContext';
+import ProjectDeets from '../components/projects/projectDeets/ProjectDeets';
 
 
 export const AppRouter = () => {
@@ -32,6 +34,12 @@ export const AppRouter = () => {
                         isAuthenticated={user.isLogged}
                         path="/"
                         component={ProjectsRouter}
+                    />
+
+                    <PublicRoute
+                        path="/projectDetails"
+                        component={ProjectDeetsRouter}
+                        isAuthenticated={user.isLogged}
                     />
 
                     <Redirect to="/auth/login" />
