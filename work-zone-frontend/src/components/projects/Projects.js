@@ -16,7 +16,7 @@ export default function Projects() {
     //TEMPORAL MIENTRAS SE HACE EL FORMULARIO. PUEDE CAMBIAR DE LOCACION, PERO ASI SERIA LA FUNCION
     const handleCreateProject = () => {
         let body = {
-            nombre: 'Proyecto Informatica Creativa',
+            nombre: 'Proyecto Informatica Creativa 2',
             descripcion: 'En scratch',
             id_plan: 1,
           }
