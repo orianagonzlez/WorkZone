@@ -1,3 +1,11 @@
 @import "~bootstrap/scss/bootstrap";
 
+@import "./variables.scss";
 @import "./layout.scss";
+@import "./components/projects/projects.scss";
+@import "./components/layout/sidebar/sidebar.scss";
+@import "./components/layout/layout.scss";
+@import "./components/Table.scss";
+@import "./components/projects/projectCard.scss";
+@import "./components/_auth.scss";
+@import "./components/projects/createProjects/createProjects.scss";

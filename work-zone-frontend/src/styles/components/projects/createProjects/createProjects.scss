@@ -1,0 +1,129 @@
+.componentContainer {
+  //background-color: $neutral-100;
+  //padding: 4rem;
+  //min-height: 100vh;
+  //width: 80%;
+  //display: flex;
+  //flex-direction: column;
+
+  .divArrowLeft {
+    display: flex;
+    align-self: flex-start;
+    flex-direction: row;
+    justify-content: start;
+    font-weight: bold;
+  }
+
+  .arrowLeft {
+    display: flex;
+    background-color: $primary-gray-400;
+    border: 0rem;
+    border-radius: 2rem;
+    margin-top: 0.7rem;
+    margin-right: 2.69rem;
+    
+  }
+
+  .create-project-form {
+    background-color: $neutral-100;
+    padding: 1rem;
+    min-height: 100vh;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    //align-items:center;
+    //justify-content:start;
+  }
+
+  h1 {
+    color: $primary-gray-500;
+    font-weight: bold;
+    font-size: 2.25rem;
+    padding-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .projectName {
+    display: flex;
+    align-self: center;
+    flex-direction: row;
+    justify-content: start;
+    font-weight: bold;
+    border-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
+    //color: ligthen($primary-gray-400, 80%); quiero como que ligthen el color de project name pero no se como
+    font-size: 269%;
+    border: 0rem;
+    border-radius: 1rem;
+    width: 80%;
+    margin-left: 1rem;
+  }
+
+  .create-button {
+    background-color: $primary-blue-500;
+    font-weight: bolder;
+    border: 0rem;
+    border-radius: 1rem;
+    padding: 0.5rem 0.5rem;
+    align-self: center;
+    margin: 2rem 0;
+    font-size: 1.269rem;
+    color: $neutral-50;
+    width: 30.69%;
+    &:hover {
+      background-color: $font;
+      box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
+      transition: all 0.5s ease;
+    }
+  }
+
+  .addOrDeleteCollaboratorButtons {
+    display: flex;
+    background-color: $primary-blue-500;
+    border: 0rem;
+    border-radius: 1rem;
+    color: $neutral-50;
+    font-weight: bolder;
+    font-size: smaller;
+    align-self: flex-end;
+    padding: 0.5rem 0.5rem;
+    margin-top: 0.369rem;
+    margin-bottom: 0.369rem;
+    &:hover {
+      background-color: $font;
+      box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
+      transition: all 0.5s ease;
+    }
+  }
+
+  hr {
+    border: 0;
+    width: 110.69%;
+    color: black;
+    background-color: black;
+    height: 1px;
+    margin-top: 0rem;
+    margin-bottom: 2.69rem;
+    margin-left: 1rem;
+  }
+
+  .miembros-logo {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    margin-bottom: 0.69rem;
+    color: $primary-blue-500;
+    font-weight: bolder;
+    font-size: 1rem;
+  }
+
+  .inputCorreo {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    border: 0rem;
+    border-radius: 1rem;
+    width: 80%;
+  }
+}
