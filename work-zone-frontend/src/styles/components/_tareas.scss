@@ -1,0 +1,93 @@
+.task_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 100%;
+  margin: 10px;
+  padding: 10px;
+
+  .column_container {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+
+    .column {
+      padding: 10px;
+      min-height: 500px;
+      border-radius: 10px;
+      h2 {
+        font-size: 1.5rem;
+        text-align: start;
+        color: $neutral-100;
+      }
+      .card {
+        user-select: none;
+        padding: 5px;
+        margin: 10px 0px 10px 0px;
+        min-height: 50px;
+        background-color: #fafafa;
+        color: #3c3c3c;
+        border-radius: 5px;
+      }
+    }
+  }
+}
+
+.btn-create {
+  background-color: $primary-mint-500;
+  border: 0rem;
+  border-radius: 1rem;
+  color: $neutral-50;
+  font-weight: bolder;
+  align-self: flex-end;
+  padding: 0.5rem 1rem;
+  &:hover {
+    background-color: $font;
+    box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
+    transition: all 0.5s ease;
+  }
+}
+
+@media (max-width: 1000px) {
+  .newProject {
+    margin: 2rem 0;
+  }
+  .task_container {
+    flex-wrap: wrap;
+
+    .column_container {
+      width: 250px;
+
+      .column {
+        min-height: 50px;
+      }
+    }
+  }
+}
+
+@media (max-width: 550px) {
+  .newProject {
+    font-size: 0.75rem;
+  }
+  .componentContainer {
+    padding-right: 2rem;
+    padding-left: 2rem;
+    .task_container {
+      padding-right: 0rem;
+      padding-left: 0rem;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      .column_container {
+        width: 300px;
+        margin: 0px;
+        .column {
+          min-height: 50px;
+          border-radius: 10px;
+          h2 {
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+}
