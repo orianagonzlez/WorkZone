@@ -1,32 +1,70 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { Container, Form, Button, Col } from "react-bootstrap";
 import { FaUsers, FaMapSigns } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import PlanCard from "../../common/PlanCard";
+import { AppContext } from "../../../context/AppContext";
+import { postData } from "../../../helpers/postData";
 
 export default function CreateProjects() {
   const [name, setName] = React.useState("");
 
   const [inputList, setInputList] = useState([""]);
 
+  const { setUser, user } = useContext(AppContext);
+
+  const handleCreateProject = () => {
+    let body = {
+      nombre: "Proyecto Bases de datos 2",
+      descripcion: "En mongoDB",
+      id_plan: "60abdc872e21bbe44cc09599",
+      owner: user.id,
+      miembros: [user.id],
+      lideres: [user.id],
+    };
+    postData(
+      "https://workzone-backend-mdb.herokuapp.com/api/projects/create",
+      body
+    ).then((r) => {
+      console.log("me respondio" + r);
+      if (r.ok) {
+        console.log("todo bien", r.data);
+      } else {
+        console.log("error");
+      }
+    });
+  };
+
   const plans = [
     {
       name: "HOBBY",
       price: 0,
-      features: ["Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet."]
+      features: [
+        "Lorem ipsum dolor sit amet.",
+        "Lorem ipsum dolor sit amet.",
+        "Lorem ipsum dolor sit amet.",
+      ],
     },
     {
       name: "EMPRENDEDOR",
       price: 10,
-      features: ["Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet."]
+      features: [
+        "Lorem ipsum dolor sit amet.",
+        "Lorem ipsum dolor sit amet.",
+        "Lorem ipsum dolor sit amet.",
+      ],
     },
     {
       name: "EMPRESA",
       price: 40,
-      features: ["Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet."]
+      features: [
+        "Lorem ipsum dolor sit amet.",
+        "Lorem ipsum dolor sit amet.",
+        "Lorem ipsum dolor sit amet.",
+      ],
     },
-  ]
+  ];
 
   const handleRemoveClick = (index) => {
     const list = [...inputList];
@@ -69,7 +107,8 @@ export default function CreateProjects() {
           </Form.Group>
         </Form.Row>
         <div className="sectionTitle">
-          <FaUsers /><span>Miembros</span>
+          <FaUsers />
+          <span>Miembros</span>
         </div>
         {inputList.map((email, i) => {
           return (
@@ -94,12 +133,18 @@ export default function CreateProjects() {
               </Form.Row>
               <div className="btn-box">
                 {inputList.length !== 1 && (
-                  <button className="addOrDeleteCollaboratorButtons" onClick={() => handleRemoveClick(i)}>
+                  <button
+                    className="addOrDeleteCollaboratorButtons"
+                    onClick={() => handleRemoveClick(i)}
+                  >
                     x
                   </button>
                 )}
                 {inputList.length - 1 === i && (
-                  <button className="addOrDeleteCollaboratorButtons" onClick={handleAddClick}>
+                  <button
+                    className="addOrDeleteCollaboratorButtons"
+                    onClick={handleAddClick}
+                  >
                     +
                   </button>
                 )}
@@ -109,16 +154,14 @@ export default function CreateProjects() {
         })}
 
         <div className="sectionTitle">
-          <FaMapSigns /><span>Plan</span>
+          <FaMapSigns />
+          <span>Plan</span>
         </div>
-        <div className="plansContainer"> 
-          {
-            plans.map((plan) => (
-              <PlanCard plan={plan} />
-            ))
-          }
+        <div className="plansContainer">
+          {plans.map((plan) => (
+            <PlanCard plan={plan} />
+          ))}
         </div>
-
 
         <Container className="justify-content-center">
           <div className="button">
