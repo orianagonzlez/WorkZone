@@ -18,15 +18,6 @@ export default function ProjectDeets({ project }) {
       <div className="upperButtons">
         <Button
           className="upperButton"
-          id="newTask"
-          onClick={() => {
-            handleCreateTask();
-          }}
-        >
-          + Agregar Tarea
-        </Button>
-        <Button
-          className="upperButton"
           id="editProject"
           onClick={() => {
             handleEditProject();
@@ -65,8 +56,6 @@ export default function ProjectDeets({ project }) {
           <h3>Elque</h3>
         </div>
       </div>
-
-      
 
       <Board />
     </Container>
