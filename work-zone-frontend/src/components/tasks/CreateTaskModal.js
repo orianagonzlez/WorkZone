@@ -1,31 +1,71 @@
 import React from "react";
 import { Modal, Button, Form, Col } from "react-bootstrap";
+import Swal from "sweetalert2";
+import { postData } from "../../helpers/postData";
 import { useForm } from "../../hooks/useForm";
 
 export const CreateTaskModal = (props) => {
-  const [formValues, handleInputChange] = useForm({
-    task_id: "",
+  const [formValues, handleInputChange, reset] = useForm({
+    task_name: "",
     task_content: "",
-    task_status: "",
+    task_member: "",
+    task_status: props.lists[0]?._id,
   });
 
-  const { task_id, task_content, task_status } = formValues;
+  const { task_name, task_content, task_member, task_status } = formValues;
 
   const handleCreate = (e) => {
-      console.log(task_id,task_content,task_status)
+      console.log(task_name,task_content,task_status)
     e.preventDefault();
     const newColumns = props.columns;
     const newTask = {
-      id: task_id,
-      content: task_content,
-      status: task_status,
+      id_proyecto: props.project._id,
+      nombre: task_name,
+      descripcion: task_content,
+      lista: task_status,
     };
-    newColumns[task_status].items.push(newTask);
-    props.setcolumns(newColumns);
-    props.onHide();
-  };
 
-  const availableColumns = Object.keys(props.columns);
+    if (task_member) {
+      newTask['miembro'] = task_member;
+    }
+
+    console.log('creando')
+    console.log(newTask)
+
+    if (task_name && task_content) {
+      //Creando la tarea en la base de datos
+      postData('https://workzone-backend-mdb.herokuapp.com/api/tasks/create', newTask).then( r => {
+        console.log('me respondio' + r);
+        if (r.ok) {
+            console.log('todo bien. CREE TAREAAAAAA');
+            console.log(r.data);
+            console.log(newColumns);
+            // newColumns[task_status].items.push(r.data);
+            // props.setcolumns(newColumns);
+            reset();
+            props.onHide();
+            Swal.fire({
+              icon: "success",
+              title: "Tarea creada",
+              text: "La tarea fue creada de forma exitosa",
+              confirmButtonColor: "#22B4DE",
+            });
+        
+        } else {
+          console.log('error');
+          props.onHide();
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Se produjo un error, intenta de nuevo",
+            confirmButtonColor: "#22B4DE",
+          });
+        }
+      });  
+      
+    }     
+    
+  };
 
   return (
     <Modal
@@ -45,27 +85,53 @@ export const CreateTaskModal = (props) => {
         <Form className="login_form" onSubmit={handleCreate}>
           <Form.Row className="d-flex align-items-center justify-content-start">
             <Form.Group as={Col}>
-              <Form.Label>ID</Form.Label>
+              <Form.Label>Nombre</Form.Label>
               <Form.Control
                 className="input"
                 type="text"
-                name="task_id"
+                name="task_name"
                 autoComplete="off"
-                value={task_id}
+                value={task_name}
                 onChange={handleInputChange}
+                required
               />
             </Form.Group>
           </Form.Row>
           <Form.Row className="d-flex align-items-center justify-content-start">
             <Form.Group as={Col}>
-              <Form.Label>Contenido</Form.Label>
+              <Form.Label>Descripción</Form.Label>
               <Form.Control
                 className="input"
                 type="text"
+                autoComplete="off"
                 name="task_content"
                 value={task_content}
                 onChange={handleInputChange}
+                required
               />
+            </Form.Group>
+          </Form.Row>
+          <Form.Row className="d-flex align-items-center justify-content-start">
+            <Form.Group as={Col}>
+              <Form.Label>Asignar a miembro</Form.Label>
+
+              <Form.Control as="select"
+                className="input"
+                type="text"
+                name="task_member"
+                onChange={handleInputChange}
+              >
+                <option value="">Ninguno</option>
+                {props.project.miembros.map((column) => (
+                  <option value={column._id} key={column._id}>{column.nombre} {column.apellido}</option>
+                ))}
+              </Form.Control>
+              {props.project.miembros.length == 0 &&
+              <Form.Text className="text-muted">
+                Agrega miembros en la configuración general del proyecto para asignarles una tarea.
+              </Form.Text>
+              }
+
             </Form.Group>
           </Form.Row>
           <Form.Row className="d-flex align-items-center justify-content-start">
@@ -78,8 +144,8 @@ export const CreateTaskModal = (props) => {
                 name="task_status"
                 onChange={handleInputChange}
               >
-                {availableColumns.map((column) => (
-                  <option value={column} key={column}>{column}</option>
+                {props.lists.map((column) => (
+                  <option value={column._id} key={column._id}>{column.nombre}</option>
                 ))}
               </Form.Control>
 

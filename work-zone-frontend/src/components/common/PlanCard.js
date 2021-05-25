@@ -10,7 +10,7 @@ export default function PlanCard({
   plan = {
     ...plan,
     features: [
-      `Tareas activas: ${plan.max_tareas}`,
+      `Tareas activas: ${plan.max_tareas === 0 ? 'Ilimitadas' : plan.max_tareas }`,
       `Miembros: ${plan.max_miembros}`,
     ],
   };

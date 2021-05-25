@@ -30,7 +30,8 @@ export default function ProjectDeets() {
     });
   }, []);
 
-  const handleEditProject = () => {
+  const handleEditProject = () => {}
+
     return (
       <Container fluid className="componentContainer">
         <div className="upperButtons">
@@ -60,8 +61,8 @@ export default function ProjectDeets() {
           <h3>Aqui va la descripcion{/* project.descripcion */}</h3>
         </div>
         
-        <Board project={project} />
+        {projectInfo?._id && <Board project={ projectInfo }/>  }
       </Container>
     );
-  };
-}
+};
+
