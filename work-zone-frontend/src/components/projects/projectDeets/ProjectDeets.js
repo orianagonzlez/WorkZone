@@ -39,22 +39,14 @@ export default function ProjectDeets({ project }) {
         </div>
       </div>
 
+      <div>
+        <div className="projectDescripcion">
+          <h2>Descripcion {/* project.descripcion */} </h2>
+        </div>
+      </div>
+
       <div className="miembros-logo">
         <FaUsers /> Miembros
-      </div>
-      <div className="miembrosProyecto">
-        <div className="miembro">
-          <img src="logo192.png" className="profilePicture"></img>
-          <h3>Rocco Madonna</h3>
-        </div>
-        <div className="miembro">
-          <img src="logo192.png" className="profilePicture"></img>
-          <h3>Christoforo Sting</h3>
-        </div>
-        <div className="miembro">
-          <img src="logo192.png" className="profilePicture"></img>
-          <h3>Elque</h3>
-        </div>
       </div>
 
       <Board />

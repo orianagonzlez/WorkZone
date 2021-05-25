@@ -8,6 +8,8 @@ import PlanCard from "../../common/PlanCard";
 export default function CreateProjects() {
   const [name, setName] = React.useState("");
 
+  const [descripcion, setDescripcion] = React.useState("");
+  
   const [inputList, setInputList] = useState([""]);
 
   const plans = [
@@ -68,6 +70,24 @@ export default function CreateProjects() {
             />
           </Form.Group>
         </Form.Row>
+
+        <Form.Row className="d-flex align-items-center justify-content-start">
+          <Form.Group as={Col}>
+            <Form.Control
+              className="projectDescripcion"
+              type="text"
+              placeholder="Descripcion"
+              name="descripcion"
+              autoComplete="off"
+              value={descripcion}
+              onChange={(e) => {
+                e.preventDefault();
+                setDescripcion(e.target.value);
+              }}
+            />
+          </Form.Group>
+        </Form.Row>
+
         <div className="sectionTitle">
           <FaUsers /><span>Miembros</span>
         </div>

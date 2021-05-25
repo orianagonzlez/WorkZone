@@ -70,6 +70,20 @@
     border-color: $font;
   }
 
+  .projectDescripcion{
+    display: flex;
+    align-self: center;
+    flex-direction: row;
+    justify-content: start;
+    font-size: 120%;
+    margin-left: 1rem;
+    background-color: $neutral-100;
+    border-width: 0 0 2px;
+    border-color: $font;
+    border: 0rem;
+    border-radius: 1rem;
+  }
+
   .create-button {
     background-color: $primary-blue-500;
     font-weight: bolder;

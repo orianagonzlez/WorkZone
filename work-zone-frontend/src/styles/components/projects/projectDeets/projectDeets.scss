@@ -11,6 +11,10 @@
     font-size: 2.25rem;
     padding-bottom: 4.5rem;
   }
+  h2{
+    display: flex;
+    font-size: 1.25rem;
+  }
   h3 {
     display: flex;
     color: $primary-gray-500;
@@ -54,6 +58,18 @@
       }
     }
   }
+
+  .projectDescripcion {
+    display: flex; 
+    align-self: flex-start;
+    flex-direction: row;
+    justify-content: center;  
+    color: $primary-gray-500;
+    padding-bottom: 2.5rem;
+    margin-top: 1rem;
+    
+  }
+
   .miembros-logo {
     display: flex;
     align-items: center;
