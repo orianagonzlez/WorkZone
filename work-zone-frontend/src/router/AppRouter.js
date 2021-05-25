@@ -11,6 +11,8 @@ import { AppContext } from "../context/AppContext";
 export const AppRouter = () => {
   const { user } = useContext(AppContext);
 
+  console.log('prueba', user);
+
   return (
     <Router>
       <div>

@@ -12,7 +12,12 @@ export const AppContext = createContext({
 });
 
 export const AppProvider = ({ children }) => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [user, setUser] = useState({user: {
+    email: "",
+    id: "",
+    nombre: "",
+    isLogged: false,
+  }});
 
   console.log("paso por aqui", user);
 
