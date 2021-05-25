@@ -25,7 +25,7 @@ export const AppRouter = () => {
                         isAuthenticated={user.isLogged}
                     />
 
-                    <PublicRoute
+                    <PrivateRoute
                         exact
                         isAuthenticated={user.isLogged}
                         path="/"
