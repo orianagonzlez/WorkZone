@@ -30,10 +30,8 @@
         box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
         transition: all 0.5s ease;
       }
-      
     }
   }
-
 
   .create-project-form {
     background-color: $neutral-100;
@@ -49,7 +47,7 @@
   h1 {
     color: $primary-gray-500;
     font-weight: bold;
-    font-size: 2.50rem;
+    font-size: 2.5rem;
     padding: 0;
     padding-left: 2rem;
     display: flex;
@@ -70,7 +68,7 @@
     border-color: $font;
   }
 
-  .projectDescription{
+  .projectDescription {
     display: flex;
     margin-left: 1rem;
     background-color: transparent;
@@ -119,21 +117,27 @@
 
   .addOrDeleteCollaboratorButtons {
     display: flex;
-    background-color: $primary-blue-500;
     border: 0rem;
-    border-radius: 1rem;
-    color: $neutral-50;
+    color: $primary-gray-400;
     font-weight: 600;
-    font-size: larger;
-    align-self: flex-end;
-    width: 60px;
-    height: 40px;
+    font-size: 1.5em;
+    align-self: center;
     margin-left: 1rem;
     text-align: center;
     justify-content: center;
+    cursor: pointer;
+
     &:hover {
-      background-color: $font;
-      box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
+      color: $primary-blue-500;
+      transition: all 0.5s ease;
+    }
+  }
+
+  .delete {
+    color: $color-red;
+
+    &:hover {
+      color: $primary-gray-400;
       transition: all 0.5s ease;
     }
   }
