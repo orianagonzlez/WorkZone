@@ -1,29 +1,18 @@
-import React from 'react'
-import { Container, Row } from 'react-bootstrap';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import React from "react";
+import { Container, Row } from "react-bootstrap";
+import { Switch, Route, Redirect } from "react-router-dom";
 
-import { LoginScreen } from '../pages/LoginScreen';
-import { RegisterScreen } from '../pages/RegisterScreen';
+import { LoginScreen } from "../pages/LoginScreen";
+import { RegisterScreen } from "../pages/RegisterScreen";
 
 export const AuthRouter = () => {
-    return (
+  return (
+    <Switch>
+      <Route exact path="/login" component={LoginScreen} />
 
-        <Switch>
-            <Route
-                exact
-                path="/auth/login"
-                component={LoginScreen}
-            />
+      <Route exact path="/register" component={RegisterScreen} />
 
-            <Route
-                exact
-                path="/auth/register"
-                component={RegisterScreen}
-            />
-
-            <Redirect to="/auth/login" />
-
-        </Switch>
-        
-    )
-}
+      <Redirect to="/login" />
+    </Switch>
+  );
+};

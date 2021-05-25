@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { FaTag, FaThList, FaUsers, FaChartLine, FaArchive } from 'react-icons/fa';
+import { useHistory } from 'react-router';
 import { AppContext } from '../../context/AppContext';
 import { getData } from '../../helpers/getData';
 import ProjectCard from './ProjectCard';
@@ -7,6 +8,7 @@ import ProjectCard from './ProjectCard';
 export const ProjectTable = ({show}) => {
 
   const {setUser, user} = useContext(AppContext);
+  const history = useHistory();
 
   const [projects, setProjects] = useState([]);
 
@@ -42,8 +44,8 @@ export const ProjectTable = ({show}) => {
               {projects.map((project) => {
                 if (!show && !project.archivado) {
                   return (
-                    <li className="Preview__table-row" key={project._id}>
-                      <ProjectCard project={project} /> 
+                    <li className="Preview__table-row" key={project._id} onClick={() => history.push(`/projects/details/${project._id}`)}>
+                      <ProjectCard project={project}/> 
                     </li>
                   )}
                 if (show && project.archivado) {

@@ -1,50 +1,36 @@
-import React, { useContext } from 'react';
-import { Container, Button } from 'react-bootstrap';
-import { AppContext } from '../../context/AppContext';
-import { postData } from '../../helpers/postData';
-
-import { ProjectTable } from './ProjectTable';
+import React, { useContext } from "react";
+import { Container, Button } from "react-bootstrap";
+import { AppContext } from "../../context/AppContext";
+import { useHistory } from "react-router";
+import { ProjectTable } from "./ProjectTable";
 
 export default function Projects() {
-    const {setUser, user} = useContext(AppContext);
+  const { setUser, user } = useContext(AppContext);
 
-    const [showArchived, setShowArchived] = React.useState(false);
-    const archive = (e) => {
-        setShowArchived(!showArchived);
-    };
+  const history = useHistory();
 
-    //TEMPORAL MIENTRAS SE HACE EL FORMULARIO. PUEDE CAMBIAR DE LOCACION, PERO ASI SERIA LA FUNCION
-    const handleCreateProject = () => {
-        let body = {
-            nombre: 'Proyecto Bases de datos 2',
-            descripcion: 'En mongoDB',
-            id_plan: "60abdc872e21bbe44cc09599",
-            owner: user.id,
-            miembros: [user.id],
-            lideres: [user.id]
-          }
-          
-        postData('https://workzone-backend-mdb.herokuapp.com/api/projects/create', body).then( r => {
-        console.log('me respondio' + r);
-        if (r.ok) {
-            console.log('todo bien', r.data);
+  const [showArchived, setShowArchived] = React.useState(false);
+  const archive = (e) => {
+    setShowArchived(!showArchived);
+  };
 
-        } else {
-        console.log('error');
-        }
-        })
-    };
-
-
-    return (
-        <Container fluid className="componentContainer">
-            <Button className="newProject" onClick={ () => {handleCreateProject()}}>+ Nuevo Proyecto</Button>
-            <h1>Tus proyectos</h1>
-            <ProjectTable show={showArchived} />
-            <Button className="archivedProjects" onClick={ e => archive(e)} >
-                { showArchived ? 'Ocultar proyectos archivados' : 'Mostrar proyectos archivados'}
-            </Button>
-            
-        </Container>
-    )
+  return (
+    <Container fluid className="componentContainer">
+      <Button
+        className="newProject"
+        onClick={() => {
+          history.push("/projects/create");
+        }}
+      >
+        + Nuevo Proyecto
+      </Button>
+      <h1>Tus proyectos</h1>
+      <ProjectTable show={showArchived} />
+      <Button className="archivedProjects" onClick={(e) => archive(e)}>
+        {showArchived
+          ? "Ocultar proyectos archivados"
+          : "Mostrar proyectos archivados"}
+      </Button>
+    </Container>
+  );
 }

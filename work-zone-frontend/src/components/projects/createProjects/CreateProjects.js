@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { Container, Form, Button, Col } from "react-bootstrap";
 import { FaUsers, FaMapSigns } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import PlanCard from "../../common/PlanCard";
+import { AppContext } from "../../../context/AppContext";
+import { postData } from "../../../helpers/postData";
 
 export default function CreateProjects() {
   const [name, setName] = React.useState("");
@@ -11,6 +13,30 @@ export default function CreateProjects() {
   const [descripcion, setDescripcion] = React.useState("");
 
   const [inputList, setInputList] = useState([""]);
+
+  const { setUser, user } = useContext(AppContext);
+
+  const handleCreateProject = () => {
+    let body = {
+      nombre: "Proyecto Bases de datos 2",
+      descripcion: "En mongoDB",
+      id_plan: "60abdc872e21bbe44cc09599",
+      owner: user.id,
+      miembros: [user.id],
+      lideres: [user.id],
+    };
+    postData(
+      "https://workzone-backend-mdb.herokuapp.com/api/projects/create",
+      body
+    ).then((r) => {
+      console.log("me respondio" + r);
+      if (r.ok) {
+        console.log("todo bien", r.data);
+      } else {
+        console.log("error");
+      }
+    });
+  };
 
   const plans = [
     {
@@ -41,8 +67,6 @@ export default function CreateProjects() {
       ],
     },
   ];
-
-  const handleSumbit = (e) => {e.preventDefault()}
 
   const handleRemoveClick = (index) => {
     const list = [...inputList];

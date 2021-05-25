@@ -1,56 +1,67 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { Container, Button } from "react-bootstrap";
 import { AppContext } from "../../../context/AppContext";
 import { postData } from "../../../helpers/postData";
-import { Board } from "./Board";
-import { FaUsers } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import { FaEdit, FaArrowCircleLeft } from "react-icons/fa";
+import { Board } from "./Board";
+import { getData } from "../../../helpers/getData";
 
-export default function ProjectDeets({ project }) {
+export default function ProjectDeets() {
+  const [projectInfo, setProjectInfo] = useState({});
+
+  const { project } = useParams();
+
+  console.log(projectInfo);
+
   //const {setUser, user} = useContext(AppContext);
 
-  const handleCreateTask = () => {};
-  const handleEditProject = () => {};
+  useEffect(() => {
+    //Una vez que se tenga el id del usuario, se buscan los proyectos donde participa
+    getData(
+      `https://workzone-backend-mdb.herokuapp.com/api/projects/${project}`
+    ).then((r) => {
+      console.log("me respondio" + r);
+      if (r.ok) {
+        setProjectInfo(r.data);
+      } else {
+        console.log("error");
+      }
+    });
+  }, []);
 
-  return (
-    <Container fluid className="componentContainer">
-      <div className="upperButtons">
-        <Button
-          className="upperButton"
-          id="editProject"
-          onClick={() => {
-            handleEditProject();
-          }}
-        >
-          <FaEdit /> Editar Proyecto
-        </Button>
-      </div>
-      <div className="divArrowLeft">
-        <div>
-          <Link to="/">
-            <Button className="arrowLeft">
-              <FaArrowCircleLeft />
-            </Button>
-          </Link>
+  const handleEditProject = () => {
+    return (
+      <Container fluid className="componentContainer">
+        <div className="upperButtons">
+          <Button
+            className="upperButton"
+            id="editProject"
+            onClick={() => {
+              handleEditProject();
+            }}
+          >
+            <FaEdit /> Editar Proyecto
+          </Button>
         </div>
-        <div>
-          <h1>Project Name{/* project.name */}</h1>
-        </div>
-      </div>
 
-      <div>
+        <div className="divArrowLeft">
+          <div>
+            <Link to="/">
+              <Button className="arrowLeft">
+                <FaArrowCircleLeft />
+              </Button>
+            </Link>
+          </div>
+          <h1>{projectInfo.nombre}</h1>
+        </div>
         <div className="description">
           <h2>Descripcion</h2>
           <h3>Aqui va la descripcion{/* project.descripcion */}</h3>
         </div>
-      </div>
-
-      <div className="miembros-logo">
-        <FaUsers /> Miembros
-      </div>
-
-      <Board />
-    </Container>
-  );
+        
+        <Board project={project} />
+      </Container>
+    );
+  };
 }
