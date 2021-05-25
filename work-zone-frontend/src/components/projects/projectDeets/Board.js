@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Container, Button } from "react-bootstrap";
-import { CreateTaskModal } from "../components/tasks/CreateTaskModal";
+import { CreateTaskModal } from "../../tasks/CreateTaskModal";
 
 const itemsFromBackend = [
   {
@@ -99,7 +99,7 @@ const onDragEnd = (result, columns, setColumns) => {
   }
 };
 
-export const HomeScreen = () => {
+export const Board = () => {
   const [columns, setColumns] = useState(columnsFromBackend);
 
   const [modalShow, setModalShow] = useState(false);
@@ -108,9 +108,7 @@ export const HomeScreen = () => {
     <Container className="componentContainer">
       <h1>Tasks</h1>
 
-      <Button className="btn-create" onClick={() => setModalShow(true)}>
-        Crear Tarea
-      </Button>
+      <button className="btn-create" onClick={ () => setModalShow(true)}>+ Crear Tarea</button>
 
       <CreateTaskModal
         show={modalShow}

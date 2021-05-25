@@ -1,0 +1,161 @@
+.componentContainer {
+  background-color: $neutral-100;
+  padding: 4rem;
+  min-height: 100vh;
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+
+  .divArrowLeft {
+    display: flex;
+    align-self: flex-start;
+    flex-direction: row;
+    justify-content: start;
+    font-weight: bold;
+    align-items: center;
+    padding-bottom: 1rem;
+
+    .arrowLeft {
+      display: flex;
+      color: $primary-gray-400;
+      background-color: transparent;
+      margin: 0.5rem;
+      padding: 0rem;
+      font-size: 2rem;
+      border-color: transparent;
+      &:hover {
+        color: $font;
+        background-color: transparent;
+        border-color: transparent;
+        box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
+        transition: all 0.5s ease;
+      }
+      
+    }
+  }
+
+
+  .create-project-form {
+    background-color: $neutral-100;
+    padding: 1rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    border: 0rem;
+    //align-items:center;
+    //justify-content:start;
+  }
+
+  h1 {
+    color: $primary-gray-500;
+    font-weight: bold;
+    font-size: 2.25rem;
+    padding: 0;
+    padding-left: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .projectName {
+    display: flex;
+    align-self: center;
+    flex-direction: row;
+    justify-content: start;
+    font-weight: bold;
+    //color: ligthen($primary-gray-400, 80%); quiero como que ligthen el color de project name pero no se como
+    font-size: 250%;
+    margin-left: 1rem;
+    background-color: transparent;
+    border-width: 0 0 2px;
+    border-color: $font;
+  }
+
+  .create-button {
+    background-color: $primary-blue-500;
+    font-weight: bolder;
+    border: 0rem;
+    border-radius: 1rem;
+    padding: 0.5rem 0.5rem;
+    align-self: center;
+    margin: 2rem 0;
+    font-size: 1.269rem;
+    color: $neutral-50;
+    width: 30.69%;
+    &:hover {
+      background-color: $font;
+      box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
+      transition: all 0.5s ease;
+    }
+  }
+
+  .box {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1rem;
+    
+    .emailInputRow {
+      width: 80%;
+      align-items: center;
+
+      .formGroup {
+        margin: 0;
+      }
+    }
+
+    .btn-box {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+
+  .addOrDeleteCollaboratorButtons {
+    display: flex;
+    background-color: $primary-blue-500;
+    border: 0rem;
+    border-radius: 1rem;
+    color: $neutral-50;
+    font-weight: 600;
+    font-size: larger;
+    align-self: flex-end;
+    width: 60px;
+    height: 40px;
+    margin-left: 1rem;
+    text-align: center;
+    justify-content: center;
+    &:hover {
+      background-color: $font;
+      box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
+      transition: all 0.5s ease;
+    }
+  }
+
+  .sectionTitle {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    margin-bottom: 1rem;
+    margin-top: 3rem;
+    color: $primary-blue-500;
+    font-weight: bolder;
+    font-size: 1rem;
+    span {
+      margin-left: 0.5rem;
+    }
+  }
+
+  .inputCorreo {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    border: 0rem;
+    border-radius: 1rem;
+    width: 100%;
+  }
+
+  .plansContainer {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+}

@@ -1,0 +1,72 @@
+// className={`text-blue-200 hover:text-neutral-200 relative mx-2 mb-4 ${modal ? 'w-52 h-72' : 'mt-8 w-72 h-96'}`}
+
+.cardContainer {
+    color: $neutral-100;
+    position: relative;
+    margin: 1rem;
+    width: 16rem;
+    height: 20rem;
+    border-radius: 1rem;
+    transition: all 0.5s ease;
+    transform-origin: center center;
+
+    &:hover {
+        color: $font;
+        cursor: pointer;
+        height: 21rem;
+        width: 17rem;
+        box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
+    }
+
+
+    .infoContainer {
+        // p-8 bg-neutral-200 hover:bg-blue-200 absolute h-full w-full rounded-xl z-10 flex flex-col justify-between
+        padding: 20px 32px;
+        background-color: $primary-gray-400;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        border-radius: 1rem;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        &:hover {
+            background-color: $neutral-50;
+            .checkIcon {
+                color: $primary-gray-400;
+            }
+        }
+
+        .titleContainer {
+            // flex flex-row justify-between
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding-top: 2rem;
+            h4 {
+                // {`uppercase text-left font-bold pr-2 self-center ${modal ? 'text-sm' : 'text-md'}`}
+                text-transform: uppercase;
+                text-align: center;
+                font-weight: bold;
+                align-self: center;
+                font-size: large;
+            }
+            .price {
+                // {`uppercase font-bold justify-self-end ${modal ? 'text-lg' : 'text-2xl'}`}
+                text-transform: uppercase;
+                font-weight: bold;
+                font-size: x-large;
+            }
+        }
+
+        .featuresContainer {
+            // {`line-clamp-6 text-left ${modal ? 'text-xxs' : 'text-xs pt-3'}`}
+            padding-bottom: 2rem;
+            text-align: left;
+            line-clamp: 6;
+        }
+
+        
+    }
+}
