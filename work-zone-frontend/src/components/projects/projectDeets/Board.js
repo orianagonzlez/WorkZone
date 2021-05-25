@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Container, Button } from "react-bootstrap";
+import { useHistory } from "react-router";
+import Swal from "sweetalert2";
 import { getData } from "../../../helpers/getData";
 import { CreateTaskModal } from "../../tasks/CreateTaskModal";
 
@@ -103,10 +105,13 @@ const onDragEnd = (result, columns, setColumns) => {
 export const Board = ({ project }) => {
   const [columns, setColumns] = useState({});
   const [lists, setLists] = useState([]);
+  const [tasksNum, setTasksNum] = useState(0);
 
   console.log(columns);
 
   const [modalShow, setModalShow] = useState(false);
+
+  const history = useHistory();
 
   useEffect(() => {
     //Buscando las listas del proyecto con sus respectivas tareas
@@ -129,13 +134,51 @@ export const Board = ({ project }) => {
             console.log('error');
         }
     });
-}, [modalShow]);
+  }, [modalShow]);
+
+  useEffect(() => {
+    let n = 0;
+    lists.forEach(item => {
+      n += item.items.length
+    });
+    setTasksNum(n);
+  }, [lists])
+
+  const handleCreateTask = () => {
+    if (project.id_plan.max_tareas === 0) {
+      setModalShow(true)
+    }
+    //Si ya no tiene mas tareas disponibles, se redirige a la pagina para actualizar el plan
+    else if (tasksNum === project.id_plan.max_tareas) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `Has alcanzado el máximo de tareas para el plan ${project.id_plan.nombre}.\nPara crear más tareas debes actualizar tu plan.`,
+        confirmButtonColor: "#22B4DE",
+      });
+
+      //PONER AQUI LA RUTA A EDITAR PROYECTOOOOOOOOO
+      // history.push(`projects/update/${project._id}`)
+
+    } else if (project.id_plan.max_tareas - tasksNum <= 10 ) {
+      Swal.fire({
+        icon: "warning",
+        title: "Actualiza tu plan",
+        text: `Tienes ${project.id_plan.max_tareas - tasksNum } tarea(s) restante para alcanzar el máximo de tareas para el plan ${project.id_plan.nombre}. Te recomendamos actualizar tu plan en la configuración del proyecto.`,
+        confirmButtonColor: "#22B4DE",
+      });
+      setModalShow(true)
+    } else {
+      setModalShow(true)
+    }
+    
+  }
 
   return (
     <Container className="componentContainer">
       <h1>Tasks</h1>
 
-      <button className="btn-create" onClick={ () => setModalShow(true)}>+ Crear Tarea</button>
+      <button className="btn-create" onClick={ () => handleCreateTask()}>+ Crear Tarea</button>
 
       {lists.length > 0 && <CreateTaskModal
         project={project}
