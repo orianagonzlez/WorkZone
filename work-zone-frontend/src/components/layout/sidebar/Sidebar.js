@@ -1,12 +1,52 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Container, Button } from 'react-bootstrap';
-import { FaUserCircle, FaBoxes, FaCog } from 'react-icons/fa';
+import { FaUserCircle, FaBoxes, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import { Link } from "react-router-dom";
+import Swal from 'sweetalert2';
+import { AppContext } from '../../../context/AppContext';
+import { postData } from '../../../helpers/postData';
 
 
 
 export default function Sidebar() {
     const [visible, setVisible] = React.useState(false);
+
+    const {setUser, user} = useContext(AppContext);
+
+    const singOut = () => {
+      
+      const body = {
+        uid: user.id,
+        onLine: false
+      };
+    
+      const url = "https://workzone-backend-mdb.herokuapp.com/api/auth/update";
+      postData(url, body).then( r => {
+           
+            if (r.ok) {
+              setUser({
+                email: "",
+                id: "",
+                nombre:"",
+                username: "",
+                fechaNacimiento: "",
+                isLogged: false,
+            })  
+              
+            } else {
+              console.log('error');
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'Un error inesperado ha ocurrido al cerrar sesión',
+                  confirmButtonColor: "#22B4DE"
+                })
+            }
+        });
+
+    }
+
+
     return (
         <Container fluid className="sidebarContainer">
             <button
@@ -87,8 +127,8 @@ export default function Sidebar() {
                             </Button>
                         </ul>
                         <ul>
-                            <Button >
-                                <FaCog /><span>Ajustes</span>
+                            <Button onClick={ () => singOut()} >
+                                <FaSignOutAlt /><span>Cerrar sesión</span>
                             </Button>
                         </ul>
                     </li>

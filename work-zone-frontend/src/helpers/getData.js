@@ -6,7 +6,7 @@ export const getData = async(path) => {
         
     };
       
-    const response = await fetch(`http://localhost:8000/${path}`, requestOptions);
+    const response = await fetch(path, requestOptions);
 
     const result = await response.text();
 
