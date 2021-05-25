@@ -2,11 +2,10 @@ import React, { useContext } from "react";
 import { Container, Button } from "react-bootstrap";
 import { AppContext } from "../../../context/AppContext";
 import { postData } from "../../../helpers/postData";
-import { FaEdit } from "react-icons/fa";
 import { Board } from "./Board";
 import { FaUsers } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { FaArrowCircleLeft } from "react-icons/fa";
+import { FaEdit, FaArrowCircleLeft } from "react-icons/fa";
 
 export default function ProjectDeets({ project }) {
   //const {setUser, user} = useContext(AppContext);

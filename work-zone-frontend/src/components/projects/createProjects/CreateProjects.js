@@ -1,13 +1,32 @@
 import React, { useState } from "react";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { Container, Form, Button, Col } from "react-bootstrap";
-import { FaUsers } from "react-icons/fa";
+import { FaUsers, FaMapSigns } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import PlanCard from "../../common/PlanCard";
 
 export default function CreateProjects() {
   const [name, setName] = React.useState("");
 
   const [inputList, setInputList] = useState([""]);
+
+  const plans = [
+    {
+      name: "HOBBY",
+      price: 0,
+      features: ["Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet."]
+    },
+    {
+      name: "EMPRENDEDOR",
+      price: 10,
+      features: ["Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet."]
+    },
+    {
+      name: "EMPRESA",
+      price: 40,
+      features: ["Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet."]
+    },
+  ]
 
   const handleRemoveClick = (index) => {
     const list = [...inputList];
@@ -20,7 +39,7 @@ export default function CreateProjects() {
   };
 
   return (
-    <Container fluid className="componentContainer">
+    <div className="componentContainer">
       <div className="divArrowLeft">
         <div>
           <Link to="/">
@@ -29,9 +48,7 @@ export default function CreateProjects() {
             </Button>
           </Link>
         </div>
-        <div>
-          <h1>Nuevo proyecto</h1>
-        </div>
+        <h1>Nuevo proyecto</h1>
       </div>
 
       <Form className="create-project-form">
@@ -51,15 +68,14 @@ export default function CreateProjects() {
             />
           </Form.Group>
         </Form.Row>
-        <hr/ >
-        <div className="miembros-logo">
-          <FaUsers /> Miembros
+        <div className="sectionTitle">
+          <FaUsers /><span>Miembros</span>
         </div>
         {inputList.map((email, i) => {
           return (
             <div className="box">
-              <Form.Row className="d-flex align-items-center justify-content-start">
-                <Form.Group as={Col}>
+              <Form.Row className="emailInputRow">
+                <Form.Group as={Col} className="formGroup">
                   <Form.Control
                     className="inputCorreo"
                     type="text"
@@ -79,12 +95,12 @@ export default function CreateProjects() {
               <div className="btn-box">
                 {inputList.length !== 1 && (
                   <button className="addOrDeleteCollaboratorButtons" onClick={() => handleRemoveClick(i)}>
-                    Borrar
+                    x
                   </button>
                 )}
                 {inputList.length - 1 === i && (
                   <button className="addOrDeleteCollaboratorButtons" onClick={handleAddClick}>
-                    Agregar
+                    +
                   </button>
                 )}
               </div>
@@ -92,15 +108,27 @@ export default function CreateProjects() {
           );
         })}
 
+        <div className="sectionTitle">
+          <FaMapSigns /><span>Plan</span>
+        </div>
+        <div className="plansContainer"> 
+          {
+            plans.map((plan) => (
+              <PlanCard plan={plan} />
+            ))
+          }
+        </div>
+
+
         <Container className="justify-content-center">
           <div className="button">
             <Button className="create-button" variant="primary" type="submit">
-              Crear
+              CREAR
             </Button>
           </div>
         </Container>
       </Form>
-    </Container>
+    </div>
   );
 }
 

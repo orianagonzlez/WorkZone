@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import { postData } from '../helpers/postData';
 import { useForm } from '../hooks/useForm';
+import Swal from 'sweetalert2';
+
 
 export const LoginScreen = () => {
   
@@ -18,29 +20,34 @@ export const LoginScreen = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        console.log("Login Sirve")
-        console.log(email, password)
+      
 
         let body = {
           email: email, 
           contrasena: password
           }
         
-        postData('users/login', body).then( r => {
-            console.log('me respondio' + r);
-            if (r.status === 'success') {
-              const {email, id_usuario, nombre, apellido, fecha_nacimiento, username } = r.data;
+        const url = "https://workzone-backend-mdb.herokuapp.com/api/auth/login";
+        postData(url, body).then( r => {
+            
+            if (r.ok) {
+              const {email, uid, nombre, apellido, fechaNacimiento, username } = r.data;
               setUser({
-                  ...user,
                   email: email,
-                  id: id_usuario,
+                  id: uid,
                   nombre: `${nombre} ${apellido}`,
                   username: username,
-                  fechaNacimiento: fecha_nacimiento,
+                  fechaNacimiento: fechaNacimiento,
                   isLogged: true,
                 });
             } else {
               console.log('error');
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'Credenciales Invalidas!',
+                  confirmButtonColor: "#22B4DE"
+                })
             }
         });
         
@@ -52,13 +59,16 @@ export const LoginScreen = () => {
 
             <Container className="login_container">
 
-                <h1 className="auth_title">¡BIENVENIDO DE VUELTA!</h1>
+
+                  <h2 className="auth_title">¡BIENVENIDO DE VUELTA!</h2>
+
+
                 
                 <Form className="login_form" onSubmit={handleLogin}>
 
                     <Form.Row className="d-flex align-items-center justify-content-start">
 
-                        <Form.Group as={Col}>
+                        <Form.Group  as={Col}>
                             <Form.Label>Correo electrónico</Form.Label>
                             <Form.Control className="input"
                                 type="text"
@@ -72,7 +82,7 @@ export const LoginScreen = () => {
                     </Form.Row>
                     <Form.Row className="d-flex align-items-center justify-content-start">
 
-                        <Form.Group as={Col}>
+                        <Form.Group  as={Col}>
                             <Form.Label>Contraseña</Form.Label>
                             <Form.Control className="input"
                                 type="password"
