@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { Container, Form, Button, Col } from "react-bootstrap";
 import { FaUsers, FaMapSigns, FaPlusCircle, FaTrash } from "react-icons/fa";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import PlanCard from "../../common/PlanCard";
 import { AppContext } from "../../../context/AppContext";
 import { postData } from "../../../helpers/postData";
@@ -21,9 +21,13 @@ export default function CreateProjects() {
 
   const [planes, setPlanes] = useState([]);
 
+  const [editMode, setEditMode] = useState(false);
+
   const [selectedPlan, setSelectedPlan] = useState("");
 
   const { user } = useContext(AppContext);
+
+  const { project } = useParams();
 
   const history = useHistory();
 
@@ -32,6 +36,10 @@ export default function CreateProjects() {
   }, [selectedPlan]);
 
   useEffect(() => {
+    //verifico si hay id en el url para saber si se va a crear o editar
+    if (project) {
+    }
+
     // se piden todos los usuarios para validar que los correo ue el ingrese estan registrados
     getData(`https://workzone-backend-mdb.herokuapp.com/api/auth/users`).then(
       (r) => {

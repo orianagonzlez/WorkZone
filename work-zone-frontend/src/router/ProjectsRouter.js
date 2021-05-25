@@ -9,8 +9,15 @@ export const ProjectsRouter = () => {
     <div className="App">
       <div className="AppPage">
         <Switch>
-          <Route path="/projects/details/:project" component={ProjectDeetsPage} />
+          <Route
+            path="/projects/details/:project"
+            component={ProjectDeetsPage}
+          />
           <Route path="/projects/create" component={CreateProjectsScreen} />
+          <Route
+            path="/projects/edit/:project"
+            component={CreateProjectsScreen}
+          />
           <Route path="/projects" component={ProjectsPage} />
 
           <Redirect to="/projects" />
