@@ -110,7 +110,7 @@ export const Board = ({ project }) => {
 
   useEffect(() => {
     //Buscando las listas del proyecto con sus respectivas tareas
-    getData(`http://localhost:8080/api/lists/from/${project._id}`)
+    getData(`https://workzone-backend-mdb.herokuapp.com/api/lists/from/${project._id}`)
     .then( r => {
         console.log('me respondio' + r);
         if (r.ok) {

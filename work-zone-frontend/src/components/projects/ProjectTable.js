@@ -50,7 +50,7 @@ export const ProjectTable = ({show}) => {
                   )}
                 if (show && project.archivado) {
                   return (
-                    <li className="Preview__table-row" key={project._id}>
+                    <li className="Preview__table-row" key={project._id} onClick={() => history.push(`/projects/details/${project._id}`)}>
                       <ProjectCard project={project} /> 
                     </li>
                   )

@@ -34,7 +34,7 @@ export const CreateTaskModal = (props) => {
 
     if (task_name && task_content) {
       //Creando la tarea en la base de datos
-      postData('http://localhost:8080/api/tasks/create', newTask).then( r => {
+      postData('https://workzone-backend-mdb.herokuapp.com/api/tasks/create', newTask).then( r => {
         console.log('me respondio' + r);
         if (r.ok) {
             console.log('todo bien. CREE TAREAAAAAA');
