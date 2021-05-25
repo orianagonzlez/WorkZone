@@ -25,10 +25,6 @@ export const AppProvider = ({ children }) => {
     }
   });
 
-  useEffect(() => {}, []);
-
-  console.log("paso por aqui", user);
-
   useEffect(() => {
     //console.log('ME EJECUTO 2 ')
     localStorage.setItem("user", JSON.stringify(user));
