@@ -12,18 +12,20 @@ export const AppContext = createContext({
 });
 
 export const AppProvider = ({ children }) => {
-  const [user, setUser] = useState({
-    email: "",
-    id: "",
-    nombre: "",
-    isLogged: false,
+  const [user, setUser] = useState(() => {
+    if (localStorage.getItem("user")) {
+      return JSON.parse(localStorage.getItem("user"));
+    } else {
+      return {
+        email: "",
+        id: "",
+        nombre: "",
+        isLogged: false,
+      };
+    }
   });
 
-  useEffect(() => {
-    if (localStorage.getItem("user")) {
-      setUser(JSON.parse(localStorage.getItem("user")));
-    }
-  }, []);
+  useEffect(() => {}, []);
 
   console.log("paso por aqui", user);
 
