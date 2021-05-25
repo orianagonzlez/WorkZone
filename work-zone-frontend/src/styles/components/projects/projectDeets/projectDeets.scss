@@ -1,94 +1,177 @@
 .componentContainer {
-    background-color: $neutral-100;
-    padding: 4rem;
-    min-height: 100vh;
-    width: 85%;
+  background-color: $neutral-100;
+  padding: 4rem;
+  min-height: 100vh;
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  h1 {
+    color: $primary-gray-500;
+    font-weight: bold;
+    font-size: 2.25rem;
+    padding-bottom: 4.5rem;
+  }
+  h2{
+    display: flex;
+    font-size: 1.25rem;
+    color: $primary-gray-500;
+  }
+  h3 {
+    display: flex;
+    color: $primary-gray-500;
+    font-size: 0.85rem;
+    margin-left: 2rem;
+    //padding-bottom: 4.5rem;
+  }
+  li {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    font-weight: bold;
+    font-size: 1rem;
+  }
+
+  .divArrowLeft {
+    display: flex;
+    align-self: flex-start;
+    flex-direction: row;
+    justify-content: start;
+    font-weight: bold;
+    align-items: center;
+
+    .arrowLeft {
+      display: flex;
+      color: $primary-gray-400;
+      background-color: transparent;
+      margin: 0.5rem;
+      padding: 0rem;
+      font-size: 2rem;
+      border-color: transparent;
+      &:hover {
+        color: $font;
+        background-color: transparent;
+        border-color: transparent;
+        box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
+        transition: all 0.5s ease;
+      }
+    }
+  }
+
+  .description {
+    display: flex; 
+    flex-direction: column;
+    color: $primary-gray-500;
+    padding-bottom: 2.5rem;
+    margin-top: 1rem;
+    margin-left: 0.69rem;
+  }
+
+  .miembros-logo {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    color: $primary-blue-500;
+    font-weight: bolder;
+    font-size: 1rem;
+    margin-left: 1rem;
+  }
+
+  .miembrosProyecto {
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    flex-direction: row;
+    margin-left: 1rem;
+  }
+
+  .miembro {
     display: flex;
     flex-direction: column;
+    justify-content: left;
+    margin-right: 1.69rem;
+    margin-left: 1.69rem;
+  }
 
-    .divArrowLeft {
-        display: flex;
-        align-self: flex-start;
-        flex-direction: row;
-        justify-content: start;
-        font-weight: bold;
-        align-items: center;
-    
-        .arrowLeft {
-          display: flex;
-          color: $primary-gray-400;
-          background-color: transparent;
-          margin: 0.5rem;
-          padding: 0rem;
-          font-size: 2rem;
-          border-color: transparent;
-          &:hover {
-            color: $font;
-            background-color: transparent;
-            border-color: transparent;
-            box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
-            transition: all 0.5s ease;
-          }
-          
-        }
-    }
-    h1 {
+  .profilePicture {
+    display: flex;
+    border-radius: 50%;
+    background-color: $primary-mint-500; // esto lo puse asi por ahora porque no se como se traería y pondría la foto de perfil
+    height: 3.5rem;
+    width: 3.5rem;
+  }
+
+  .upperButtons {
+    align-self: flex-end;
+    margin-right: 4rem;
+    #newTask {
+      background-color: $primary-mint-500;
+      &:hover {
+        background-color: $font;
+        box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
+        transition: all 0.5s ease;
+      }
+
+      h1 {
         color: $primary-gray-500;
         font-weight: bold;
         font-size: 2.25rem;
         padding-bottom: 4.5rem;
-    }
-    li {
-        list-style: none;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        font-weight: bold;
-        font-size: 1rem;
-    }
-    .upperButtons {
+      }
+      #editProject {
+        background-color: $primary-blue-500;
+        margin-left: 1rem;
+        &:hover {
+          background-color: $font;
+          box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
+          transition: all 0.5s ease;
+        }
+      }
+      .upperButtons {
         align-self: flex-end;
         #editProject {
-            background-color: $primary-blue-500;
-            margin-left: 1rem;
-            &:hover {
-                background-color: $font;
-                box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
-                transition: all 0.5s ease;
-            }
+          background-color: $primary-blue-500;
+          margin-left: 1rem;
+          &:hover {
+            background-color: $font;
+            box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
+            transition: all 0.5s ease;
+          }
         }
         .upperButton {
-            border: 0rem;
-            border-radius: 1rem;
-            color: $neutral-50;
-            font-weight: bolder;
-            padding: 0.5rem 1rem;
+          border: 0rem;
+          border-radius: 1rem;
+          color: $neutral-50;
+          font-weight: bolder;
+          padding: 0.5rem 1rem;
         }
+      }
     }
-}
+  }
 
-@media (max-width: 970px) {
-    .componentContainer{
-        width: 100%;
-        .newProject {
-            margin: 2rem 0;
-        }
-        .archivedProjects {
-            width:auto;
-        }
-    }
-}
-
-@media (max-width: 550px) {
+  @media (max-width: 970px) {
     .componentContainer {
-        h1 {
-            font-size: 1.75rem;
-        }
-        .newProject {
-            font-size: 0.75rem;
-        }
-        .archivedProjects {
-            font-size: 0.75rem;
-        }
+      width: 100%;
+      .newProject {
+        margin: 2rem 0;
+      }
+      .archivedProjects {
+        width: auto;
+      }
     }
+  }
+
+  @media (max-width: 550px) {
+    .componentContainer {
+      h1 {
+        font-size: 1.75rem;
+      }
+      .newProject {
+        font-size: 0.75rem;
+      }
+      .archivedProjects {
+        font-size: 0.75rem;
+      }
+    }
+  }
 }

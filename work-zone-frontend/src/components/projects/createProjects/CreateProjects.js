@@ -13,6 +13,8 @@ import validator from "validator";
 export default function CreateProjects() {
   const [name, setName] = React.useState("");
 
+  const [descripcion, setDescripcion] = React.useState("");
+
   const [inputList, setInputList] = useState([""]);
 
   const [users, setUsers] = useState([]);
@@ -201,6 +203,23 @@ export default function CreateProjects() {
               onChange={(e) => {
                 e.preventDefault();
                 setName(e.target.value);
+              }}
+            />
+          </Form.Group>
+        </Form.Row>
+
+        <Form.Row className="d-flex align-items-center justify-content-start">
+          <Form.Group as={Col}>
+            <Form.Control
+              className="projectDescription"
+              type="text"
+              placeholder="Descripcion"
+              name="descripcion"
+              autoComplete="off"
+              value={descripcion}
+              onChange={(e) => {
+                e.preventDefault();
+                setDescripcion(e.target.value);
               }}
             />
           </Form.Group>

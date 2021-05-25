@@ -47,7 +47,7 @@
   h1 {
     color: $primary-gray-500;
     font-weight: bold;
-    font-size: 2.25rem;
+    font-size: 2.5rem;
     padding: 0;
     padding-left: 2rem;
     display: flex;
@@ -61,11 +61,20 @@
     justify-content: start;
     font-weight: bold;
     //color: ligthen($primary-gray-400, 80%); quiero como que ligthen el color de project name pero no se como
-    font-size: 250%;
+    font-size: 169%;
     margin-left: 1rem;
     background-color: transparent;
     border-width: 0 0 2px;
     border-color: $font;
+  }
+
+  .projectDescription {
+    display: flex;
+    margin-left: 1rem;
+    background-color: transparent;
+    border-top: transparent;
+    border-left: transparent;
+    border-right: transparent;
   }
 
   .create-button {
@@ -90,7 +99,7 @@
     display: flex;
     flex-direction: row;
     margin-bottom: 1rem;
-
+    margin-left: 1rem;
     .emailInputRow {
       width: 80%;
       align-items: center;

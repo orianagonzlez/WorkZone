@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Container, Button } from "react-bootstrap";
+import { getData } from "../../../helpers/getData";
 import { CreateTaskModal } from "../../tasks/CreateTaskModal";
 
 const itemsFromBackend = [
@@ -99,10 +100,26 @@ const onDragEnd = (result, columns, setColumns) => {
   }
 };
 
-export const Board = () => {
+export const Board = ({ project }) => {
   const [columns, setColumns] = useState(columnsFromBackend);
 
+  console.log(columns);
+
   const [modalShow, setModalShow] = useState(false);
+
+  useEffect(() => {
+    //Una vez que se tenga el id del usuario, se buscan los proyectos donde participa
+    getData(`http://localhost:8080/api/lists/from/${project}`)
+    .then( r => {
+        console.log('me respondio' + r);
+        if (r.ok) {
+          console.log(r.data);
+            // setColumns(r.data);
+        } else {
+            console.log('error');
+        }
+    });
+}, []);
 
   return (
     <Container className="componentContainer">
