@@ -50,7 +50,7 @@ export default function ProjectDeets() {
                 <h1>{ projectInfo.nombre }</h1>
             </div>
 
-            <Board project={ project }/>            
+           {projectInfo?._id && <Board project={ projectInfo }/>  }          
         </Container>
     )
 }

@@ -4,64 +4,64 @@ import { Container, Button } from "react-bootstrap";
 import { getData } from "../../../helpers/getData";
 import { CreateTaskModal } from "../../tasks/CreateTaskModal";
 
-const itemsFromBackend = [
-  {
-    id: "task1",
-    content: "Task 1",
-    status: "column0",
-  },
-  {
-    id: "task2",
-    content: "Task 2",
-    status: "column2",
-  },
-  {
-    id: "task3",
-    content: "Task 3",
-    status: "column0",
-  },
-  {
-    id: "task4",
-    content: "Task 4",
-    status: "column3",
-  },
-  {
-    id: "task5",
-    content: "Task 5",
-    status: "column2",
-  },
-];
+// const itemsFromBackend = [
+//   {
+//     id: "task1",
+//     content: "Task 1",
+//     status: "column0",
+//   },
+//   {
+//     id: "task2",
+//     content: "Task 2",
+//     status: "column2",
+//   },
+//   {
+//     id: "task3",
+//     content: "Task 3",
+//     status: "column0",
+//   },
+//   {
+//     id: "task4",
+//     content: "Task 4",
+//     status: "column3",
+//   },
+//   {
+//     id: "task5",
+//     content: "Task 5",
+//     status: "column2",
+//   },
+// ];
 
-const columnsFromBackend = {
-  ["column0"]: {
-    name: "Requested",
-    items: [],
-  },
-  ["column1"]: {
-    name: "To do",
-    items: [],
-  },
-  ["column2"]: {
-    name: "In Progress",
-    items: [],
-  },
-  ["column3"]: {
-    name: "Done",
-    items: [],
-  },
-};
+// const columnsFromBackend = {
+//   ["column0"]: {
+//     name: "Requested",
+//     items: [],
+//   },
+//   ["column1"]: {
+//     name: "To do",
+//     items: [],
+//   },
+//   ["column2"]: {
+//     name: "In Progress",
+//     items: [],
+//   },
+//   ["column3"]: {
+//     name: "Done",
+//     items: [],
+//   },
+// };
 
-itemsFromBackend.map((task) => {
-  if (task.status === "column0") {
-    columnsFromBackend["column0"].items.push(task);
-  } else if (task.status === "column1") {
-    columnsFromBackend["column1"].items.push(task);
-  } else if (task.status === "column2") {
-    columnsFromBackend["column2"].items.push(task);
-  } else {
-    columnsFromBackend["column3"].items.push(task);
-  }
-});
+// itemsFromBackend.map((task) => {
+//   if (task.status === "column0") {
+//     columnsFromBackend["column0"].items.push(task);
+//   } else if (task.status === "column1") {
+//     columnsFromBackend["column1"].items.push(task);
+//   } else if (task.status === "column2") {
+//     columnsFromBackend["column2"].items.push(task);
+//   } else {
+//     columnsFromBackend["column3"].items.push(task);
+//   }
+// });
 
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
@@ -101,25 +101,35 @@ const onDragEnd = (result, columns, setColumns) => {
 };
 
 export const Board = ({ project }) => {
-  const [columns, setColumns] = useState(columnsFromBackend);
+  const [columns, setColumns] = useState({});
+  const [lists, setLists] = useState([]);
 
   console.log(columns);
 
   const [modalShow, setModalShow] = useState(false);
 
   useEffect(() => {
-    //Una vez que se tenga el id del usuario, se buscan los proyectos donde participa
-    getData(`http://localhost:8080/api/lists/from/${project}`)
+    //Buscando las listas del proyecto con sus respectivas tareas
+    getData(`http://localhost:8080/api/lists/from/${project._id}`)
     .then( r => {
         console.log('me respondio' + r);
         if (r.ok) {
           console.log(r.data);
+          setLists(r.data);
             // setColumns(r.data);
+          const c = {}
+          r.data.forEach(col => {
+            c[col._id] = col;
+          });
+
+          console.log(c);
+          setColumns(c);
+
         } else {
             console.log('error');
         }
     });
-}, []);
+}, [modalShow]);
 
   return (
     <Container className="componentContainer">
@@ -127,13 +137,14 @@ export const Board = ({ project }) => {
 
       <button className="btn-create" onClick={ () => setModalShow(true)}>+ Crear Tarea</button>
 
-      <CreateTaskModal
+      {lists.length > 0 && <CreateTaskModal
+        project={project}
         show={modalShow}
         onHide={() => setModalShow(false)}
         columns={columns}
+        lists={lists}
         setcolumns={setColumns}
-        itemsFromBackend
-      />
+      />}
 
       <div className="task_container">
         <DragDropContext
@@ -156,12 +167,12 @@ export const Board = ({ project }) => {
                               : "#3B566E",
                           }}
                         >
-                          <h2>{column.name}</h2>
+                          <h2>{column.nombre}</h2>
                           {column.items.map((item, index) => {
                             return (
                               <Draggable
-                                key={item.id}
-                                draggableId={item.id}
+                                key={item._id}
+                                draggableId={item._id}
                                 index={index}
                               >
                                 {(provided, snapshot) => {
@@ -172,7 +183,7 @@ export const Board = ({ project }) => {
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
                                     >
-                                      {item.content}
+                                      {item.nombre}
                                     </div>
                                   );
                                 }}
