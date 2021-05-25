@@ -31,7 +31,7 @@
       margin-left: 20px;
       color: $primary-gray-500;
       font-weight: 700;
-      width: 40vw;
+      width: 350px;
 
       .input {
         background-color: transparent;
@@ -82,16 +82,27 @@
       margin: 20px 0px 0px 20px;
       color: $font;
       font-weight: 700;
-      width: 80vw;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
 
-      .input {
-        background-color: transparent;
-        outline: 0;
-        border-width: 0 0 2px;
-        border-color: $font;
-        border-radius: 0;
-        margin-top: 0px;
-        margin: 0px 10px 10px 0px;
+      .input_label{
+        font-size: 20px;
+      }
+
+      .input_container {
+        padding: 0px 20px 0px 20px;
+
+        .input {
+          background-color: transparent;
+          outline: 0;
+          border-width: 0 0 2px;
+          border-color: $font;
+          border-radius: 0;
+          margin-top: 0px;
+          margin: 0px 10px 10px 0px;
+          font-size: 20px;
+        }
       }
     }
   }
@@ -130,6 +141,7 @@
   box-shadow: none;
 }
 
+
 @media (max-width: 768px) {
   .register_main {
     display: flex;
@@ -141,6 +153,7 @@
         padding: 20px;
         margin: 0;
         justify-self: center;
+        align-items: stretch;
         width: 100%;
       }
       .auth_title {
@@ -153,24 +166,24 @@
     }
 
     .login_main {
-        .login_container {
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+      .login_container {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
-            .login_form {
-                margin: 0;
-            }
-            .auth_title {
-                font-size: 40px;
-                text-align: center;
-            }
+        .login_form {
+          margin: 0;
+          width: 150px;
         }
-        .auth_link {
-            font-size: small;
+        .auth_title {
+          font-size: 40px;
+          text-align: center;
         }
+      }
+      .auth_link {
+        font-size: small;
+      }
     }
-    
   }
 }
