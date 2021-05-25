@@ -43,7 +43,7 @@ export const CreateTaskModal = (props) => {
             // newColumns[task_status].items.push(r.data);
             // props.setcolumns(newColumns);
             reset();
-
+            props.onHide();
             Swal.fire({
               icon: "success",
               title: "Tarea creada",
@@ -53,6 +53,7 @@ export const CreateTaskModal = (props) => {
         
         } else {
           console.log('error');
+          props.onHide();
           Swal.fire({
             icon: "error",
             title: "Oops...",
@@ -61,7 +62,7 @@ export const CreateTaskModal = (props) => {
           });
         }
       });  
-      props.onHide();
+      
     }     
     
   };
