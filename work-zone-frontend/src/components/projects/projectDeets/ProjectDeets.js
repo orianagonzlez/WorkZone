@@ -40,8 +40,9 @@ export default function ProjectDeets({ project }) {
       </div>
 
       <div>
-        <div className="projectDescripcion">
-          <h2>Descripcion {/* project.descripcion */} </h2>
+        <div className="description">
+          <h2>Descripcion</h2>
+          <h3>Aqui va la descripcion{/* project.descripcion */}</h3>
         </div>
       </div>
 

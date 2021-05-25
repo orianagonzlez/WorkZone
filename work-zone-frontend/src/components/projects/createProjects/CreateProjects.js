@@ -9,26 +9,40 @@ export default function CreateProjects() {
   const [name, setName] = React.useState("");
 
   const [descripcion, setDescripcion] = React.useState("");
-  
+
   const [inputList, setInputList] = useState([""]);
 
   const plans = [
     {
       name: "HOBBY",
       price: 0,
-      features: ["Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet."]
+      features: [
+        "Lorem ipsum dolor sit amet.",
+        "Lorem ipsum dolor sit amet.",
+        "Lorem ipsum dolor sit amet.",
+      ],
     },
     {
       name: "EMPRENDEDOR",
       price: 10,
-      features: ["Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet."]
+      features: [
+        "Lorem ipsum dolor sit amet.",
+        "Lorem ipsum dolor sit amet.",
+        "Lorem ipsum dolor sit amet.",
+      ],
     },
     {
       name: "EMPRESA",
       price: 40,
-      features: ["Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet."]
+      features: [
+        "Lorem ipsum dolor sit amet.",
+        "Lorem ipsum dolor sit amet.",
+        "Lorem ipsum dolor sit amet.",
+      ],
     },
-  ]
+  ];
+
+  const handleSumbit = (e) => {e.preventDefault()}
 
   const handleRemoveClick = (index) => {
     const list = [...inputList];
@@ -74,7 +88,7 @@ export default function CreateProjects() {
         <Form.Row className="d-flex align-items-center justify-content-start">
           <Form.Group as={Col}>
             <Form.Control
-              className="projectDescripcion"
+              className="projectDescription"
               type="text"
               placeholder="Descripcion"
               name="descripcion"
@@ -89,7 +103,8 @@ export default function CreateProjects() {
         </Form.Row>
 
         <div className="sectionTitle">
-          <FaUsers /><span>Miembros</span>
+          <FaUsers />
+          <span>Miembros</span>
         </div>
         {inputList.map((email, i) => {
           return (
@@ -114,12 +129,18 @@ export default function CreateProjects() {
               </Form.Row>
               <div className="btn-box">
                 {inputList.length !== 1 && (
-                  <button className="addOrDeleteCollaboratorButtons" onClick={() => handleRemoveClick(i)}>
+                  <button
+                    className="addOrDeleteCollaboratorButtons"
+                    onClick={() => handleRemoveClick(i)}
+                  >
                     x
                   </button>
                 )}
                 {inputList.length - 1 === i && (
-                  <button className="addOrDeleteCollaboratorButtons" onClick={handleAddClick}>
+                  <button
+                    className="addOrDeleteCollaboratorButtons"
+                    onClick={handleAddClick}
+                  >
                     +
                   </button>
                 )}
@@ -129,16 +150,14 @@ export default function CreateProjects() {
         })}
 
         <div className="sectionTitle">
-          <FaMapSigns /><span>Plan</span>
+          <FaMapSigns />
+          <span>Plan</span>
         </div>
-        <div className="plansContainer"> 
-          {
-            plans.map((plan) => (
-              <PlanCard plan={plan} />
-            ))
-          }
+        <div className="plansContainer">
+          {plans.map((plan) => (
+            <PlanCard plan={plan} />
+          ))}
         </div>
-
 
         <Container className="justify-content-center">
           <div className="button">

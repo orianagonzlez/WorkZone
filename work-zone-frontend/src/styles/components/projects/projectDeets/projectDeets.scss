@@ -14,14 +14,13 @@
   h2{
     display: flex;
     font-size: 1.25rem;
+    color: $primary-gray-500;
   }
   h3 {
     display: flex;
     color: $primary-gray-500;
-    font-weight: bold;
     font-size: 0.85rem;
-    justify-self: left;
-    text-align: center;
+    margin-left: 2rem;
     //padding-bottom: 4.5rem;
   }
   li {
@@ -59,15 +58,13 @@
     }
   }
 
-  .projectDescripcion {
+  .description {
     display: flex; 
-    align-self: flex-start;
-    flex-direction: row;
-    justify-content: center;  
+    flex-direction: column;
     color: $primary-gray-500;
     padding-bottom: 2.5rem;
     margin-top: 1rem;
-    
+    margin-left: 0.69rem;
   }
 
   .miembros-logo {
