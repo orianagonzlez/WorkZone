@@ -23,6 +23,8 @@ export default function CreateProjects() {
 
   const [editMode, setEditMode] = useState(false);
 
+  const [projectEdit, setprojectEdit] = useState();
+
   const [selectedPlan, setSelectedPlan] = useState("");
 
   const { user } = useContext(AppContext);
@@ -38,6 +40,30 @@ export default function CreateProjects() {
   useEffect(() => {
     //verifico si hay id en el url para saber si se va a crear o editar
     if (project) {
+      getData(
+        `https://workzone-backend-mdb.herokuapp.com/api/projects/${project}`
+      ).then((r) => {
+        if (r.ok) {
+          //indico que estoy en modo editor de un proyecto
+          setEditMode(true);
+          //parcheo del formulario
+          setprojectEdit(r.data);
+          setSelectedPlan(r.data.id_plan._id);
+          let emails = [];
+          console.log(r.data);
+          //esto es para filtrar los emails y no puedas eliminar al lider y a los admins
+          r.data.miembros.forEach((myUser) => {
+            if (myUser._id !== user.id && myUser._id !== r.data.owner) {
+              emails.push(myUser.email);
+            }
+          });
+          setInputList([...emails]);
+          setName(r.data.nombre);
+          setDescripcion(r.data.descripcion);
+        } else {
+          console.log("error");
+        }
+      });
     }
 
     // se piden todos los usuarios para validar que los correo ue el ingrese estan registrados
@@ -63,6 +89,57 @@ export default function CreateProjects() {
       }
     );
   }, []);
+
+  const createProyecto = (body) => {
+    postData(
+      "https://workzone-backend-mdb.herokuapp.com/api/projects/create",
+      body
+    ).then((r) => {
+      console.log("me respondio" + r);
+      if (r.ok) {
+        console.log("todo bien", r.data);
+        history.push("/projects");
+        // despues que se crea se le crea una lista inicial
+        const bodyList = {
+          id_proyecto: r.data._id,
+          nombre: "Inicial",
+        };
+
+        createList(bodyList);
+      } else {
+        console.log("error");
+      }
+    });
+  };
+
+  const updateProyecto = (body) => {
+    postData(
+      "https://workzone-backend-mdb.herokuapp.com/api/projects/update",
+      body
+    ).then((r) => {
+      console.log("me respondio" + r);
+      if (r.ok) {
+        console.log("todo bien", r.data);
+        //history.push(`/projects/details/${project}`);
+      } else {
+        console.log("error");
+      }
+    });
+  };
+
+  const createList = (body) => {
+    postData(
+      "https://workzone-backend-mdb.herokuapp.com/api/lists/create",
+      body
+    ).then((r) => {
+      console.log("me respondio" + r);
+      if (r.ok) {
+        console.log("todo bien", r.data);
+      } else {
+        console.log("error");
+      }
+    });
+  };
 
   const handleCreateProject = (e) => {
     e.preventDefault();
@@ -131,48 +208,27 @@ export default function CreateProjects() {
     membersIds = [...new Set(membersIds)];
     console.log(membersIds);
 
-    let body = {
-      nombre: name,
-      descripcion: "En mongoDB",
-      id_plan: selectedPlan,
-      owner: user.id,
-      miembros: membersIds,
-      lideres: [user.id],
-    };
-    //se crea el rpoyecto
-    postData(
-      "https://workzone-backend-mdb.herokuapp.com/api/projects/create",
-      body
-    ).then((r) => {
-      console.log("me respondio" + r);
-      if (r.ok) {
-        console.log("todo bien", r.data);
-        history.push("/projects");
-        // despues que se crea se le crea una lista inicial
-        const bodyList = {
-          id_proyecto: r.data._id,
-          nombre: "Inicial",
-        };
-
-        createList(bodyList);
-      } else {
-        console.log("error");
-      }
-    });
-  };
-
-  const createList = (body) => {
-    postData(
-      "https://workzone-backend-mdb.herokuapp.com/api/lists/create",
-      body
-    ).then((r) => {
-      console.log("me respondio" + r);
-      if (r.ok) {
-        console.log("todo bien", r.data);
-      } else {
-        console.log("error");
-      }
-    });
+    if (editMode) {
+      let body = {
+        id_proyecto: projectEdit._id,
+        nombre: name,
+        descripcion: descripcion,
+        id_plan: selectedPlan,
+        miembros: membersIds,
+        //lideres: [user.id],
+      };
+      updateProyecto(body);
+    } else {
+      let body = {
+        nombre: name,
+        descripcion: descripcion,
+        id_plan: selectedPlan,
+        owner: user.id,
+        miembros: membersIds,
+        lideres: [user.id],
+      };
+      createProyecto(body);
+    }
   };
 
   const handleRemoveClick = (index) => {
@@ -298,7 +354,7 @@ export default function CreateProjects() {
               type="submit"
               onClick={(e) => handleCreateProject(e)}
             >
-              CREAR
+              {editMode ? "Guardar" : "Crear"}
             </Button>
           </div>
         </Container>
