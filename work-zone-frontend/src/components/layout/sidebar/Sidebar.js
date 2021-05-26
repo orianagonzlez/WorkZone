@@ -93,11 +93,6 @@ export default function Sidebar() {
                                     <FaCog /><span>Ajustes</span>
                                 </Button>
                             </ul>
-                            <ul>
-                                <Button >
-                                    <FaUserCircle size={28} /><span>User</span>
-                                </Button>
-                            </ul>
                         </li>
                     </div>
                 </div>
@@ -132,11 +127,6 @@ export default function Sidebar() {
                             </Button>
                         </ul>
                     </li>
-                </div>
-                <div className="userContainer">
-                    <Button >
-                        <FaUserCircle size={28} /><span>User</span>
-                    </Button>
                 </div>
             </div>
         </Container>
