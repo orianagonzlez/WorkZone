@@ -1,5 +1,5 @@
 .componentContainer {
-  background-color: $neutral-100;
+  background-color: $neutral-50;
   padding: 2rem;
   min-height: 100vh;
   width: 85%;
@@ -62,8 +62,9 @@
     display: flex;
     flex-direction: column;
     color: $primary-gray-500;
-    margin-top: 1rem;
-    margin-left: 0.69rem;
+    margin-top: 0.5rem;
+    margin-left: 0rem;
+    margin-bottom: 0.5rem;
   }
 
   .miembros-logo {
