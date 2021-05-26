@@ -84,12 +84,15 @@
     margin-left: 1rem;
   }
 
+  // .miembro {
+  //   display: flex;
+  //   flex-direction: column;
+  //   justify-content: left;
+  //   margin-right: 1.69rem;
+  //   margin-left: 1.69rem;
+  // }
   .miembro {
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-    margin-right: 1.69rem;
-    margin-left: 1.69rem;
+    font-weight: 600;
   }
 
   .profilePicture {
