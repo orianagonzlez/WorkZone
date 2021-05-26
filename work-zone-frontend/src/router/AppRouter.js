@@ -17,7 +17,7 @@ export const AppRouter = () => {
     <Router>
       <div>
         <Switch>
-          <PublicRoute
+          <PrivateRoute
             isAuthenticated={user.isLogged}
             path="/projects"
             component={ProjectsRouter}
