@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { Container, Button, Row, Col } from "react-bootstrap";
 import { FaEdit, FaArrowCircleLeft, FaUsers } from "react-icons/fa";
 import { Board } from "./Board";
@@ -11,6 +11,8 @@ export default function ProjectDeets() {
   const [members, setMembers] = useState([]);
 
   const { project } = useParams();
+
+  const history = useHistory();
 
   console.log(projectInfo);
 
@@ -31,56 +33,38 @@ export default function ProjectDeets() {
     });
   }, []);
 
-  const handleEditProject = () => {}
+  const handleEditProject = () => {};
 
-    return (
-      <Container fluid className="componentContainer mx-1 my-1">
-        <div className="upperButtons">
-          <Button
-            className="upperButton"
-            id="editProject"
-            onClick={() => {
-              handleEditProject();
-            }}
-          >
-            <FaEdit /> Editar Proyecto
-          </Button>
-        </div>
+  return (
+    <Container fluid className="componentContainer">
+      <div className="upperButtons">
+        <Button
+          className="upperButton"
+          id="editProject"
+          onClick={() => {
+            history.push(`/projects/edit/${project}`);
+          }}
+        >
+          <FaEdit /> Editar Proyecto
+        </Button>
+      </div>
 
-        <div className="divArrowLeft">
-          <div>
-            <Link to="/">
-              <Button className="arrowLeft">
-                <FaArrowCircleLeft />
-              </Button>
-            </Link>
-          </div>
-          <h1>{projectInfo.nombre}</h1>
+      <div className="divArrowLeft">
+        <div>
+          <Link to="/">
+            <Button className="arrowLeft">
+              <FaArrowCircleLeft />
+            </Button>
+          </Link>
         </div>
-        <div className="description">
-          <h2>Descripcion</h2>
-          <h3 className="mt-2">{ projectInfo.descripcion }</h3>
-        </div>
-        <div className="mx-2">
-          <div className="sectionTitle mt-5">
-            <FaUsers />
-            <span>Miembros</span>
-          </div> 
-          <Row xs={1} sm={2} md={4} lg={6}>
-          {
-            members.map((member) => {
-                return (
-                        <Col className="my-2">
-                            <Members member={member} />
-                        </Col>  
-                );
-              })
-          } 
-          </Row>
-        </div>
-        
-        {projectInfo?._id && <Board project={ projectInfo }/>  }
-      </Container>
-    );
-};
+        <h1>{projectInfo.nombre}</h1>
+      </div>
+      <div className="description">
+        <h2>Descripcion</h2>
+        <h3>Aqui va la descripcion{/* project.descripcion */}</h3>
+      </div>
 
+      {projectInfo?._id && <Board project={projectInfo} />}
+    </Container>
+  );
+}
