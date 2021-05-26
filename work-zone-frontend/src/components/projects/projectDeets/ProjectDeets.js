@@ -60,7 +60,7 @@ export default function ProjectDeets() {
         <h1>{projectInfo.nombre}</h1>
       </div>
       <div className="description">
-        <h2>Descripcion</h2>
+        <h2>Descripción</h2>
         <h3>{projectInfo.descripcion}</h3>
       </div>
 
