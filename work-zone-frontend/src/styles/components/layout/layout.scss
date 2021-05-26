@@ -1,4 +1,7 @@
 .layoutContainer {
     display: flex;
     flex-direction: row;
+    .cont {
+        width: 85%;
+    }
 }

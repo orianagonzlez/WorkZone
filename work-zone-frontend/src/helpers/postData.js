@@ -1,15 +1,14 @@
-export const postData = async(path, body) => {
-
+export const postData = async (path, body) => {
   let myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
   const raw = JSON.stringify(body);
 
   const requestOptions = {
-    method: 'POST',
+    method: "POST",
     headers: myHeaders,
     body: raw,
-    redirect: 'follow'
+    redirect: "follow",
   };
 
   const response = await fetch(path, requestOptions);
@@ -19,8 +18,6 @@ export const postData = async(path, body) => {
   console.log(result);
   const r = JSON.parse(result);
 
-  console.log('por alguna razon se termino')
+  console.log("por alguna razon se termino");
   return r;
-
-}
-
+};

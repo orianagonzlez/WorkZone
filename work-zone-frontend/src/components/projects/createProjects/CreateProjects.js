@@ -9,6 +9,7 @@ import { postData } from "../../../helpers/postData";
 import { getData } from "../../../helpers/getData";
 import Swal from "sweetalert2";
 import validator from "validator";
+import { useFetch2 } from "../../../hooks/useFetch2";
 
 export default function CreateProjects() {
   const [name, setName] = React.useState("");
@@ -33,9 +34,19 @@ export default function CreateProjects() {
 
   const history = useHistory();
 
-  useEffect(() => {
-    console.log(selectedPlan);
-  }, [selectedPlan]);
+  // aqui vienen los planes
+  const {
+    data: dataPlans,
+    loading: loadingPlans,
+    error: errorPlans,
+  } = useFetch2("https://workzone-backend-mdb.herokuapp.com/api/plans");
+
+  // aqui vienen todos los usuarios
+  const {
+    data: dataUsers,
+    loading: loadingUsers,
+    error: errorUsers,
+  } = useFetch2("https://workzone-backend-mdb.herokuapp.com/api/auth/users");
 
   useEffect(() => {
     //verifico si hay id en el url para saber si se va a crear o editar
@@ -65,30 +76,16 @@ export default function CreateProjects() {
         }
       });
     }
-
-    // se piden todos los usuarios para validar que los correo ue el ingrese estan registrados
-    getData(`https://workzone-backend-mdb.herokuapp.com/api/auth/users`).then(
-      (r) => {
-        if (r.ok) {
-          setUsers(r.data);
-          console.log(r.data);
-        } else {
-          console.log("error");
-        }
-      }
-    );
-    //se pide la info de los planes
-    getData(`https://workzone-backend-mdb.herokuapp.com/api/plans/`).then(
-      (r) => {
-        if (r.ok) {
-          setPlanes(r.data);
-          console.log(r.data);
-        } else {
-          console.log("error");
-        }
-      }
-    );
-  }, []);
+    // se piden todos los usuarios para validar que los correo que el ingrese estan registrados
+    if (!loadingUsers && users.length === 0) {
+      setUsers(dataUsers);
+    }
+    //Aqui se setean los planes
+    if (!loadingPlans && planes.length === 0) {
+      setPlanes(dataPlans);
+      console.log(dataPlans);
+    }
+  }, [dataPlans, dataUsers]);
 
   const createProyecto = (body) => {
     postData(
@@ -100,15 +97,40 @@ export default function CreateProjects() {
         console.log("todo bien", r.data);
         history.push("/projects");
         // despues que se crea se le crea una lista inicial
-        const bodyList = {
-          id_proyecto: r.data._id,
-          nombre: "Inicial",
-        };
-
+        const bodyList = [
+          {
+            id_proyecto: r.data._id,
+            nombre: "Por hacer",
+          },
+          {
+            id_proyecto: r.data._id,
+            nombre: "Haciendose",
+          },
+          {
+            id_proyecto: r.data._id,
+            nombre: "Listo",
+          },
+        ];
         createList(bodyList);
       } else {
         console.log("error");
       }
+    });
+  };
+
+  const createList = (body) => {
+    body.forEach((list) => {
+      postData(
+        "https://workzone-backend-mdb.herokuapp.com/api/lists/create",
+        list
+      ).then((r) => {
+        console.log("me respondio" + r);
+        if (r.ok) {
+          console.log("todo bien", r.data);
+        } else {
+          console.log("error");
+        }
+      });
     });
   };
 
@@ -127,41 +149,58 @@ export default function CreateProjects() {
     });
   };
 
-  const createList = (body) => {
-    postData(
-      "https://workzone-backend-mdb.herokuapp.com/api/lists/create",
-      body
-    ).then((r) => {
-      console.log("me respondio" + r);
-      if (r.ok) {
-        console.log("todo bien", r.data);
-      } else {
-        console.log("error");
-      }
-    });
-  };
-
   const handleCreateProject = (e) => {
     e.preventDefault();
     let invalid = false;
     let msg = "";
 
     //validar campos vacios
-    if (validator.isEmpty(name) && inputList.length >= 0) {
+    if (validator.isEmpty(name) || validator.isEmpty(descripcion)) {
       msg = `Requerimos de todos los campos para crear tu proyecto`;
       invalid = true;
     }
     //que elija un plan
     if (!selectedPlan) {
-      msg = `Selecciona el plan que mas adapte a tus necesidadeso`;
+      msg = `Selecciona el plan que mas adapte a tus necesidades`;
       invalid = true;
     }
 
-    //validar que sean correos
+    //validar que sean correos este tengo que dispare aqui porque sino se dispara el que esa persona no esta registrada
+    //obvio no esta registrada porque eso no es un correo
+    let invalidEmail = false;
     inputList.forEach((email) => {
-      if (!validator.isEmail(email) && !validator.isEmpty) {
-        msg = `Necesitamos el email de la persona: ${email}, para agregarlo a tu proyecto`;
-        invalid = true;
+      if (!validator.isEmail(email) && !validator.isEmpty(email)) {
+        invalidEmail = true;
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `Necesitamos el email de la persona: ${email}, para agregarlo a tu proyecto`,
+          confirmButtonColor: "#22B4DE",
+        });
+      }
+    });
+
+    if (invalidEmail) {
+      return;
+    }
+
+    //esto es para saber si los correos ingresados son de gente que esta registrada
+    let membersIds = [];
+    inputList.forEach((email) => {
+      if (!validator.isEmpty(email)) {
+        let myUser = users.filter((user) => {
+          if (String(user.email) === email) {
+            return user;
+          }
+        });
+        myUser = myUser[0];
+        if (!myUser) {
+          msg = `Invita a ${email} a registrar en Workzone para poder añadirla a tu proyecto`;
+          invalid = true;
+        } else {
+          let uid = myUser.uid;
+          membersIds.push(uid);
+        }
       }
     });
 
@@ -172,35 +211,8 @@ export default function CreateProjects() {
         text: msg,
         confirmButtonColor: "#22B4DE",
       });
+      return;
     }
-
-    //esto es para saber si los correos ingresados son de gente que esta registrada
-    let membersIds = [];
-    inputList.forEach((email) => {
-      if (!validator.isEmpty(email)) {
-        let myUser = users.filter((user) => {
-          // console.log(user.email, email);
-          // console.log(String(user.email) === email);
-          if (String(user.email) === email) {
-            return user;
-          }
-        });
-        myUser = myUser[0];
-
-        if (!myUser) {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: `Invita a ${email} a registrar en Workzone para poder añadirla a tu proyecto`,
-            confirmButtonColor: "#22B4DE",
-          });
-          return;
-        } else {
-          let uid = myUser.uid;
-          membersIds.push(uid);
-        }
-      }
-    });
 
     //esto elimina los petidos
     //es por si alguien es tarado y manda 2 correos iguales o mete su correo en la lista
@@ -240,6 +252,9 @@ export default function CreateProjects() {
   const handleAddClick = () => {
     setInputList([...inputList, ""]);
   };
+
+  if (loadingPlans || !planes)
+    return <div className="componentContainer"></div>;
 
   return (
     <div className="componentContainer">
@@ -351,7 +366,6 @@ export default function CreateProjects() {
             <Button
               className="create-button"
               variant="primary"
-              type="submit"
               onClick={(e) => handleCreateProject(e)}
             >
               {editMode ? "Guardar" : "Crear"}
