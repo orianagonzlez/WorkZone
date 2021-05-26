@@ -52,7 +52,8 @@ export const LoginScreen = () => {
   return (
     <div className="login_main">
       <Container className="login_container">
-        <h2 className="auth_title">¡BIENVENIDO DE VUELTA!</h2>
+        <h2 className="auth_title">¡WorkZone!</h2>
+        <h3 className="auth_subtitle">Trabajar a distancia nunca había sido tan fácil</h3>
 
         <Form className="login_form" onSubmit={handleLogin}>
           <Form.Row className="d-flex align-items-center justify-content-start">

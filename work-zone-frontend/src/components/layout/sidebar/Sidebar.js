@@ -13,7 +13,7 @@ export default function Sidebar() {
 
   const { setUser, user } = useContext(AppContext);
 
-  const singOut = () => {
+  const signOut = () => {
     const body = {
       uid: user.id,
       onLine: false,
@@ -42,106 +42,90 @@ export default function Sidebar() {
     });
   };
 
-  return (
-    <Container fluid className="sidebarContainer">
-      <button
-        type="button"
-        className="burgerMenu"
-        onClick={(e) => {
-          setVisible(!visible);
-        }}
-      >
-        <svg
-          className=""
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-        </svg>
-      </button>
-      {visible ? (
-        <div className="sidebarMobile">
-          <div>
-            <div className="logo">LOGO HERE</div>
-            <li>
-              <ul>
-                <Link to="/">
-                  <Button>
-                    <FaBoxes />
-                    <span>Proyectos</span>
-                  </Button>
-                </Link>
-              </ul>
-              <ul>
-                <Button>
-                  <FaCog />
-                  <span>Otro</span>
-                </Button>
-              </ul>
-              <ul>
-                <Button>
-                  <FaCog />
-                  <span>Otro</span>
-                </Button>
-              </ul>
-              <ul>
-                <Button>
-                  <FaCog />
-                  <span>Ajustes</span>
-                </Button>
-              </ul>
-              <ul>
-                <Button>
-                  <FaUserCircle size={28} />
-                  <span>User</span>
-                </Button>
-              </ul>
-            </li>
-          </div>
-        </div>
-      ) : null}
+    return (
+        <Container fluid className="sidebarContainer">
+            <button
+                type="button"
+                className="burgerMenu"
+                onClick={(e) => {
+                    setVisible(!visible);
+                }}
+            >
+                <svg
+                    className=""
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+                </svg>
+            </button>
+            {visible ?
+                <div className="sidebarMobile">
+                    <div>
+                        <div className="logo">
+                            LOGO HERE
+                        </div>
+                        <li>
+                            <ul>
+                                <Link to="/">
+                                    <Button>
+                                        <FaBoxes /><span>Proyectos</span>
+                                    </Button>
+                                </Link>
+                            </ul>
+                            <ul>
+                                <Button >
+                                    <FaCog /><span>Otro</span>
+                                </Button>
+                            </ul>
+                            <ul>
+                                <Button >
+                                    <FaCog /><span>Otro</span>
+                                </Button>
+                            </ul>
+                            <ul>
+                                <Button >
+                                    <FaCog /><span>Ajustes</span>
+                                </Button>
+                            </ul>
+                        </li>
+                    </div>
+                </div>
+            : null}
 
-      <div className="sidebarVisible">
-        <div>
-          <div className="logo">LOGO HERE</div>
-          <li>
-            <ul>
-              <Link to="/">
-                <Button>
-                  <FaBoxes />
-                  <span>Proyectos</span>
-                </Button>
-              </Link>
-            </ul>
-            <ul>
-              <Button>
-                <FaCog />
-                <span>Otro</span>
-              </Button>
-            </ul>
-            <ul>
-              <Button>
-                <FaCog />
-                <span>Otro</span>
-              </Button>
-            </ul>
-            <ul>
-              <Button onClick={() => singOut()}>
-                <GoSignOut />
-                <span>Cerrar sesión</span>
-              </Button>
-            </ul>
-          </li>
-        </div>
-        <div className="userContainer">
-          <Button>
-            <FaUserCircle size={28} />
-            <span>User</span>
-          </Button>
-        </div>
-      </div>
-    </Container>
-  );
+            <div className="sidebarVisible">
+                <div>
+                    <div className="logo">
+                        LOGO HERE
+                    </div>
+                    <li>
+                        <ul>
+                            <Link to="/">
+                                <Button>
+                                    <FaBoxes /><span>Proyectos</span>
+                                </Button>
+                            </Link>
+                        </ul>
+                        <ul>
+                            <Button >
+                                <FaCog /><span>Otro</span>
+                            </Button>
+                        </ul>
+                        <ul>
+                            <Button >
+                                <FaCog /><span>Otro</span>
+                            </Button>
+                        </ul>
+                        <ul>
+                            <Button onClick={ () => signOut()} >
+                            <GoSignOut /><span>Cerrar sesión</span>
+                            </Button>
+                        </ul>
+                    </li>
+                </div>
+            </div>
+        </Container>
+    )
 }
 
 /*
