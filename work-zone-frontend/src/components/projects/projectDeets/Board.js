@@ -115,38 +115,38 @@ export const Board = ({ project }) => {
 
   useEffect(() => {
     //Buscando las listas del proyecto con sus respectivas tareas
-    getData(`https://workzone-backend-mdb.herokuapp.com/api/lists/from/${project._id}`)
-    .then( r => {
-        console.log('me respondio' + r);
-        if (r.ok) {
-          console.log(r.data);
-          setLists(r.data);
-            // setColumns(r.data);
-          const c = {}
-          r.data.forEach(col => {
-            c[col._id] = col;
-          });
+    getData(
+      `https://workzone-backend-mdb.herokuapp.com/api/lists/from/${project._id}`
+    ).then((r) => {
+      console.log("me respondio" + r);
+      if (r.ok) {
+        console.log(r.data);
+        setLists(r.data);
+        // setColumns(r.data);
+        const c = {};
+        r.data.forEach((col) => {
+          c[col._id] = col;
+        });
 
-          console.log(c);
-          setColumns(c);
-
-        } else {
-            console.log('error');
-        }
+        console.log(c);
+        setColumns(c);
+      } else {
+        console.log("error");
+      }
     });
   }, [modalShow]);
 
   useEffect(() => {
     let n = 0;
-    lists.forEach(item => {
-      n += item.items.length
+    lists.forEach((item) => {
+      n += item.items.length;
     });
     setTasksNum(n);
-  }, [lists])
+  }, [lists]);
 
   const handleCreateTask = () => {
     if (project.id_plan.max_tareas === 0) {
-      setModalShow(true)
+      setModalShow(true);
     }
     //Si ya no tiene mas tareas disponibles, se redirige a la pagina para actualizar el plan
     else if (tasksNum === project.id_plan.max_tareas) {
@@ -159,35 +159,41 @@ export const Board = ({ project }) => {
 
       //PONER AQUI LA RUTA A EDITAR PROYECTOOOOOOOOO
       // history.push(`projects/update/${project._id}`)
-
-    } else if (project.id_plan.max_tareas - tasksNum <= 10 ) {
+    } else if (project.id_plan.max_tareas - tasksNum <= 10) {
       Swal.fire({
         icon: "warning",
         title: "Actualiza tu plan",
-        text: `Tienes ${project.id_plan.max_tareas - tasksNum } tarea(s) restante para alcanzar el máximo de tareas para el plan ${project.id_plan.nombre}. Te recomendamos actualizar tu plan en la configuración del proyecto.`,
+        text: `Tienes ${
+          project.id_plan.max_tareas - tasksNum
+        } tarea(s) restante para alcanzar el máximo de tareas para el plan ${
+          project.id_plan.nombre
+        }. Te recomendamos actualizar tu plan en la configuración del proyecto.`,
         confirmButtonColor: "#22B4DE",
       });
-      setModalShow(true)
+      setModalShow(true);
     } else {
-      setModalShow(true)
+      setModalShow(true);
     }
-    
-  }
+  };
 
   return (
     <Container className="componentContainer pt-4">
       <h1>Tasks</h1>
 
-      <button className="btn-create" onClick={ () => handleCreateTask()}>+ Crear Tarea</button>
+      <button className="btn-create" onClick={() => handleCreateTask()}>
+        + Crear Tarea
+      </button>
 
-      {lists.length > 0 && <CreateTaskModal
-        project={project}
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-        columns={columns}
-        lists={lists}
-        setcolumns={setColumns}
-      />}
+      {lists.length > 0 && (
+        <CreateTaskModal
+          project={project}
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+          columns={columns}
+          lists={lists}
+          setcolumns={setColumns}
+        />
+      )}
 
       <div className="task_container">
         <DragDropContext
