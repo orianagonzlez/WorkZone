@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { Container, Button } from "react-bootstrap";
 import { AppContext } from "../../../context/AppContext";
 import { postData } from "../../../helpers/postData";
@@ -11,6 +11,8 @@ export default function ProjectDeets() {
   const [projectInfo, setProjectInfo] = useState({});
 
   const { project } = useParams();
+
+  const history = useHistory();
 
   console.log(projectInfo);
 
@@ -30,39 +32,38 @@ export default function ProjectDeets() {
     });
   }, []);
 
-  const handleEditProject = () => {}
+  const handleEditProject = () => {};
 
-    return (
-      <Container fluid className="componentContainer">
-        <div className="upperButtons">
-          <Button
-            className="upperButton"
-            id="editProject"
-            onClick={() => {
-              handleEditProject();
-            }}
-          >
-            <FaEdit /> Editar Proyecto
-          </Button>
-        </div>
+  return (
+    <Container fluid className="componentContainer">
+      <div className="upperButtons">
+        <Button
+          className="upperButton"
+          id="editProject"
+          onClick={() => {
+            history.push(`/projects/edit/${project}`);
+          }}
+        >
+          <FaEdit /> Editar Proyecto
+        </Button>
+      </div>
 
-        <div className="divArrowLeft">
-          <div>
-            <Link to="/">
-              <Button className="arrowLeft">
-                <FaArrowCircleLeft />
-              </Button>
-            </Link>
-          </div>
-          <h1>{projectInfo.nombre}</h1>
+      <div className="divArrowLeft">
+        <div>
+          <Link to="/">
+            <Button className="arrowLeft">
+              <FaArrowCircleLeft />
+            </Button>
+          </Link>
         </div>
-        <div className="description">
-          <h2>Descripcion</h2>
-          <h3>Aqui va la descripcion{/* project.descripcion */}</h3>
-        </div>
-        
-        {projectInfo?._id && <Board project={ projectInfo }/>  }
-      </Container>
-    );
-};
+        <h1>{projectInfo.nombre}</h1>
+      </div>
+      <div className="description">
+        <h2>Descripcion</h2>
+        <h3>Aqui va la descripcion{/* project.descripcion */}</h3>
+      </div>
 
+      {projectInfo?._id && <Board project={projectInfo} />}
+    </Container>
+  );
+}
