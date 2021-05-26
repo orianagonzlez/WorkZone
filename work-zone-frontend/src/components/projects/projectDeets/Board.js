@@ -208,8 +208,8 @@ export const Board = ({ project }) => {
                           ref={provided.innerRef}
                           style={{
                             background: snapshot.isDraggingOver
-                              ? "#6487A5"
-                              : "#3B566E",
+                              ? "linear-gradient(158.55deg, #6487A5 -48.1%, rgba(34, 180, 222, 0.2) 162.82%)"
+                              : "linear-gradient(158.55deg, #6487A5 -48.1%, rgba(59, 86, 110, 0.15) 162.82%)",
                           }}
                         >
                           <h2>{column.nombre}</h2>
