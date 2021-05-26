@@ -163,11 +163,7 @@ export const Board = ({ project }) => {
       Swal.fire({
         icon: "warning",
         title: "Actualiza tu plan",
-        text: `Tienes ${
-          project.id_plan.max_tareas - tasksNum
-        } tarea(s) restante para alcanzar el máximo de tareas para el plan ${
-          project.id_plan.nombre
-        }. Te recomendamos actualizar tu plan en la configuración del proyecto.`,
+        text: `Tienes ${project.id_plan.max_tareas - tasksNum } tarea(s) restante(s) para alcanzar el máximo de tareas para el plan ${project.id_plan.nombre}. Te recomendamos actualizar tu plan en la configuración del proyecto.`,
         confirmButtonColor: "#22B4DE",
       });
       setModalShow(true);

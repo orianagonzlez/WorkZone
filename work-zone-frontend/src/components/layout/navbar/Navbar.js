@@ -17,7 +17,7 @@ export default function Navbar() {
     return (
         <div className="navbarContainer d-flex justify-content-end">
             <Button >
-                <FaUserCircle size={24} /><span>User</span>
+                <FaUserCircle size={24} /><span>{user.nombre}</span>
             </Button>
         </div>
     )
