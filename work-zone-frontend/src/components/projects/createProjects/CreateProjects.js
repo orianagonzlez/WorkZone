@@ -204,6 +204,18 @@ export default function CreateProjects() {
       }
     });
 
+    //esto elimina los petidos
+    //es por si alguien es tarado y manda 2 correos iguales o mete su correo en la lista
+    membersIds = [user.id, ...membersIds];
+    membersIds = [...new Set(membersIds)];
+    console.log(membersIds);
+
+    //no admitir mas miembros de los que el plan permite
+    if (membersIds.length > selectedPlan.max_miembros) {
+      msg = `El número maximo de miembros de tu plan es ${selectedPlan.max_miembros} y actualmente hay ${membersIds.length}`;
+      invalid = true;
+    }
+
     if (invalid) {
       Swal.fire({
         icon: "error",
@@ -213,12 +225,6 @@ export default function CreateProjects() {
       });
       return;
     }
-
-    //esto elimina los petidos
-    //es por si alguien es tarado y manda 2 correos iguales o mete su correo en la lista
-    membersIds = [user.id, ...membersIds];
-    membersIds = [...new Set(membersIds)];
-    console.log(membersIds);
 
     if (editMode) {
       let body = {
