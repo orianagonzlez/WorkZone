@@ -1,51 +1,46 @@
-import React, { useContext } from 'react';
-import { Container, Button } from 'react-bootstrap';
-import { FaUserCircle, FaBoxes, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import React, { useContext } from "react";
+import { Container, Button } from "react-bootstrap";
+import { FaUserCircle, FaBoxes, FaCog, FaSignOutAlt } from "react-icons/fa";
+import { GoSignOut } from "react-icons/go";
+
 import { Link } from "react-router-dom";
-import Swal from 'sweetalert2';
-import { AppContext } from '../../../context/AppContext';
-import { postData } from '../../../helpers/postData';
-
-
+import Swal from "sweetalert2";
+import { AppContext } from "../../../context/AppContext";
+import { postData } from "../../../helpers/postData";
 
 export default function Sidebar() {
-    const [visible, setVisible] = React.useState(false);
+  const [visible, setVisible] = React.useState(false);
 
-    const {setUser, user} = useContext(AppContext);
+  const { setUser, user } = useContext(AppContext);
 
-    const singOut = () => {
-      
-      const body = {
-        uid: user.id,
-        onLine: false
-      };
-    
-      const url = "https://workzone-backend-mdb.herokuapp.com/api/auth/update";
-      postData(url, body).then( r => {
-           
-            if (r.ok) {
-              setUser({
-                email: "",
-                id: "",
-                nombre:"",
-                username: "",
-                fechaNacimiento: "",
-                isLogged: false,
-            })  
-              
-            } else {
-              console.log('error');
-              Swal.fire({
-                  icon: 'error',
-                  title: 'Oops...',
-                  text: 'Un error inesperado ha ocurrido al cerrar sesión',
-                  confirmButtonColor: "#22B4DE"
-                })
-            }
+  const signOut = () => {
+    const body = {
+      uid: user.id,
+      onLine: false,
+    };
+
+    const url = "https://workzone-backend-mdb.herokuapp.com/api/auth/update";
+    postData(url, body).then((r) => {
+      if (r.ok) {
+        setUser({
+          email: "",
+          id: "",
+          nombre: "",
+          username: "",
+          fechaNacimiento: "",
+          isLogged: false,
         });
-
-    }
-
+      } else {
+        console.log("error");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Un error inesperado ha ocurrido al cerrar sesión",
+          confirmButtonColor: "#22B4DE",
+        });
+      }
+    });
+  };
 
     return (
         <Container fluid className="sidebarContainer">
@@ -93,11 +88,6 @@ export default function Sidebar() {
                                     <FaCog /><span>Ajustes</span>
                                 </Button>
                             </ul>
-                            <ul>
-                                <Button >
-                                    <FaUserCircle size={28} /><span>User</span>
-                                </Button>
-                            </ul>
                         </li>
                     </div>
                 </div>
@@ -127,22 +117,16 @@ export default function Sidebar() {
                             </Button>
                         </ul>
                         <ul>
-                            <Button onClick={ () => singOut()} >
-                                <FaSignOutAlt /><span>Cerrar sesión</span>
+                            <Button onClick={ () => signOut()} >
+                            <GoSignOut /><span>Cerrar sesión</span>
                             </Button>
                         </ul>
                     </li>
-                </div>
-                <div className="userContainer">
-                    <Button >
-                        <FaUserCircle size={28} /><span>User</span>
-                    </Button>
                 </div>
             </div>
         </Container>
     )
 }
-
 
 /*
 

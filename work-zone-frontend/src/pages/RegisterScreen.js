@@ -82,13 +82,13 @@ export const RegisterScreen = () => {
   };
 
   return (
-    <div className="register_main">
-      <Container className="register_container">
-        <h1 className="auth_title">¡BIENVENIDO A WORK ZONE!</h1>
+    <div className="register_main ">
+      <Container className="register_container  justify-content-center">
+        <h1 className="auth_title text-center">¡BIENVENIDO A WORK ZONE!</h1>
         <h2 className="auth_subtitle">Información Personal</h2>
 
         <Form className="register_form" onSubmit={handleRegister}>
-          <Form.Row className="d-flex  align-items-center">
+          <Form.Row className="d-flex  align-items-center justify-content-around">
             <Form.Group as={Col} md={5} sm={12} className="input_container">
               <Form.Label className="input_label">Nombre</Form.Label>
               <Form.Control
@@ -114,9 +114,11 @@ export const RegisterScreen = () => {
             </Form.Group>
           </Form.Row>
 
-          <Form.Row className="d-flex  align-items-center">
+          <Form.Row className="d-flex  align-items-center justify-content-around">
             <Form.Group as={Col} md={5} sm={12} className="input_container">
-              <Form.Label className="input_label">Fecha de Nacimiento</Form.Label>
+              <Form.Label className="input_label">
+                Fecha de Nacimiento
+              </Form.Label>
               <Form.Control
                 className="input"
                 type="date"
@@ -126,7 +128,9 @@ export const RegisterScreen = () => {
               />
             </Form.Group>
             <Form.Group as={Col} md={5} sm={12} className="input_container">
-              <Form.Label className="input_label">Correo Electrónico</Form.Label>
+              <Form.Label className="input_label">
+                Correo Electrónico
+              </Form.Label>
               <Form.Control
                 className="input"
                 type="text"
@@ -138,19 +142,13 @@ export const RegisterScreen = () => {
             </Form.Group>
           </Form.Row>
 
-          <Form.Row className="d-flex  align-items-center">
-            <Form.Group as={Col} md={5} sm={12} className="input_container">
-              <Form.Label className="input_label">Usuario</Form.Label>
-              <Form.Control
-                className="input"
-                type="text"
-                name="username"
-                autoComplete="off"
-                value={username}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group as={Col} md={5} sm={12} className="input_container">
+          <Form.Row className="d-flex  align-items-center justify-content-around">
+            <Form.Group
+              as={Col}
+              md={5}
+              sm={12}
+              className="input_container justify-content-around "
+            >
               <Form.Label className="input_label">Contraseña</Form.Label>
               <Form.Control
                 className="input"
@@ -160,15 +158,28 @@ export const RegisterScreen = () => {
                 onChange={handleInputChange}
               />
             </Form.Group>
-          </Form.Row>
-          <Form.Row className="d-flex align-items-center">
             <Form.Group as={Col} md={5} sm={12} className="input_container">
-              <Form.Label className="input_label">Confirme su Contraseña</Form.Label>
+              <Form.Label className="input_label">
+                Confirme su Contraseña
+              </Form.Label>
               <Form.Control
                 className="input"
                 type="password"
                 name="password2"
                 value={password2}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+          </Form.Row>
+          <Form.Row className="d-flex align-items-center justify-content-around">
+            <Form.Group as={Col} md={5} sm={12} className="input_container ">
+              <Form.Label className="input_label">Usuario</Form.Label>
+              <Form.Control
+                className="input"
+                type="text"
+                name="username"
+                autoComplete="off"
+                value={username}
                 onChange={handleInputChange}
               />
             </Form.Group>
