@@ -61,7 +61,7 @@ export default function ProjectDeets() {
       </div>
       <div className="description">
         <h2>Descripcion</h2>
-        <h3>Aqui va la descripcion{/* project.descripcion */}</h3>
+        <h3>{projectInfo.descripcion}</h3>
       </div>
 
       {projectInfo?._id && <Board project={projectInfo} />}
