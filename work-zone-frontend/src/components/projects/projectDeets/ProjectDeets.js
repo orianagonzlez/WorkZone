@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
-import { Container, Button } from "react-bootstrap";
-import { AppContext } from "../../../context/AppContext";
-import { postData } from "../../../helpers/postData";
-import { FaEdit, FaArrowCircleLeft } from "react-icons/fa";
+import { Container, Button, Row, Col } from "react-bootstrap";
+import { FaEdit, FaArrowCircleLeft, FaUsers } from "react-icons/fa";
 import { Board } from "./Board";
 import { getData } from "../../../helpers/getData";
+import { Members } from "./Member";
 
 export default function ProjectDeets() {
   const [projectInfo, setProjectInfo] = useState({});
+  const [members, setMembers] = useState([]);
 
   const { project } = useParams();
 
@@ -26,6 +26,7 @@ export default function ProjectDeets() {
       console.log("me respondio" + r);
       if (r.ok) {
         setProjectInfo(r.data);
+        setMembers(r.data.miembros);
       } else {
         console.log("error");
       }
