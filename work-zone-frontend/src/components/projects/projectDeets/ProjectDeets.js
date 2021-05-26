@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Container, Button } from "react-bootstrap";
-import { AppContext } from "../../../context/AppContext";
-import { postData } from "../../../helpers/postData";
-import { FaEdit, FaArrowCircleLeft } from "react-icons/fa";
+import { Container, Button, Row, Col } from "react-bootstrap";
+import { FaEdit, FaArrowCircleLeft, FaUsers } from "react-icons/fa";
 import { Board } from "./Board";
 import { getData } from "../../../helpers/getData";
+import { Members } from "./Member";
 
 export default function ProjectDeets() {
   const [projectInfo, setProjectInfo] = useState({});
+  const [members, setMembers] = useState([]);
 
   const { project } = useParams();
 
@@ -24,6 +24,7 @@ export default function ProjectDeets() {
       console.log("me respondio" + r);
       if (r.ok) {
         setProjectInfo(r.data);
+        setMembers(r.data.miembros);
       } else {
         console.log("error");
       }
@@ -33,7 +34,7 @@ export default function ProjectDeets() {
   const handleEditProject = () => {}
 
     return (
-      <Container fluid className="componentContainer">
+      <Container fluid className="componentContainer mx-1 my-1">
         <div className="upperButtons">
           <Button
             className="upperButton"
@@ -58,7 +59,24 @@ export default function ProjectDeets() {
         </div>
         <div className="description">
           <h2>Descripcion</h2>
-          <h3>Aqui va la descripcion{/* project.descripcion */}</h3>
+          <h3 className="mt-2">{ projectInfo.descripcion }</h3>
+        </div>
+        <div className="mx-2">
+          <div className="sectionTitle mt-5">
+            <FaUsers />
+            <span>Miembros</span>
+          </div> 
+          <Row xs={1} sm={2} md={4} lg={6}>
+          {
+            members.map((member) => {
+                return (
+                        <Col className="my-2">
+                            <Members member={member} />
+                        </Col>  
+                );
+              })
+          } 
+          </Row>
         </div>
         
         {projectInfo?._id && <Board project={ projectInfo }/>  }

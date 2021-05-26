@@ -175,7 +175,7 @@ export const Board = ({ project }) => {
   }
 
   return (
-    <Container className="componentContainer">
+    <Container className="componentContainer pt-4">
       <h1>Tasks</h1>
 
       <button className="btn-create" onClick={ () => handleCreateTask()}>+ Crear Tarea</button>
