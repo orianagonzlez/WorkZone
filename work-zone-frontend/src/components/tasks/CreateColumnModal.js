@@ -16,58 +16,48 @@ export const CreateColumnModal = (props) => {
     e.preventDefault();
     const currentColumns = props.columns;
     const newColumn = {
-      active: true,
       id_proyecto: props.project._id,
-      items: [],
       nombre: column_name,
     };
 
-    currentColumns[`id${column_name}000`]=(newColumn)
+    // currentColumns[`id${column_name}000`]=(newColumn)
 
-    console.log(currentColumns)
+    console.log("creando");
+    console.log(newColumn);
 
-    props.onHide();
+    if (column_name) {
+      //Creando la nueva lista en la base de datos
+      postData(
+        "https://workzone-backend-mdb.herokuapp.com/api/lists/create",
+        newColumn
+      ).then((r) => {
+        console.log("me respondio" + r);
+        if (r.ok) {
+          console.log("todo bien", r.data);
+          reset();
+          
 
-    // if (task_member) {
-    //   newTask["miembro"] = task_member;
-    // }
+          Swal.fire({
+            icon: "success",
+            title: "Lista creada",
+            text: "La lista fue creada de forma exitosa",
+            confirmButtonColor: "#22B4DE",
+          });
+          props.onHide();
 
-    // console.log("creando");
-    // console.log(newTask);
-
-    // if (task_name && task_content) {
-    //   //Creando la tarea en la base de datos
-    //   postData(
-    //     "https://workzone-backend-mdb.herokuapp.com/api/tasks/create",
-    //     newTask
-    //   ).then((r) => {
-    //     console.log("me respondio" + r);
-    //     if (r.ok) {
-    //       console.log("todo bien. CREE TAREAAAAAA");
-    //       console.log(r.data);
-    //       console.log(newColumns);
-    //       // newColumns[task_status].items.push(r.data);
-    //       // props.setcolumns(newColumns);
-    //       reset();
-    //       props.onHide();
-    //       Swal.fire({
-    //         icon: "success",
-    //         title: "Tarea creada",
-    //         text: "La tarea fue creada de forma exitosa",
-    //         confirmButtonColor: "#22B4DE",
-    //       });
-    //     } else {
-    //       console.log("error");
-    //       props.onHide();
-    //       Swal.fire({
-    //         icon: "error",
-    //         title: "Oops...",
-    //         text: "Se produjo un error, intenta de nuevo",
-    //         confirmButtonColor: "#22B4DE",
-    //       });
-    //     }
-    //   });
-    // }
+        } else {
+          console.log("error");
+          
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Se produjo un error, intenta de nuevo",
+            confirmButtonColor: "#22B4DE",
+          });
+          props.onHide();
+        }
+      });
+    }
   };
 
   return (
@@ -81,7 +71,7 @@ export const CreateColumnModal = (props) => {
     >
       <Modal.Header closeButton onClick={props.onHide}>
         <Modal.Title id="contained-modal-title-vcenter">
-          Crear Columna
+          Crear Lista
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -102,7 +92,7 @@ export const CreateColumnModal = (props) => {
           </Form.Row>
           <div className="button p-3 mx-5 mb-5">
             <Button className="auth_button" type="submit">
-              Crear Columna
+              Crear Lista
             </Button>
           </div>
         </Form>

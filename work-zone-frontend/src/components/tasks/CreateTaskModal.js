@@ -46,22 +46,22 @@ export const CreateTaskModal = (props) => {
           // newColumns[task_status].items.push(r.data);
           // props.setcolumns(newColumns);
           reset();
-          props.onHide();
           Swal.fire({
             icon: "success",
             title: "Tarea creada",
             text: "La tarea fue creada de forma exitosa",
             confirmButtonColor: "#22B4DE",
           });
+          props.onHide();
         } else {
           console.log("error");
-          props.onHide();
           Swal.fire({
             icon: "error",
             title: "Oops...",
             text: "Se produjo un error, intenta de nuevo",
             confirmButtonColor: "#22B4DE",
           });
+          props.onHide();
         }
       });
     }

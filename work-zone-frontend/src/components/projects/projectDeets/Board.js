@@ -79,7 +79,7 @@ export const Board = ({ project }) => {
         console.log("error");
       }
     });
-  }, [modalShow]);
+  }, [modalShow, columnModalShow]);
 
   useEffect(() => {
     let n = 0;
@@ -146,7 +146,7 @@ export const Board = ({ project }) => {
         )}
 
         <button className="btn-create" onClick={() => handleCreateColumn()}>
-          + Crear Columna
+          + Crear Lista
         </button>
         {lists.length > 0 && (
           <CreateColumnModal
