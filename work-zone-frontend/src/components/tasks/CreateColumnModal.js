@@ -37,12 +37,12 @@ export const CreateColumnModal = (props) => {
           reset();
           
 
-          Swal.fire({
-            icon: "success",
-            title: "Lista creada",
-            text: "La lista fue creada de forma exitosa",
-            confirmButtonColor: "#22B4DE",
-          });
+          // Swal.fire({
+          //   icon: "success",
+          //   title: "Lista creada",
+          //   text: "La lista fue creada de forma exitosa",
+          //   confirmButtonColor: "#22B4DE",
+          // });
           props.onHide();
 
         } else {
