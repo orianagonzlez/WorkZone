@@ -157,7 +157,7 @@ export const CreateTaskModal = (props) => {
             </Form.Group>
           </Form.Row>
           <div className="button p-3 mx-5 mb-5">
-            <Button className="auth_button" variant="primary" type="submit">
+            <Button className="auth_button" type="submit">
               Crear Tarea
             </Button>
           </div>

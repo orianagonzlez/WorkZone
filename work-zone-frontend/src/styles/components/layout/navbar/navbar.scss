@@ -1,23 +1,23 @@
 .navbarContainer {
-    max-height: 44px;
-    height: 44px;
+    max-height: 50px;
+    height: 50px;
     width: 100%;
     padding: 0.5rem;
     padding-right: 2rem;
-    background-color: $font;
+    background-color: $primary-gray-400;
     color: $neutral-100;
     font-weight: bold;
     Button {
         padding: 0 0.25rem;
         border-radius: 0.25rem;
         border: 0;
-        color: $neutral-100;
+        color: $neutral-50;
         font-weight: bold;
         background-color: transparent;
         outline: none;
         text-align: center;
         &:hover {
-            background: $neutral-100;
+            background: transparent;
             color: $font;
         }
         span {

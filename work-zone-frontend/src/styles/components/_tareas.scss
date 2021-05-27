@@ -1,3 +1,9 @@
+.create_buttons_row{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
 .task_container {
   display: flex;
   flex-direction: row;
@@ -48,10 +54,11 @@
   font-weight: bolder;
   align-self: flex-end;
   padding: 0.5rem 1rem;
+  margin: 10px;
   &:hover {
     background-color: $font;
     box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
-    transition: all 0.5s ease;
+    transition: all 0.3s ease;
   }
 }
 
@@ -73,6 +80,19 @@
 }
 
 @media (max-width: 550px) {
+
+  .create_buttons_row{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .btn-create {
+    border-radius: 0.5rem;
+    font-size: 14px;
+    padding: 0.25rem 0.5rem;
+  }
+
   .newProject {
     font-size: 0.75rem;
   }
