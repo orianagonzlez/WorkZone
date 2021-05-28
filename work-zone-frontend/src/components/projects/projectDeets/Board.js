@@ -1,69 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { Container, Button } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import { useHistory } from "react-router";
 import Swal from "sweetalert2";
 import { getData } from "../../../helpers/getData";
 import { CreateTaskModal } from "../../tasks/CreateTaskModal";
+import { CreateColumnModal } from "../../tasks/CreateColumnModal";
 
-// const itemsFromBackend = [
-//   {
-//     id: "task1",
-//     content: "Task 1",
-//     status: "column0",
-//   },
-//   {
-//     id: "task2",
-//     content: "Task 2",
-//     status: "column2",
-//   },
-//   {
-//     id: "task3",
-//     content: "Task 3",
-//     status: "column0",
-//   },
-//   {
-//     id: "task4",
-//     content: "Task 4",
-//     status: "column3",
-//   },
-//   {
-//     id: "task5",
-//     content: "Task 5",
-//     status: "column2",
-//   },
-// ];
-
-// const columnsFromBackend = {
-//   ["column0"]: {
-//     name: "Requested",
-//     items: [],
-//   },
-//   ["column1"]: {
-//     name: "To do",
-//     items: [],
-//   },
-//   ["column2"]: {
-//     name: "In Progress",
-//     items: [],
-//   },
-//   ["column3"]: {
-//     name: "Done",
-//     items: [],
-//   },
-// };
-
-// itemsFromBackend.map((task) => {
-//   if (task.status === "column0") {
-//     columnsFromBackend["column0"].items.push(task);
-//   } else if (task.status === "column1") {
-//     columnsFromBackend["column1"].items.push(task);
-//   } else if (task.status === "column2") {
-//     columnsFromBackend["column2"].items.push(task);
-//   } else {
-//     columnsFromBackend["column3"].items.push(task);
-//   }
-// });
 
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
@@ -111,6 +54,8 @@ export const Board = ({ project }) => {
 
   const [modalShow, setModalShow] = useState(false);
 
+  const [columnModalShow, setColumnModalShow] = useState(false)
+
   const history = useHistory();
 
   useEffect(() => {
@@ -134,7 +79,7 @@ export const Board = ({ project }) => {
         console.log("error");
       }
     });
-  }, [modalShow]);
+  }, [modalShow, columnModalShow]);
 
   useEffect(() => {
     let n = 0;
@@ -163,7 +108,11 @@ export const Board = ({ project }) => {
       Swal.fire({
         icon: "warning",
         title: "Actualiza tu plan",
-        text: `Tienes ${project.id_plan.max_tareas - tasksNum } tarea(s) restante(s) para alcanzar el máximo de tareas para el plan ${project.id_plan.nombre}. Te recomendamos actualizar tu plan en la configuración del proyecto.`,
+        text: `Tienes ${
+          project.id_plan.max_tareas - tasksNum
+        } tarea(s) restante(s) para alcanzar el máximo de tareas para el plan ${
+          project.id_plan.nombre
+        }. Te recomendamos actualizar tu plan en la configuración del proyecto.`,
         confirmButtonColor: "#22B4DE",
       });
       setModalShow(true);
@@ -172,24 +121,45 @@ export const Board = ({ project }) => {
     }
   };
 
+  const handleCreateColumn = () => {
+    setColumnModalShow(true);
+  }
+
   return (
     <Container className="componentContainer pt-4">
       <h1>Tasks</h1>
 
-      <button className="btn-create" onClick={() => handleCreateTask()}>
-        + Crear Tarea
-      </button>
+      <Row className="create_buttons_row"> 
 
-      {lists.length > 0 && (
-        <CreateTaskModal
-          project={project}
-          show={modalShow}
-          onHide={() => setModalShow(false)}
-          columns={columns}
-          lists={lists}
-          setcolumns={setColumns}
-        />
-      )}
+      <button className="btn-create" onClick={() => handleCreateTask()}>
+          + Crear Tarea
+        </button>
+        {lists.length > 0 && (
+          <CreateTaskModal
+            project={project}
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            columns={columns}
+            lists={lists}
+            setcolumns={setColumns}
+          />
+        )}
+
+        <button className="btn-create" onClick={() => handleCreateColumn()}>
+          + Crear Lista
+        </button>
+        {lists.length > 0 && (
+          <CreateColumnModal
+            project={project}
+            show={columnModalShow}
+            onHide={() => setColumnModalShow(false)}
+            columns={columns}
+            lists={lists}
+            setcolumns={setColumns}
+          />
+        )}
+
+      </Row>
 
       <div className="task_container">
         <DragDropContext
@@ -208,8 +178,8 @@ export const Board = ({ project }) => {
                           ref={provided.innerRef}
                           style={{
                             background: snapshot.isDraggingOver
-                              ? "#6487A5"
-                              : "#3B566E",
+                              ? "linear-gradient(158.55deg, #6487A5 -48.1%, rgba(34, 180, 222, 0.2) 162.82%)"
+                              : "linear-gradient(158.55deg, #6487A5 -48.1%, rgba(59, 86, 110, 0.5) 162.82%)",
                           }}
                         >
                           <h2>{column.nombre}</h2>

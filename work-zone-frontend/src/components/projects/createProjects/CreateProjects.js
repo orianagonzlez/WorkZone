@@ -59,9 +59,9 @@ export default function CreateProjects() {
           setEditMode(true);
           //parcheo del formulario
           setprojectEdit(r.data);
-          setSelectedPlan(r.data.id_plan._id);
+          setSelectedPlan(r.data.id_plan);
+          //console.log(selectedPlan, "pls ayuda");
           let emails = [];
-          console.log(r.data);
           //esto es para filtrar los emails y no puedas eliminar al lider y a los admins
           r.data.miembros.forEach((myUser) => {
             if (myUser._id !== user.id && myUser._id !== r.data.owner) {
@@ -142,7 +142,7 @@ export default function CreateProjects() {
       console.log("me respondio" + r);
       if (r.ok) {
         console.log("todo bien", r.data);
-        //history.push(`/projects/details/${project}`);
+        history.push(`/projects/details/${project}`);
       } else {
         console.log("error");
       }
@@ -204,6 +204,18 @@ export default function CreateProjects() {
       }
     });
 
+    //esto elimina los petidos
+    //es por si alguien es tarado y manda 2 correos iguales o mete su correo en la lista
+    membersIds = [user.id, ...membersIds];
+    membersIds = [...new Set(membersIds)];
+    console.log(membersIds);
+
+    //no admitir mas miembros de los que el plan permite
+    if (membersIds.length > selectedPlan.max_miembros) {
+      msg = `El número maximo de miembros de tu plan es ${selectedPlan.max_miembros} y actualmente hay ${membersIds.length}`;
+      invalid = true;
+    }
+
     if (invalid) {
       Swal.fire({
         icon: "error",
@@ -214,18 +226,12 @@ export default function CreateProjects() {
       return;
     }
 
-    //esto elimina los petidos
-    //es por si alguien es tarado y manda 2 correos iguales o mete su correo en la lista
-    membersIds = [user.id, ...membersIds];
-    membersIds = [...new Set(membersIds)];
-    console.log(membersIds);
-
     if (editMode) {
       let body = {
         id_proyecto: projectEdit._id,
         nombre: name,
         descripcion: descripcion,
-        id_plan: selectedPlan,
+        id_plan: selectedPlan._id,
         miembros: membersIds,
         //lideres: [user.id],
       };
@@ -234,7 +240,7 @@ export default function CreateProjects() {
       let body = {
         nombre: name,
         descripcion: descripcion,
-        id_plan: selectedPlan,
+        id_plan: selectedPlan._id,
         owner: user.id,
         miembros: membersIds,
         lideres: [user.id],
@@ -255,6 +261,10 @@ export default function CreateProjects() {
 
   if (loadingPlans || !planes)
     return <div className="componentContainer"></div>;
+
+  if (editMode && !selectedPlan) {
+    return <div className="componentContainer"></div>;
+  }
 
   return (
     <div className="componentContainer">
@@ -357,6 +367,8 @@ export default function CreateProjects() {
               plan={plan}
               selectedPlan={selectedPlan}
               setSelectedPlan={setSelectedPlan}
+              planes={planes}
+              editMode={editMode}
             />
           ))}
         </div>

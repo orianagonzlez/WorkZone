@@ -46,22 +46,22 @@ export const CreateTaskModal = (props) => {
           // newColumns[task_status].items.push(r.data);
           // props.setcolumns(newColumns);
           reset();
+          // Swal.fire({
+          //   icon: "success",
+          //   title: "Tarea creada",
+          //   text: "La tarea fue creada de forma exitosa",
+          //   confirmButtonColor: "#22B4DE",
+          // });
           props.onHide();
-          Swal.fire({
-            icon: "success",
-            title: "Tarea creada",
-            text: "La tarea fue creada de forma exitosa",
-            confirmButtonColor: "#22B4DE",
-          });
         } else {
           console.log("error");
-          props.onHide();
           Swal.fire({
             icon: "error",
             title: "Oops...",
             text: "Se produjo un error, intenta de nuevo",
             confirmButtonColor: "#22B4DE",
           });
+          props.onHide();
         }
       });
     }
@@ -157,7 +157,7 @@ export const CreateTaskModal = (props) => {
             </Form.Group>
           </Form.Row>
           <div className="button p-3 mx-5 mb-5">
-            <Button className="auth_button" variant="primary" type="submit">
+            <Button className="auth_button" type="submit">
               Crear Tarea
             </Button>
           </div>
