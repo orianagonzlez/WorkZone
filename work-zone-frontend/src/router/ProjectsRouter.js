@@ -1,8 +1,8 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import ProjectsPage from "../pages/projects";
+import ProjectsScreen from "../pages/projects";
 import CreateProjectsScreen from "../pages/projects/CreateProjectsScreen";
-import ProjectDeetsPage from "../pages/projects/projectDeets";
+import ProjectDeetsScreen from "../pages/projects/ProjectDeetsScreen";
 
 export const ProjectsRouter = () => {
   return (
@@ -11,14 +11,14 @@ export const ProjectsRouter = () => {
         <Switch>
           <Route
             path="/projects/details/:project"
-            component={ProjectDeetsPage}
+            component={ProjectDeetsScreen}
           />
           <Route path="/projects/create" component={CreateProjectsScreen} />
           <Route
             path="/projects/edit/:project"
             component={CreateProjectsScreen}
           />
-          <Route path="/projects" component={ProjectsPage} />
+          <Route path="/projects" component={ProjectsScreen} />
 
           <Redirect to="/projects" />
         </Switch>

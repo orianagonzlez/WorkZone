@@ -368,7 +368,7 @@ export default function CreateProjects() {
               variant="primary"
               onClick={(e) => handleCreateProject(e)}
             >
-              {editMode ? "Guardar" : "Crear"}
+              {editMode ? "GUARDAR" : "CREAR"}
             </Button>
           </div>
         </Container>
