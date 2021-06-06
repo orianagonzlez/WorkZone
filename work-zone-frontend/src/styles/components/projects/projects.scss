@@ -16,7 +16,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    font-weight: bold;
+    //font-weight: bold;
     font-size: 1rem;
   }
   .newProject {
@@ -35,7 +35,6 @@
   }
   .archivedProjects {
     background-color: $primary-gray-400;
-    font-weight: bolder;
     border: 0rem;
     border-radius: 1rem;
     padding: 0.5rem 1rem;
