@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Button } from "react-bootstrap";
 import { useHistory } from "react-router";
 import Swal from "sweetalert2";
 import { getData } from "../../../helpers/getData";
 import { CreateTaskModal } from "../../tasks/CreateTaskModal";
 import { CreateColumnModal } from "../../tasks/CreateColumnModal";
-
+import { EditColumnModal } from "../../tasks/EditColumnModal";
+import { BsThreeDots } from "react-icons/bs";
 
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
@@ -54,7 +55,9 @@ export const Board = ({ project }) => {
 
   const [modalShow, setModalShow] = useState(false);
 
-  const [columnModalShow, setColumnModalShow] = useState(false)
+  const [columnModalShow, setColumnModalShow] = useState(false);
+
+  const [editColumnModalShow, setEditColumnModalShow] = useState(false);
 
   const history = useHistory();
 
@@ -123,15 +126,19 @@ export const Board = ({ project }) => {
 
   const handleCreateColumn = () => {
     setColumnModalShow(true);
-  }
+  };
+
+  const handleEditColumn = () => {
+    setEditColumnModalShow(true)
+  };
+
 
   return (
     <Container className="componentContainer pt-4">
       <h1>Tasks</h1>
 
-      <Row className="create_buttons_row"> 
-
-      <button className="btn-create" onClick={() => handleCreateTask()}>
+      <Row className="create_buttons_row">
+        <button className="btn-create" onClick={() => handleCreateTask()}>
           + Crear Tarea
         </button>
         {lists.length > 0 && (
@@ -159,6 +166,19 @@ export const Board = ({ project }) => {
           />
         )}
 
+        <button className="btn-create" onClick={() => handleEditColumn()}>
+          <BsThreeDots />
+        </button>
+        {lists.length > 0 && (
+          <EditColumnModal
+            project={project}
+            show={editColumnModalShow}
+            onHide={() => setEditColumnModalShow(false)}
+            columns={columns}
+            lists={lists}
+            setcolumns={setColumns}
+          />
+        )}
       </Row>
 
       <div className="task_container">
@@ -182,7 +202,9 @@ export const Board = ({ project }) => {
                               : "linear-gradient(158.55deg, #6487A5 -48.1%, rgba(59, 86, 110, 0.5) 162.82%)",
                           }}
                         >
-                          <h2>{column.nombre}</h2>
+                          <div className="column_header">
+                            <h2>{column.nombre}</h2>
+                          </div>
                           {column.items.map((item, index) => {
                             return (
                               <Draggable

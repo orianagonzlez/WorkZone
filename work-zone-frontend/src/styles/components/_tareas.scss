@@ -1,31 +1,43 @@
-.create_buttons_row{
+.create_buttons_row {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
 }
 
+
 .task_container {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: stretch;
   height: 100%;
-  margin: 10px;
   padding: 10px;
 
   .column_container {
-    width: 100%;
     flex-direction: column;
     align-items: center;
+    margin: 0px 10px 0px 10px;
 
     .column {
       padding: 10px;
       min-height: 500px;
+      max-width: 225px;
+      min-width: 225px;
       border-radius: 10px;
-      h2 {
-        font-size: 1.5rem;
-        text-align: start;
-        color: $neutral-50;
+      box-shadow: 0px 2.5px 5px 2.5px rgba(0, 0, 0, 0.1);
+
+      .column_header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        h2 {
+          font-size: 1.5rem;
+          text-align: start;
+          color: $neutral-50;
+        }
       }
+
       .card {
         user-select: none;
         padding: 5px;
@@ -37,10 +49,10 @@
         transition: all 0.5s ease;
         box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px 0px,
           rgba(0, 0, 0, 0.5) 0px 0px 1px 0px;
-          &:hover {
-            box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.2);
-            transition: all 0.5s ease;
-          }
+        &:hover {
+          box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.2);
+          transition: all 0.5s ease;
+        }
       }
     }
   }
@@ -80,8 +92,7 @@
 }
 
 @media (max-width: 550px) {
-
-  .create_buttons_row{
+  .create_buttons_row {
     display: flex;
     flex-direction: row;
     justify-content: center;
