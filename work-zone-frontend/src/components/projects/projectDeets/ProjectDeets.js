@@ -4,7 +4,7 @@ import { Container, Button, Row, Col } from "react-bootstrap";
 import { FaEdit, FaArrowCircleLeft, FaUsers, FaInfo } from "react-icons/fa";
 import { Board } from "./Board";
 import { getData } from "../../../helpers/getData";
-import { Members } from "./Member";
+import { Members } from "../../common/Member";
 
 export default function ProjectDeets() {
   const [projectInfo, setProjectInfo] = useState({});

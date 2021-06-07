@@ -3,7 +3,8 @@ import { Modal, Button, Form, Col, ProgressBar } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { postData } from "../../helpers/postData";
 import { useForm } from "../../hooks/useForm";
-import { FaEdit, FaChartLine, FaUsers, FaTag, FaThList, FaFile } from "react-icons/fa";
+import { FaEdit, FaChartLine, FaUsers, FaTag, FaThList, FaFile, FaEye } from "react-icons/fa";
+import { Members } from "../common/Member";
 
 export const TaskDeetsModal = (props) => {
   const [formValues, handleInputChange, reset] = useForm({
@@ -26,12 +27,15 @@ export const TaskDeetsModal = (props) => {
   const handleAddNewSubtask = (e) => {
     e.preventDefault();
     subtasks.push(newSubtask);
-  }
+  };
 
   const progressPercentage = () => {
-      // const progess = checked*100/subtasks.length
+      // const progress = checked*100/subtasks.length
       return (20);
-  }
+  };
+
+  const labels = ['Label #1', 'Label #2', 'Label #1', 'Label #2', 'Label #1', 'Label #2', 'Label #1', 'Label #2'];
+
 
   const handleCreate = (e) => {
       /*
@@ -173,20 +177,33 @@ export const TaskDeetsModal = (props) => {
                             <FaUsers />
                             <span>Encargados</span>
                         </div>
-
+                        { task_member != undefined ?? <Members member={task_member} />}
                     </div>
-                    <div className="subcont-item" id="archivos">
+                    <div className="subcont-item" id="files">
                         <div className="sectionTitle mt-3">
                             <FaFile />
                             <span>Archivos</span>
                         </div>
-
+                        <div className="file-buttons">
+                            <button type="button" id="see-files"><FaEye /></button>
+                            <label className="upload-file-label">
+                              +
+                              <input type="file" id="upload-file" />
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <div id="labels">
                     <div className="sectionTitle mt-3">
                         <FaTag />
                         <span>Etiquetas</span>
+                    </div>
+                    <div className="labels-container">
+                      {labels.map((label, index) => (
+                        <div className="label" key={index} >
+                          {label}
+                        </div>
+                      ))}
                     </div>
                 </div>
                 <div id="progress">
