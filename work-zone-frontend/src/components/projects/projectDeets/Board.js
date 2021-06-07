@@ -198,6 +198,7 @@ export const Board = ({ project }) => {
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
                                     >
+                                
                                       {item.nombre}
                                     </div>
                                   );

@@ -16,6 +16,40 @@ export const LoginScreen = () => {
 
   const { email, password } = formValues;
 
+  const handleRecoveryPassword = async () => {
+    const { value: email } = await Swal.fire({
+      title: 'Te ayudaremos a recordar!',
+      input: 'email',
+      inputLabel: 'Por favor ingrese el correo con el que se registro',
+      inputPlaceholder: 'prueba@gmail.com'
+    })
+    let body = { email: email}
+
+    postData(
+      "http://localhost:8080/api/auth/resetPassword",
+      body
+    ).then((r) => {
+      console.log("me respondio" + r);
+      if (r.ok) {
+        Swal.fire({
+          icon: "info",
+          title: "Listo!",
+          text: `Se ha enviado una contraseña provicional al email: ${email}`,
+          confirmButtonColor: "#22B4DE",
+        });
+      } else {
+        console.log("error");
+          Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `El correo: ${email} no se encuentra registrado`,
+          confirmButtonColor: "#22B4DE",
+        });
+      }
+    });
+
+  }
+
   const handleLogin = (e) => {
     e.preventDefault();
 
@@ -48,7 +82,6 @@ export const LoginScreen = () => {
       }
     });
   };
-
   return (
     <div className="login_main">
       <Container className="login_container">
@@ -100,7 +133,7 @@ export const LoginScreen = () => {
             </div>
 
             <Form.Group>
-              <div className="auth_link"> ¿Olvidaste tu contraseña?</div>
+              <div className="auth_link" onClick={() => handleRecoveryPassword() }> ¿Olvidaste tu contraseña?</div>
             </Form.Group>
           </Container>
         </Form>
