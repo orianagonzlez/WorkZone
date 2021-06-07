@@ -8,6 +8,8 @@ import { CreateTaskModal } from "../../tasks/CreateTaskModal";
 import { CreateColumnModal } from "../../tasks/CreateColumnModal";
 import { EditColumnModal } from "../../tasks/EditColumnModal";
 import { BsThreeDots } from "react-icons/bs";
+import { TaskDeetsModal } from "../../tasks/TaskDeetsModal";
+
 
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
@@ -51,13 +53,15 @@ export const Board = ({ project }) => {
   const [lists, setLists] = useState([]);
   const [tasksNum, setTasksNum] = useState(0);
 
-  console.log(columns);
+  /*console.log(columns);*/
 
   const [modalShow, setModalShow] = useState(false);
 
   const [columnModalShow, setColumnModalShow] = useState(false);
 
   const [editColumnModalShow, setEditColumnModalShow] = useState(false);
+  
+  const [taskModalShow, setTaskModalShow] = useState(false);
 
   const history = useHistory();
 
@@ -91,6 +95,8 @@ export const Board = ({ project }) => {
     });
     setTasksNum(n);
   }, [lists]);
+
+
 
   const handleCreateTask = () => {
     if (project.id_plan.max_tareas === 0) {
@@ -131,6 +137,29 @@ export const Board = ({ project }) => {
   const handleEditColumn = () => {
     setEditColumnModalShow(true)
   };
+
+
+  
+
+  const [taskToShow = {}, setTaskToShow] = useState();
+
+  
+
+  const handleOpenTaskDeets = (item) => {
+    setTaskToShow(item);
+    console.log(taskToShow);
+    setTaskModalShow(true);
+    console.log("yes");
+    //console.log(taskModalShow);
+    //console.log(item);
+    //console.log(taskModalShow);
+    console.log(taskToShow.nombre);
+    
+    //console.log(item.nombre);
+
+  }
+
+
 
 
   return (
@@ -220,13 +249,31 @@ export const Board = ({ project }) => {
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
                                     >
-                                      {item.nombre}
+                                      <button
+                                        onClick={() => handleOpenTaskDeets(item)}>
+                                        {item.nombre}
+                                      </button>
+                                      { item === taskToShow ? 
+                                        //console.log("yeesyeyeyeyes", index)
+                                        <TaskDeetsModal
+                                          project={project}
+                                          task={item}
+                                          show={taskModalShow}
+                                          onHide={() => setTaskModalShow(false)}
+                                          columns={columns}
+                                          lists={lists}
+                                          setcolumns={setColumns}
+                                        />
+                                        : console.log("sos", index)
+                                    }
+                                      
                                     </div>
                                   );
                                 }}
                               </Draggable>
                             );
                           })}
+                          {console.log(taskToShow)}
                           {provided.placeholder}
                         </div>
                       );
@@ -238,6 +285,7 @@ export const Board = ({ project }) => {
           })}
         </DragDropContext>
       </div>
+                          
     </Container>
   );
 };

@@ -4,10 +4,10 @@ import { Container, Button, Row, Col } from "react-bootstrap";
 import { FaEdit, FaArrowCircleLeft, FaUsers, FaInfo, FaSignOutAlt } from "react-icons/fa";
 import { Board } from "./Board";
 import { getData } from "../../../helpers/getData";
-import { Members } from "./Member";
 import { AppContext } from "../../../context/AppContext";
 import Swal from "sweetalert2";
 import { postData } from "../../../helpers/postData";
+import { Members } from "../../common/Member";
 
 export default function ProjectDeets() {
   const { setUser, user } = useContext(AppContext);
@@ -132,7 +132,7 @@ export default function ProjectDeets() {
         </div>
         <h3 className="mt-2">{projectInfo.descripcion}</h3>
       </div>
-      <div className="mx-2">
+      <div className="members mx-2">
           <div className="sectionTitle mt-3">
             <FaUsers />
             <span>Miembros</span>
@@ -142,8 +142,8 @@ export default function ProjectDeets() {
             members.map((member) => {
                 return (
                         <Col className="my-2" key={member._id}>
-                            <Members member={member} />
-                        </Col>  
+                            <Members member={member} placement={'project'} />
+                        </Col>
                 );
               })
           } 
