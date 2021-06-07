@@ -3,7 +3,7 @@ import { Modal, Button, Form, Col, ProgressBar } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { postData } from "../../helpers/postData";
 import { useForm } from "../../hooks/useForm";
-import { FaEdit, FaChartLine, FaUsers, FaTag, FaThList, FaFile, FaEye, FaPlus } from "react-icons/fa";
+import { FaEdit, FaChartLine, FaUsers, FaTag, FaThList, FaFile, FaEye, FaPlus, FaTrash } from "react-icons/fa";
 import { Members } from "../common/Member";
 
 export const TaskDeetsModal = (props) => {
@@ -227,6 +227,9 @@ export const TaskDeetsModal = (props) => {
                 </div>
             </div>
         </div>
+        <Button variant="danger" className="delete-task" >
+          <FaTrash /> Eliminar tarea
+        </Button>
       </Modal.Body>
       </Form>
     </Modal>
