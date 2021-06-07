@@ -82,7 +82,7 @@ export const Board = ({ project }) => {
         console.log("error");
       }
     });
-  }, [modalShow, columnModalShow]);
+  }, [modalShow, columnModalShow, editColumnModalShow]);
 
   useEffect(() => {
     let n = 0;
@@ -101,7 +101,7 @@ export const Board = ({ project }) => {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: `Has alcanzado el máximo de tareas para el plan ${project.id_plan.nombre}.\nPara crear más tareas debes actualizar tu plan.`,
+        text: `Has alcanzado el máximo de tareas para el plan. Mejora tu plan para seguir trabajando! ${project.id_plan.nombre}.\nPara crear más tareas debes actualizar tu plan.`,
         confirmButtonColor: "#22B4DE",
       });
 

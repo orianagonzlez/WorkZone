@@ -7,15 +7,42 @@ import { useForm } from "../../hooks/useForm";
 export const EditColumnModal = (props) => {
   const [formValues, handleInputChange, reset] = useForm({
     column_name: "",
+    task_status: props.columns[0]?._id
   });
 
   const { column_name, task_status } = formValues;
 
   const handleEdit = (e) => {
     e.preventDefault();
-    if (task_status != undefined || column_name.length != 0) {
+    if ( task_status && column_name) {
       console.log(column_name, task_status);
-      props.onHide();
+
+      const body = {
+        id_lista: task_status,
+        nombre: column_name
+      };
+
+      console.log(body);
+
+      postData(
+        "https://workzone-backend-mdb.herokuapp.com/api/lists/update",
+        body
+      ).then((r) => {
+        console.log("me respondio" + r);
+        if (r.ok) {
+          console.log("todo bien", r.data);
+          reset();
+          props.onHide();
+        } else {
+          console.log("error");
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Algo ha salido mal, intenta de nuevo",
+            confirmButtonColor: "#22B4DE",
+          });
+        }
+      });
     } else {
       console.log("ERROR");
     }
@@ -46,8 +73,8 @@ export const EditColumnModal = (props) => {
                 type="text"
                 name="task_status"
                 onChange={handleInputChange}
+                required
               >
-                <option>Selecciona una Lista</option>
                 {props.lists.map((column) => (
                   <option value={column._id} key={column._id}>
                     {column.nombre}
