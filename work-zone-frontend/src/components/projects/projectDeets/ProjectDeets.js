@@ -67,7 +67,7 @@ export default function ProjectDeets() {
         </div>
         <h3 className="mt-2">{projectInfo.descripcion}</h3>
       </div>
-      <div className="mx-2">
+      <div className="members mx-2">
           <div className="sectionTitle mt-3">
             <FaUsers />
             <span>Miembros</span>

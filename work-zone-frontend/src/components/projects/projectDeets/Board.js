@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { getData } from "../../../helpers/getData";
 import { CreateTaskModal } from "../../tasks/CreateTaskModal";
 import { CreateColumnModal } from "../../tasks/CreateColumnModal";
+import { TaskDeetsModal } from "../../tasks/TaskDeetsModal";
 
 
 const onDragEnd = (result, columns, setColumns) => {
@@ -54,7 +55,9 @@ export const Board = ({ project }) => {
 
   const [modalShow, setModalShow] = useState(false);
 
-  const [columnModalShow, setColumnModalShow] = useState(false)
+  const [columnModalShow, setColumnModalShow] = useState(false);
+
+  const [taskModalShow, setTaskModalShow] = useState(false);
 
   const history = useHistory();
 
@@ -124,6 +127,12 @@ export const Board = ({ project }) => {
   const handleCreateColumn = () => {
     setColumnModalShow(true);
   }
+
+
+  const handleOpenTaskDeets = () => {
+    setTaskModalShow(true);
+  }
+
 
   return (
     <Container className="componentContainer pt-4">
@@ -198,7 +207,18 @@ export const Board = ({ project }) => {
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
                                     >
-                                      {item.nombre}
+                                      <button
+                                        onClick={() => handleOpenTaskDeets()}>
+                                        {item.nombre}
+                                      </button>
+                                      <TaskDeetsModal
+                                        task={item}
+                                        show={taskModalShow}
+                                        onHide={() => setTaskModalShow(false)}
+                                        columns={columns}
+                                        lists={lists}
+                                        setcolumns={setColumns}
+                                      />
                                     </div>
                                   );
                                 }}

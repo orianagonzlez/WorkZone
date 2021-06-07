@@ -1,0 +1,54 @@
+.deets-container {
+    color: $font;
+    width: 100%;
+    .header-container {
+        padding: 0 40px 8px 40px;
+        .title-container {
+            display: flex;
+            flex-direction: row;
+            align-items: baseline;
+            #contained-modal-title-vcenter {
+                font-size: 40px;
+                padding-right: 36px;
+                font-weight: bold;
+            }
+        }
+        .p-column {
+            color: $primary-blue-500;
+            span {
+                font-weight: bold;
+                font-style: italic;
+            }
+        }
+    }
+    .info-container {
+        padding: 0 40px;
+        display: flex;
+        flex-direction: row;
+        .sectionTitle {
+            font-weight: 700;
+            color: $primary-blue-500;
+            padding-bottom: 8px;
+            span {
+                padding-left: 0.5rem;
+            }
+        }
+        #subtasks {
+            width: 40%;
+            .subtasks-checkboxes {
+                padding-left: 1rem;
+            }
+        }
+        .info-subcontainer {
+            width: 60%;
+            .subsubcontainer {
+                display: flex;
+                flex-direction: row;
+                .subcont-item {
+                    width: 50%;
+                }
+            }
+        }
+        
+    }
+}
