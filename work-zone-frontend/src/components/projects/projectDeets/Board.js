@@ -233,6 +233,7 @@ export const Board = ({ project }) => {
                                       { item === taskToShow ? 
                                         //console.log("yeesyeyeyeyes", index)
                                         <TaskDeetsModal
+                                          project={project}
                                           task={item}
                                           show={taskModalShow}
                                           onHide={() => setTaskModalShow(false)}

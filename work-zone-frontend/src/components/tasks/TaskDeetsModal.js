@@ -13,7 +13,9 @@ export const TaskDeetsModal = (props) => {
     task_member: props.task.miembro,
     task_status: props.task.lista,
   });
-  console.log(props.task.name);
+  console.log(props.task.miembro); // esto es un id. hay que buscar en la base de datos a la persona con este id para poner la fotico
+
+  
 
   const { task_name, task_content, task_member, task_status } = formValues;
 
@@ -178,7 +180,16 @@ export const TaskDeetsModal = (props) => {
                             <FaUsers />
                             <span>Encargados</span>
                         </div>
-                        { task_member != undefined ?? <Members member={task_member} />}
+                        { task_member != undefined ?
+                          (props.project.miembros.map((miembro) => {
+                            console.log("task member ",task_member);
+                            console.log(miembro._id);
+                            if (task_member === miembro._id) {
+                              return (<Members member={miembro} placement={'task'} />)
+                            }
+                            return null;
+                          }))
+                        : null}
                     </div>
                     <div className="subcont-item" id="files">
                         <div className="sectionTitle mt-3">

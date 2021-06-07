@@ -77,7 +77,7 @@ export default function ProjectDeets() {
             members.map((member) => {
                 return (
                         <Col className="my-2">
-                            <Members member={member} />
+                            <Members member={member} placement={'project'} />
                         </Col>  
                 );
               })
