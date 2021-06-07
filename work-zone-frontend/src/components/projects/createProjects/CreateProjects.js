@@ -267,7 +267,8 @@ export default function CreateProjects() {
   }
 
   return (
-    <div className="componentContainer">
+    
+      <div className="componentContainer">
       <div className="divArrowLeft">
         <div>
           <Link to="/">
@@ -278,9 +279,9 @@ export default function CreateProjects() {
         </div>
         <h1>Nuevo proyecto</h1>
       </div>
-
-      <Form className="create-project-form">
-        <Form.Row className="d-flex align-items-center justify-content-start">
+      <div className= "d-flex justify-content-center">  
+      <Form className="create-project-form ">
+        <Form.Row className="d-flex align-items-center justify-content-center pr-5">
           <Form.Group as={Col}>
             <Form.Control
               className="projectName"
@@ -297,10 +298,10 @@ export default function CreateProjects() {
           </Form.Group>
         </Form.Row>
 
-        <Form.Row className="d-flex align-items-center justify-content-start">
+        <Form.Row className="d-flex align-items-center justify-content-center pr-5">
           <Form.Group as={Col}>
             <Form.Control
-              className="projectDescription"
+              className="projectDescription "
               type="text"
               placeholder="Descripcion"
               name="descripcion"
@@ -385,7 +386,11 @@ export default function CreateProjects() {
           </div>
         </Container>
       </Form>
+      </div>
     </div>
+
+  
+   
   );
 }
 

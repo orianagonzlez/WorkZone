@@ -3,7 +3,7 @@ import { Container, Button } from "react-bootstrap";
 import { FaUserCircle, FaBoxes, FaCog, FaSignOutAlt } from "react-icons/fa";
 import { GoSignOut } from "react-icons/go";
 
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AppContext } from "../../../context/AppContext";
 import { postData } from "../../../helpers/postData";
@@ -100,11 +100,11 @@ export default function Sidebar() {
                     </div>
                     <li>
                         <ul>
-                            <Link to="/">
+                            <NavLink exact={true} activeClassName='is-active' to="/projects">
                                 <Button>
                                     <FaBoxes /><span>Proyectos</span>
                                 </Button>
-                            </Link>
+                            </NavLink>
                         </ul>
                         <ul>
                             <Button >
