@@ -131,6 +131,11 @@
         transition: all 0.5s ease;
       }
     }
+    #leaveProject {
+      align-self: flex-end;
+      color: $font;
+      margin-left: 1rem;
+    }
     align-self: flex-end;
     .upperButton {
       border: 0rem;
