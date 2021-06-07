@@ -3,7 +3,7 @@ import { Modal, Button, Form, Col, ProgressBar } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { postData } from "../../helpers/postData";
 import { useForm } from "../../hooks/useForm";
-import { FaEdit, FaChartLine, FaUsers, FaTag, FaThList, FaFile, FaEye } from "react-icons/fa";
+import { FaEdit, FaChartLine, FaUsers, FaTag, FaThList, FaFile, FaEye, FaPlus } from "react-icons/fa";
 import { Members } from "../common/Member";
 
 export const TaskDeetsModal = (props) => {
@@ -13,6 +13,7 @@ export const TaskDeetsModal = (props) => {
     task_member: props.task.miembro,
     task_status: props.task.lista,
   });
+  console.log(props.task.name);
 
   const { task_name, task_content, task_member, task_status } = formValues;
 
@@ -187,7 +188,7 @@ export const TaskDeetsModal = (props) => {
                         <div className="file-buttons">
                             <button type="button" id="see-files"><FaEye /></button>
                             <label className="upload-file-label">
-                              +
+                              <FaPlus />
                               <input type="file" id="upload-file" />
                             </label>
                         </div>
