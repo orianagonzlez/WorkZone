@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Modal, Button, Form, Col } from "react-bootstrap";
 import Swal from "sweetalert2";
+import { AppContext } from "../../context/AppContext";
 import { getData } from "../../helpers/getData";
 import { postData } from "../../helpers/postData";
 import { useFetch2 } from "../../hooks/useFetch2";
 import { useForm } from "../../hooks/useForm";
 
 export const EditProfileModal = ({ usuario, onHide, show }) => {
-  console.log(usuario, usuario.nombre)
+  const { setUser, user } = useContext(AppContext);
+
   const [formValues, handleInputChange, reset] = useForm({
     name: usuario.nombre,
     lastname: usuario.apellido,
@@ -96,6 +98,14 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
       if (r.ok) {
         console.log("todo bien. CREE TAREAAAAAA");
         console.log(r.data);
+
+        setUser({
+          ...user,
+          email: email,
+          nombre: `${name} ${lastname}`,
+          username: username,
+          fechaNacimiento: body.fechaNacimiento,
+        });
         
         Swal.fire({
           icon: "success",
