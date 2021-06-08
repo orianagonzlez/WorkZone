@@ -1,0 +1,141 @@
+.profileDeetsContainer {
+  background-color: $neutral-50;
+  padding: 2rem;
+  padding-bottom: 7rem;
+  min-height: 100vh;
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  h1 {
+    color: $primary-gray-500;
+    font-weight: bold;
+    font-size: 2.25rem;
+    padding-bottom: 4.5rem;
+  }
+  h2 {
+    display: flex;
+    font-size: 1.25rem;
+    color: $primary-gray-500;
+  }
+  h3 {
+    display: flex;
+    //padding-bottom: 4.5rem;
+  }
+
+  .gridContainer {
+    display: grid;
+    grid-template-columns: 150px 370px 185px 370px 150px;
+    grid-template-rows: 10px 100px 10px 100px 50px 10px;
+
+    .pfp {
+      display: flex;
+      justify-content: center;
+      z-index: 1;
+      grid-column-start: 3;
+      grid-column-end: span col4-start;
+      grid-row-start: 1;
+      grid-row-end: 5;
+      margin-left: 3rem;
+      border-radius: 50%;
+      width: 11.5%;
+    }
+
+    .profileBox {
+      display: flex;
+      justify-self: center;
+      padding: 3rem;
+      background-color: #e8e8e8;
+      border-radius: 1rem;
+      width: 75%;
+      grid-column-start: 1;
+      grid-column-end: col1-end;
+      grid-row-start: 3;
+      grid-row-end: row2-end;
+    }
+
+    .profileInfo {
+      display: flex;
+      justify-content: space-evenly;
+      padding-top: 7rem;
+      .nombre {
+        flex-direction: column;
+        //margin-right: 4rem;
+      }
+      .moreInfo {
+        flex-direction: column;
+        //margin-right: 4rem;
+      }
+      #name {
+        margin-bottom: 1.75rem;
+      }
+      #lastname {
+        margin-bottom: 1.75rem;
+      }
+      #email {
+        margin-bottom: 1.75rem;
+      }
+      #birth {
+        margin-bottom: 1.75rem;
+      }
+      .profileLabel {
+        width: 300px;
+        border-bottom: 1px solid black;
+      }
+      h2 {
+        color: $font;
+        font-weight: bold;
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+      }
+      h3 {
+        color: $font;
+        font-size: 1.25rem;
+      }
+    }
+  }
+
+  .upperButtonsProfile {
+    padding-top: 4rem;
+    padding-right: 6rem;
+    padding-bottom: 4rem;
+    align-self: center;
+    margin-right: 4rem;
+    justify-content: space-evenly;
+    h1 {
+      color: $primary-gray-500;
+      font-weight: bold;
+      font-size: 2.25rem;
+      padding-bottom: 4.5rem;
+    }
+    #editProfile {
+      align-self: flex-end;
+      background-color: $primary-blue-500;
+      margin-left: 1rem;
+      &:hover {
+        background-color: $font;
+        box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
+        transition: all 0.5s ease;
+      }
+    }
+    #changePass {
+      align-self: flex-end;
+      background-color: $primary-blue-500;
+      margin-left: 1rem;
+      margin-right: 1.25rem;
+      &:hover {
+        background-color: $font;
+        box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
+        transition: all 0.5s ease;
+      }
+    }
+    align-self: flex-end;
+    .upperButtonProfile {
+      border: 0rem;
+      border-radius: 1.75rem;
+      color: $neutral-50;
+      font-weight: bolder;
+      padding: 1rem 1.75rem;
+      font-size: 1rem;
+    }
+  }
+}
