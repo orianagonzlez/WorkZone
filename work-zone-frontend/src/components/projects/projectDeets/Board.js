@@ -65,7 +65,10 @@ export const Board = ({ project }) => {
 
   const history = useHistory();
 
+  console.log('AQUI ESTOY Y ESTAS SON MIS COLUMNAS')
+  console.log(columns);
   useEffect(() => {
+    console.log('vy a empezas')
     //Buscando las listas del proyecto con sus respectivas tareas
     getData(
       `https://workzone-backend-mdb.herokuapp.com/api/lists/from/${project._id}`
@@ -253,7 +256,7 @@ export const Board = ({ project }) => {
                                         onClick={() => handleOpenTaskDeets(item)}>
                                         {item.nombre}
                                       </button>
-                                      { item === taskToShow ? 
+                                      { item === taskToShow &&
                                         //console.log("yeesyeyeyeyes", index)
                                         <TaskDeetsModal
                                           project={project}
@@ -264,7 +267,7 @@ export const Board = ({ project }) => {
                                           lists={lists}
                                           setcolumns={setColumns}
                                         />
-                                        : console.log("sos", index)
+                                        
                                     }
                                       
                                     </div>
@@ -273,7 +276,6 @@ export const Board = ({ project }) => {
                               </Draggable>
                             );
                           })}
-                          {console.log(taskToShow)}
                           {provided.placeholder}
                         </div>
                       );

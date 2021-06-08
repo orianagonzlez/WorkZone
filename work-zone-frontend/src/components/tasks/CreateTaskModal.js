@@ -72,17 +72,19 @@ export const CreateTaskModal = (props) => {
                 confirmButtonColor: "#22B4DE",
               });
             }
+            reset();
+            props.onHide();
           });
 
-          props.setcolumns(newColumns);
-          reset();
+          // props.setcolumns(newColumns);
+          
           // Swal.fire({
           //   icon: "success",
           //   title: "Tarea creada",
           //   text: "La tarea fue creada de forma exitosa",
           //   confirmButtonColor: "#22B4DE",
           // });
-          props.onHide();
+          
         } else {
           console.log("error");
           Swal.fire({
