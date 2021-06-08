@@ -99,3 +99,28 @@
     }
   }
 }
+
+
+.search-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  padding-right: 16px;
+  margin: 16px 0px;
+  .search-input {
+    // md:justify-self-end rounded-lg text-sm col-start-1 col-span-full row-start-1 row-span-full border-neutral-300
+    border-radius: 10px;
+    padding: 5px;
+    margin: 5px;
+    border: none;
+    -moz-box-shadow:    inset 0 0 4px #aaaaaa;
+    -webkit-box-shadow: inset 0 0 4px #aaaaaa;
+    box-shadow:         inset 0 0 4px #aaaaaa;
+  }
+  :focus {
+    outline-color: lightblue;
+    border-radius: 8px;
+  }
+}
