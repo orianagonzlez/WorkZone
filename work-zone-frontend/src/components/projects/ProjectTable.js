@@ -15,6 +15,7 @@ import ProjectCard from "./ProjectCard";
 
 export const ProjectTable = ({ show }) => {
   const { setUser, user } = useContext(AppContext);
+  console.log('USER', user)
   const history = useHistory();
 
   const [projects, setProjects] = useState([]);

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { FaUserCircle } from 'react-icons/fa';
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Swal from 'sweetalert2';
 import { AppContext } from '../../../context/AppContext';
 import { postData } from '../../../helpers/postData';
@@ -13,10 +13,11 @@ export default function Navbar() {
 
     const {setUser, user} = useContext(AppContext);
 
+    const history = useHistory();
 
     return (
         <div className="navbarContainer d-flex justify-content-end">
-            <Button >
+            <Button onClick={() => history.push('/profile')}>
                 <FaUserCircle size={24} /><span>{user.nombre}</span>
             </Button>
         </div>
