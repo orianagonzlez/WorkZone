@@ -1,7 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { Container, Button, Row, Col } from "react-bootstrap";
-import { FaEdit, FaArrowCircleLeft, FaUsers, FaInfo, FaSignOutAlt } from "react-icons/fa";
+import {
+  FaEdit,
+  FaArrowCircleLeft,
+  FaUsers,
+  FaInfo,
+  FaSignOutAlt,
+} from "react-icons/fa";
 import { Board } from "./Board";
 import { getData } from "../../../helpers/getData";
 import { AppContext } from "../../../context/AppContext";
@@ -38,12 +44,12 @@ export default function ProjectDeets() {
   }, []);
 
   const handleLeaveProject = () => {
-    console.log('me quiero salir');
+    console.log("me quiero salir");
 
     const body = {
       id_proyecto: projectInfo._id,
-      miembros: projectInfo.miembros.filter(m => m._id != user.id ),
-      lideres: projectInfo.lideres.filter(m => m._id != user.id)
+      miembros: projectInfo.miembros.filter((m) => m._id != user.id),
+      lideres: projectInfo.lideres.filter((m) => m._id != user.id),
     };
 
     console.log(body);
@@ -67,13 +73,13 @@ export default function ProjectDeets() {
           if (r.ok) {
             console.log("todo bien", r.data);
             Swal.fire({
-            icon: "success",
-            title: "Listo!",
-            text: "Proyecto abandonado exitosamente",
-            confirmButtonColor: "#22B4DE",
+              icon: "success",
+              title: "Listo!",
+              text: "Proyecto abandonado exitosamente",
+              confirmButtonColor: "#22B4DE",
             }).then((res) => {
-              history.push('/projects');
-            })
+              history.push("/projects");
+            });
           } else {
             console.log("error");
             Swal.fire({
@@ -86,9 +92,7 @@ export default function ProjectDeets() {
         });
       }
     });
-    
   };
-
 
   return (
     <Container fluid className="componentContainer">
@@ -102,16 +106,18 @@ export default function ProjectDeets() {
         >
           <FaEdit /> Editar Proyecto
         </Button>
-        {user?.id && projectInfo?.owner && projectInfo.owner != user.id && <Button
-          variant="light"
-          className="upperButton"
-          id="leaveProject"
-          onClick={() => {
-            handleLeaveProject()
-          }}
-        >
-          <FaSignOutAlt/> Abandonar
-        </Button>}
+        {user?.id && projectInfo?.owner && projectInfo.owner != user.id && (
+          <Button
+            variant="light"
+            className="upperButton"
+            id="leaveProject"
+            onClick={() => {
+              handleLeaveProject();
+            }}
+          >
+            <FaSignOutAlt /> Abandonar
+          </Button>
+        )}
       </div>
 
       <div className="divArrowLeft">
@@ -127,29 +133,29 @@ export default function ProjectDeets() {
       <div className="description mx-1">
         {/* <h2>Descripcion</h2> */}
         <div className="sectionTitle mt-3">
-            <FaInfo />
-            <span>Descripcion</span>
+          <FaInfo />
+          <span>Descripcion</span>
         </div>
         <h3 className="mt-2">{projectInfo.descripcion}</h3>
       </div>
       <div className="members mx-2">
-          <div className="sectionTitle mt-3">
-            <FaUsers />
-            <span>Miembros</span>
-          </div> 
-          <Row xs={1} sm={2} md={4} lg={6}>
-          {
-            members.map((member) => {
-                return (
-                        <Col className="my-2" key={member._id}>
-                            <Members member={member} placement={'project'} />
-                        </Col>
-                );
-              })
-          } 
-          </Row>
+        <div className="sectionTitle mt-3">
+          <FaUsers />
+          <span>Miembros</span>
         </div>
-      {projectInfo?._id && <Board project={projectInfo} />}
+        <Row xs={1} sm={2} md={4} lg={6}>
+          {members.map((member) => {
+            return (
+              <Col className="my-2" key={member._id}>
+                <Members member={member} placement={"project"} />
+              </Col>
+            );
+          })}
+        </Row>
+      </div>
+      {projectInfo?._id && (
+        <Board project={projectInfo} setProject={setProjectInfo} />
+      )}
     </Container>
   );
 }

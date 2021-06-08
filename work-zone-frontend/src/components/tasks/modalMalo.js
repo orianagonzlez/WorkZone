@@ -23,13 +23,17 @@ import { useFetch2 } from "../../hooks/useFetch2";
 import { getData } from "../../helpers/getData";
 
 export const TaskDeetsModal = (props) => {
-  const [formValues, handleInputChange, reset] = useForm({
-    task_name: props.task.nombre,
-    task_content: props.task.descripcion,
-    task_member: props.task.miembro,
-    task_status: props.task.lista,
-  });
+  //----------------------------------------------------------------------------------
+  // const [formValues, handleInputChange, reset] = useForm({
+  //   task_name: props.task.nombre,
+  //   task_content: props.task.descripcion,
+  //   task_member: props.task.miembro,
+  //   task_status: props.task.lista,
+  // });
 
+  // const { task_name, task_content, task_member, task_status } = formValues;
+
+  //--------------------------------------------------------------------------------------
   // const {
   //   data: thisTask,
   //   loading,
@@ -66,16 +70,40 @@ export const TaskDeetsModal = (props) => {
   //   });
   // };
 
-  const { task_name, task_content, task_member, task_status } = formValues;
+  //---------------------------------------------------------------
+  const [task_name, setTask_name] = useState("");
+
+  const [task_content, setTask_content] = useState("");
+
+  const [task_member, setTask_member] = useState("");
+
+  const [task_status, setTask_status] = useState(props.task.lista);
+
+  const [inputList, setInputList] = useState();
+
+  const { data, loading, error } = useFetch2(
+    `https://workzone-backend-mdb.herokuapp.com/api/tasks/${props.task._id}`
+  );
+
+  useEffect(() => {
+    if (!loading && data) {
+      setTask_name(data.nombre);
+      setTask_content(data.descripcion);
+      if (data.miembro) {
+        setTask_member(data?.miembro?._id);
+      } else {
+        setTask_member(props.task.miembro);
+      }
+      setInputList(data.subtareas);
+    }
+  }, [loading, data]);
 
   console.log(props);
   console.log(props.task.miembro); // esto es un id. hay que buscar en la base de datos a la persona con este id para poner la fotico
 
-  const [inputList, setInputList] = React.useState([...props.task.subtareas]);
-
   const progressPercentage = () => {
-    let progress = inputList.filter((subtask) => subtask.status === 1).length;
-    let total = inputList.length;
+    let progress = inputList?.filter((subtask) => subtask.status === 1).length;
+    let total = inputList?.length;
     return (progress * 100) / total;
   };
 
@@ -101,25 +129,15 @@ export const TaskDeetsModal = (props) => {
     setInputList(list);
   };
 
-  useEffect(() => {
-    console.log("soy props", props);
-    let mylists = props.lists;
-    console.log(mylists);
-  }, []);
-
   const handleCreate = (e) => {
     e.preventDefault();
-    console.log(formValues);
     console.log(inputList);
     console.log(props);
 
     //por is hay una subtask vacia
     setInputList(inputList.filter((subtask) => subtask.nombre !== ""));
 
-    if (
-      validator.isEmpty(formValues.task_name) ||
-      validator.isEmpty(formValues.task_content)
-    ) {
+    if (validator.isEmpty(task_name) || validator.isEmpty(task_content)) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -130,8 +148,8 @@ export const TaskDeetsModal = (props) => {
 
     let body = {
       id_tarea: props.task._id,
-      nombre: formValues.task_name,
-      descripcion: formValues.task_content,
+      nombre: task_name,
+      descripcion: task_content,
       subtareas: inputList,
       miembro: assigned,
     };
@@ -139,16 +157,13 @@ export const TaskDeetsModal = (props) => {
     console.log(body);
 
     postData("http://localhost:8080/api/tasks/update", body).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
-        console.log("todo bien", r.data);
       } else {
         console.log("error");
       }
     });
 
     props.onHide();
-    props.refreshList();
 
     /*
     console.log(task_name, task_content, task_status);
@@ -160,11 +175,14 @@ export const TaskDeetsModal = (props) => {
       descripcion: task_content,
       lista: task_status,
     };
+
     if (task_member) {
       newTask["miembro"] = task_member;
     }
+
     console.log("creando");
     console.log(newTask);
+
     if (task_name && task_content) {
       //Creando la tarea en la base de datos
       postData(
@@ -210,6 +228,7 @@ export const TaskDeetsModal = (props) => {
       data-keyboard="false"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      aria-hidden={false}
       animation={false}
     >
       <Form className="subtask_form" onSubmit={handleCreate}>
@@ -223,8 +242,11 @@ export const TaskDeetsModal = (props) => {
                   type="text"
                   name="task_name"
                   autoComplete="off"
-                  value={formValues.task_name}
-                  onChange={handleInputChange}
+                  value={task_name}
+                  onChange={(e) => {
+                    e.preventDefault();
+                    setTask_name(e.target.value);
+                  }}
                   as="textarea"
                 />
               </Modal.Title>
@@ -236,8 +258,11 @@ export const TaskDeetsModal = (props) => {
                 name="task_content"
                 autoComplete="off"
                 as="textarea"
-                value={formValues.task_content}
-                onChange={handleInputChange}
+                value={task_content}
+                onChange={(e) => {
+                  e.preventDefault();
+                  setTask_content(e.target.value);
+                }}
               />
             </p>
             {/* <p className="p-column">
@@ -260,6 +285,7 @@ export const TaskDeetsModal = (props) => {
                 {/* {task_member != undefined
                   ? props.project.miembros.map((miembro) => {
                       console.log("task member ", task_member);
+
                       if (task_member === miembro._id) {
                         return <Members member={miembro} placement={"task"} />;
                       }
@@ -275,9 +301,9 @@ export const TaskDeetsModal = (props) => {
                     {
                       // esto es para poner por default el que ya tiene la tarea asiganada
                       //si es que esta asiganda
-                      formValues.task_member != undefined ? (
+                      task_member != undefined ? (
                         props.project.miembros.map((miembro) => {
-                          console.log("task member ", formValues.task_member);
+                          console.log("task member ", task_member);
 
                           if (assigned === miembro._id) {
                             return <option>{miembro.nombre}</option>;
@@ -357,7 +383,7 @@ export const TaskDeetsModal = (props) => {
                 </div>
               </div>
               <div className="subtasks-checkboxes">
-                {inputList.map((subtask, i) => {
+                {inputList?.map((subtask, i) => {
                   return (
                     <div className="d-flex align-items-center ">
                       <div className=" ">
@@ -495,6 +521,7 @@ export const TaskDeetsModal = (props) => {
           <Form.Row className="d-flex align-items-center justify-content-start my-3 mx-5 px-5">
             <Form.Group as={Col}>
               <Form.Label>Asignar a miembro</Form.Label>
+
               <Form.Control
                 as="select"
                 className="input"
@@ -520,6 +547,7 @@ export const TaskDeetsModal = (props) => {
           <Form.Row className="d-flex align-items-center justify-content-start my-3 mx-5 px-5">
             <Form.Group as={Col}>
               <Form.Label>Status</Form.Label>
+
               <Form.Control
                 as="select"
                 className="input"

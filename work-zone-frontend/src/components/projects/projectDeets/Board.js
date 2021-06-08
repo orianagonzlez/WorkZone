@@ -47,7 +47,7 @@ const onDragEnd = (result, columns, setColumns) => {
   }
 };
 
-export const Board = ({ project }) => {
+export const Board = ({ project, setProject }) => {
   const [columns, setColumns] = useState({});
   const [lists, setLists] = useState([]);
   const [tasksNum, setTasksNum] = useState(0);
@@ -65,7 +65,10 @@ export const Board = ({ project }) => {
   const history = useHistory();
 
   useEffect(() => {
-    //Buscando las listas del proyecto con sus respectivas tareas
+    refreshList();
+  }, [modalShow, columnModalShow, editColumnModalShow]);
+
+  const refreshList = () => {
     getData(
       `https://workzone-backend-mdb.herokuapp.com/api/lists/from/${project._id}`
     ).then((r) => {
@@ -85,7 +88,7 @@ export const Board = ({ project }) => {
         console.log("error");
       }
     });
-  }, [modalShow, columnModalShow, editColumnModalShow]);
+  };
 
   useEffect(() => {
     let n = 0;
@@ -244,7 +247,7 @@ export const Board = ({ project }) => {
                                       >
                                         {item.nombre}
                                       </button>
-                                      {item === taskToShow ? (
+                                      {item === taskToShow && (
                                         //console.log("yeesyeyeyeyes", index)
                                         <TaskDeetsModal
                                           project={project}
@@ -255,9 +258,9 @@ export const Board = ({ project }) => {
                                           lists={lists}
                                           setcolumns={setColumns}
                                           animation={false}
+                                          key={1}
+                                          refreshList={refreshList}
                                         />
-                                      ) : (
-                                        console.log("sos", index)
                                       )}
                                     </div>
                                   );
