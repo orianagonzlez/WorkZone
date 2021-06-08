@@ -56,6 +56,7 @@
     .profileInfo {
       display: flex;
       justify-content: space-evenly;
+      flex-wrap: wrap;
       padding-top: 7rem;
       .nombre {
         flex-direction: column;

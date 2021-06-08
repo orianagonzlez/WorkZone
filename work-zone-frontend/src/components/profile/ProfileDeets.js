@@ -1,19 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useHistory, useParams } from "react-router-dom";
-import { Container, Button, Row, Col, Jumbotron } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 import { FaEdit, FaLockOpen } from "react-icons/fa";
 import { AppContext } from "../../context/AppContext";
 import { getData } from "../../helpers/getData";
+import { EditProfileModal } from "./EditProfileModal";
 
 export default function ProfileDeets() {
-  //name: "",
-  //lastname: "",
-  // email: "",
-  // birthday: "",
+  
   const { setUser, user } = useContext(AppContext);
   const [usuario, setUsuario] = useState({});
+  const [modalShow, setModalShow] = useState(false);
 
   useEffect(() => {
+  
     if(user?.id) {
       getData(
         `https://workzone-backend-mdb.herokuapp.com/api/auth/${user.id}`
@@ -27,7 +26,11 @@ export default function ProfileDeets() {
       });
     }
      
-  }, [user]);
+  }, [user, modalShow]);
+
+  const handleEditProfile = () => {
+    setModalShow(true);
+  }
  
 
   return (
@@ -37,9 +40,14 @@ export default function ProfileDeets() {
           <FaLockOpen /> Cambiar Contrasena
         </Button>
 
-        <Button className="upperButtonProfile" id="editProfile">
+        <Button className="upperButtonProfile" id="editProfile" onClick={() => handleEditProfile()}>
           <FaEdit /> Editar Perfil
         </Button>
+       {usuario?.uid &&  <EditProfileModal
+        usuario={usuario}
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        />}
       </div>
 
       <div className="gridContainer">
@@ -73,7 +81,7 @@ export default function ProfileDeets() {
             <div className="">
               <div className="profileLabel" id="birth">
                 <h2>Fecha de nacimiento</h2>
-                <h3>{ usuario.fechaNacimiento }</h3>
+                <h3>{ usuario.fechaNacimiento?.split('T')[0] }</h3>
               </div>
             </div>
           </Container>
