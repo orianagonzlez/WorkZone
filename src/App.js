@@ -2,7 +2,7 @@ import { Button } from "react-bootstrap";
 import React from "react";
 import Modal from "react-bootstrap/Modal";
 import "bootstrap/dist/css/bootstrap.min.css";
-import ModalNewProyect from "./ModalNewProyect";
+// import ModalNewProyect from "./ModalNewProyect";
 import { AppRouter } from "./router/AppRouter";
 import { AppProvider } from "./context/AppContext";
 import { HomeScreen } from "./pages/HomeScreen";
