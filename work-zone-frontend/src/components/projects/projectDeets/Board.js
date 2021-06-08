@@ -9,6 +9,7 @@ import { CreateColumnModal } from "../../tasks/CreateColumnModal";
 import { EditColumnModal } from "../../tasks/EditColumnModal";
 import { BsThreeDots } from "react-icons/bs";
 import { TaskDeetsModal } from "../../tasks/TaskDeetsModal";
+import { Members } from "../../common/Member";
 
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
@@ -246,6 +247,25 @@ export const Board = ({ project, setProject }) => {
                                         }
                                       >
                                         {item.nombre}
+                                        {console.log(item.miembro, "ITEM")}
+                                        {item.miembro != undefined
+                                          ? project.miembros.map((miembro) => {
+                                              console.log(miembro._id);
+                                              if (
+                                                item.miembro === miembro._id
+                                              ) {
+                                                return (
+                                                  <div className="d-flex justify-content-center">
+                                                    <Members
+                                                      member={miembro}
+                                                      placement={"task"}
+                                                    />
+                                                  </div>
+                                                );
+                                              }
+                                              return null;
+                                            })
+                                          : null}
                                       </button>
                                       {item === taskToShow && (
                                         //console.log("yeesyeyeyeyes", index)

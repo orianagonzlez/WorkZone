@@ -101,11 +101,11 @@ export const TaskDeetsModal = (props) => {
     setInputList(list);
   };
 
-  useEffect(() => {
-    console.log("soy props", props);
-    let mylists = props.lists;
-    console.log(mylists);
-  }, []);
+  // useEffect(() => {
+  //   console.log("soy props", props);
+  //   let mylists = props.lists;
+  //   console.log(mylists);
+  // }, []);
 
   const handleCreate = (e) => {
     e.preventDefault();
@@ -164,6 +164,7 @@ export const TaskDeetsModal = (props) => {
       if (result.isConfirmed) {
         let body = {
           id_tarea: props.task._id,
+          id_lista: props.task.lista,
           active: false,
         };
         postData("http://localhost:8080/api/tasks/delete", body).then((r) => {
