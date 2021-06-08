@@ -33,7 +33,7 @@ export const RegisterScreen = () => {
         nombre: name,
         apellido: lastname,
         contrasena: password,
-        fechaNacimiento: new Date(),
+        fechaNacimiento: new Date(birthday),
         email: email,
         username: username,
       };

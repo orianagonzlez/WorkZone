@@ -138,17 +138,19 @@ export const TaskDeetsModal = (props) => {
 
     console.log(body);
 
-    postData("http://localhost:8080/api/tasks/update", body).then((r) => {
+    postData(
+      "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
+      body
+    ).then((r) => {
       console.log("me respondio" + r);
       if (r.ok) {
         console.log("todo bien", r.data);
+        props.refreshList();
       } else {
         console.log("error");
       }
     });
-
     props.onHide();
-    props.refreshList();
   };
 
   const handleDelete = () => {
@@ -167,15 +169,19 @@ export const TaskDeetsModal = (props) => {
           id_lista: props.task.lista,
           active: false,
         };
-        postData("http://localhost:8080/api/tasks/delete", body).then((r) => {
+        postData(
+          "https://workzone-backend-mdb.herokuapp.com/api/tasks/delete",
+          body
+        ).then((r) => {
           console.log("me respondio" + r);
           if (r.ok) {
+            props.refreshList();
             console.log("todo bien", r.data);
           } else {
             console.log("error");
           }
         });
-        props.refreshList();
+
         Swal.fire(
           "Eliminado!",
           "La tarea fue elimiada exitosamente.",

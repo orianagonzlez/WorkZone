@@ -10,6 +10,5 @@ export const getData = async (path) => {
 
   const r = JSON.parse(result);
 
-  console.log("por alguna razon se termino");
   return r;
 };

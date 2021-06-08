@@ -10,8 +10,10 @@ import { EditColumnModal } from "../../tasks/EditColumnModal";
 import { BsThreeDots } from "react-icons/bs";
 import { TaskDeetsModal } from "../../tasks/TaskDeetsModal";
 import { Members } from "../../common/Member";
+import { postData } from "../../../helpers/postData";
 
 const onDragEnd = (result, columns, setColumns) => {
+  console.log("ARRASTRE");
   if (!result.destination) return;
   const { source, destination } = result;
 
@@ -33,6 +35,33 @@ const onDragEnd = (result, columns, setColumns) => {
         items: destItems,
       },
     });
+
+    // se actualiza la lista de origen
+    const sourceBody = {
+      id_lista: source.droppableId,
+      items: sourceItems.map((i) => i._id),
+    };
+
+    console.log("SOURCE BODY", sourceBody);
+    updateList(sourceBody);
+
+    // se actualiza la lista destino
+    const destBody = {
+      id_lista: destination.droppableId,
+      items: destItems.map((i) => i._id),
+    };
+
+    console.log("dest BODY", destBody);
+    updateList(destBody);
+
+    // se actualiza la tarea
+    const newTask = {
+      id_tarea: removed._id,
+      id_lista: destination.droppableId,
+    };
+
+    console.log("tarei", newTask);
+    updateTask(newTask);
   } else {
     const column = columns[source.droppableId];
     const copiedItems = [...column.items];
@@ -45,10 +74,59 @@ const onDragEnd = (result, columns, setColumns) => {
         items: copiedItems,
       },
     });
+
+    // solo hay que actualizar la lista para mantener el orden de los items
+    const body = {
+      id_lista: source.droppableId,
+      items: copiedItems.map((i) => i._id),
+    };
+
+    console.log("BODY", body);
+    updateList(body);
   }
 };
 
-export const Board = ({ project, setProject }) => {
+const updateList = (body) => {
+  postData(
+    "https://workzone-backend-mdb.herokuapp.com/api/lists/update",
+    body
+  ).then((res) => {
+    console.log("me respondio" + res);
+    if (res.ok) {
+      console.log("todo bien", res.data);
+    } else {
+      console.log("error");
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Oops...",
+      //   text: "Algo ha salido mal, intenta de nuevo",
+      //   confirmButtonColor: "#22B4DE",
+      // });
+    }
+  });
+};
+
+const updateTask = (body) => {
+  postData(
+    "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
+    body
+  ).then((res) => {
+    console.log("me respondio" + res);
+    if (res.ok) {
+      console.log("todo bien", res.data);
+    } else {
+      console.log("error");
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Oops...",
+      //   text: "Algo ha salido mal, intenta de nuevo",
+      //   confirmButtonColor: "#22B4DE",
+      // });
+    }
+  });
+};
+
+export const Board = ({ project }) => {
   const [columns, setColumns] = useState({});
   const [lists, setLists] = useState([]);
   const [tasksNum, setTasksNum] = useState(0);
@@ -288,7 +366,6 @@ export const Board = ({ project, setProject }) => {
                               </Draggable>
                             );
                           })}
-                          {console.log(taskToShow)}
                           {provided.placeholder}
                         </div>
                       );

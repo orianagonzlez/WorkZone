@@ -18,6 +18,5 @@ export const postData = async (path, body) => {
   console.log(result);
   const r = JSON.parse(result);
 
-  console.log("por alguna razon se termino");
   return r;
 };

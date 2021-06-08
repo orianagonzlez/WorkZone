@@ -1,0 +1,167 @@
+.profileDeetsContainer {
+  background-color: $neutral-50;
+  padding: 2rem;
+  padding-bottom: 7rem;
+  min-height: 100vh;
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  h1 {
+    color: $primary-gray-500;
+    font-weight: bold;
+    font-size: 2.25rem;
+    padding-bottom: 4.5rem;
+  }
+  h2 {
+    display: flex;
+    font-size: 1.25rem;
+    color: $primary-gray-500;
+  }
+  h3 {
+    display: flex;
+    //padding-bottom: 4.5rem;
+  }
+
+  .gridContainer {
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+    grid-template-rows: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
+
+    .pfp {
+      display: flex;
+      justify-content: center;
+      //z-index: 5;
+      grid-column-start: 1;
+      grid-column-end: span col3-start;
+      grid-row-start: 2;
+      grid-row-end: 5;
+      border-radius: 50%;
+      //width: 11.5%;
+      color: $primary-gray-500;
+    }
+
+    .profileBox {
+      display: flex;
+      justify-self: center;
+      padding: 3rem;
+      background-color: #e8e8e8;
+      border-radius: 1rem;
+      width: 75%;
+      grid-column-start: 1;
+      grid-column-end: col1-end;
+      grid-row-start: 3;
+      grid-row-end: row2-end;
+      transition: all 0.5s ease;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
+        rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+    }
+
+    .profileInfo {
+      display: flex;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
+      padding-top: 7rem;
+      .nombre {
+        flex-direction: column;
+        //margin-right: 4rem;
+      }
+      .moreInfo {
+        flex-direction: column;
+        //margin-right: 4rem;
+      }
+      .profileLabel {
+        width: 300px;
+        border-bottom: 1px solid black;
+        margin-bottom: 1.75rem;
+      }
+      h2 {
+        color: $font;
+        font-weight: bold;
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+      }
+      h3 {
+        color: $font;
+        font-size: 1.25rem;
+      }
+    }
+  }
+
+  .upperButtonsProfile {
+    margin: 4rem 4rem 4rem 0;
+    align-self: center;
+    justify-content: space-evenly;
+    align-self: flex-end;
+    h1 {
+      color: $primary-gray-500;
+      font-weight: bold;
+      font-size: 2.25rem;
+      padding-bottom: 4.5rem;
+    }
+    #editProfile {
+      align-self: flex-end;
+      background-color: $primary-blue-500;
+      margin-left: 1rem;
+      &:hover {
+        background-color: $font;
+        box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
+        transition: all 0.5s ease;
+      }
+    }
+    #changePass {
+      align-self: flex-end;
+      background-color: $primary-blue-500;
+      &:hover {
+        background-color: $font;
+        box-shadow: 0px 4px 40px 10px rgba(0, 0, 0, 0.06);
+        transition: all 0.5s ease;
+      }
+    }
+    .upperButtonProfile {
+      border: 0rem;
+      border-radius: 1rem;
+      color: $neutral-50;
+      font-weight: bolder;
+      padding: 0.5rem 1rem;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+@media (max-width: 1175px) {
+  .profileDeetsContainer {
+    .gridContainer {
+      .pfp {
+        grid-row-start: 2;
+        grid-row-end: 4;
+      }
+    }
+  }
+}
+
+@media (max-width: 970px) {
+  .profileDeetsContainer {
+    min-width: 100vw;
+    .gridContainer {
+      .profileBox {
+        padding: 1rem;
+        width: 75vw;
+        .profileInfo {
+          justify-content: flex-start;
+          .profileLabel {
+            width: 60vw;
+          }
+        }
+      }
+    }
+    .upperButtonsProfile {
+      margin: 4rem 2rem 0 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      #editProfile {
+        margin-left: 0;
+      }
+    }
+  }
+}
