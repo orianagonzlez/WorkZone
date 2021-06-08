@@ -67,11 +67,11 @@ export default function Sidebar() {
                         </div>
                         <li>
                             <ul>
-                                <Link to="/">
-                                    <Button>
-                                        <FaBoxes /><span>Proyectos</span>
-                                    </Button>
-                                </Link>
+                              <NavLink exact={true} activeClassName='is-active' to="/projects">
+                                  <Button>
+                                      <FaBoxes /><span>Proyectos</span>
+                                  </Button>
+                              </NavLink>
                             </ul>
                             <ul>
                                 <Button >
@@ -79,14 +79,16 @@ export default function Sidebar() {
                                 </Button>
                             </ul>
                             <ul>
+                              <NavLink exact={true} activeClassName='is-active' to="/profile">
                                 <Button >
-                                    <FaCog /><span>Otro</span>
+                                    <FaUserCog /><span>Perfil</span>
                                 </Button>
+                              </NavLink>
                             </ul>
                             <ul>
-                                <Button >
-                                    <FaCog /><span>Ajustes</span>
-                                </Button>
+                              <Button onClick={ () => signOut()} >
+                                <GoSignOut /><span>Cerrar sesión</span>
+                              </Button>
                             </ul>
                         </li>
                     </div>
@@ -121,7 +123,7 @@ export default function Sidebar() {
                         </ul>
                         <ul>
                             <Button onClick={ () => signOut()} >
-                            <GoSignOut /><span>Cerrar sesión</span>
+                              <GoSignOut /><span>Cerrar sesión</span>
                             </Button>
                         </ul>
                     </li>

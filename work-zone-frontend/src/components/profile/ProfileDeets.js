@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Container, Button } from "react-bootstrap";
-import { FaEdit, FaLockOpen } from "react-icons/fa";
+import { FaEdit, FaLockOpen, FaUserCircle } from "react-icons/fa";
 import { AppContext } from "../../context/AppContext";
 import { getData } from "../../helpers/getData";
 import { EditProfileModal } from "./EditProfileModal";
@@ -37,7 +37,7 @@ export default function ProfileDeets() {
     <Container fluid className="profileDeetsContainer">
       <div className="upperButtonsProfile">
         <Button className="upperButtonProfile" id="changePass">
-          <FaLockOpen /> Cambiar Contrasena
+          <FaLockOpen /> Cambiar Contraseña
         </Button>
 
         <Button className="upperButtonProfile" id="editProfile" onClick={() => handleEditProfile()}>
@@ -51,9 +51,6 @@ export default function ProfileDeets() {
       </div>
 
       <div className="gridContainer">
-        <div className="pfp">
-          <img src="user-icon.png" />
-        </div>
         <div className="profileBox">
           <Container fluid className="profileInfo">
             <div className="nombre">
@@ -85,6 +82,9 @@ export default function ProfileDeets() {
               </div>
             </div>
           </Container>
+        </div>
+        <div className="pfp">
+          <img src="user-icon.png" alt="user-pfp" />
         </div>
       </div>
     </Container>

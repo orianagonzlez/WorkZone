@@ -5,3 +5,14 @@
         width: 85%;
     }
 }
+
+@media (max-width: 970px) {
+    .layoutContainer {
+        min-width: 100vw;
+        .cont {
+            justify-self: center;
+            min-width: 100vw;
+        }
+
+    }
+}
