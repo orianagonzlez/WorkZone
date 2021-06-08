@@ -149,56 +149,39 @@ export const TaskDeetsModal = (props) => {
 
     props.onHide();
     props.refreshList();
+  };
 
-    /*
-    console.log(task_name, task_content, task_status);
-    e.preventDefault();
-    const newColumns = props.columns;
-    const newTask = {
-      id_proyecto: props.project._id,
-      nombre: task_name,
-      descripcion: task_content,
-      lista: task_status,
-    };
-    if (task_member) {
-      newTask["miembro"] = task_member;
-    }
-    console.log("creando");
-    console.log(newTask);
-    if (task_name && task_content) {
-      //Creando la tarea en la base de datos
-      postData(
-        "https://workzone-backend-mdb.herokuapp.com/api/tasks/create",
-        newTask
-      ).then((r) => {
-        console.log("me respondio" + r);
-        if (r.ok) {
-          console.log("todo bien. CREE TAREAAAAAA");
-          console.log(r.data);
-          console.log(newColumns);
-          // newColumns[task_status].items.push(r.data);
-          // props.setcolumns(newColumns);
-          reset();
-          // Swal.fire({
-          //   icon: "success",
-          //   title: "Tarea creada",
-          //   text: "La tarea fue creada de forma exitosa",
-          //   confirmButtonColor: "#22B4DE",
-          // });
-          props.onHide();
-        } else {
-          console.log("error");
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Se produjo un error, intenta de nuevo",
-            confirmButtonColor: "#22B4DE",
-          });
-          props.onHide();
-        }
-      });
-    }
-    */
+  const handleDelete = () => {
+    Swal.fire({
+      title: "Estas seguro de que quieres borrar esta tarea?",
+      text: "No podras deshacerlo!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminala!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let body = {
+          id_tarea: props.task._id,
+          active: false,
+        };
+        postData("http://localhost:8080/api/tasks/delete", body).then((r) => {
+          console.log("me respondio" + r);
+          if (r.ok) {
+            console.log("todo bien", r.data);
+          } else {
+            console.log("error");
+          }
+        });
+        props.refreshList();
+        Swal.fire(
+          "Eliminado!",
+          "La tarea fue elimiada exitosamente.",
+          "success"
+        );
+      }
+    });
   };
 
   return (
@@ -356,7 +339,7 @@ export const TaskDeetsModal = (props) => {
                   </Button>
                 </div>
               </div>
-              <div className="subtasks-checkboxes">
+              <div className="subtasks-checkboxes mb-5">
                 {inputList.map((subtask, i) => {
                   return (
                     <div className="d-flex align-items-center ">
@@ -431,7 +414,13 @@ export const TaskDeetsModal = (props) => {
             </div>
           </div>
           <div className="d-flex ">
-            <Button variant="danger" className="button-task">
+            <Button
+              variant="danger"
+              className="button-task"
+              onClick={() => {
+                handleDelete();
+              }}
+            >
               <FaTrash /> Eliminar tarea
             </Button>
             <Button
