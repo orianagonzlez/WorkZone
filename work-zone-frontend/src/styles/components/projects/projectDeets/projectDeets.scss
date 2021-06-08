@@ -147,31 +147,21 @@
       color: $neutral-50;
       font-weight: bolder;
       padding: 0.5rem 1rem;
+      margin-bottom: 1rem;
     }
   }
 
-  @media (max-width: 970px) {
-    .componentContainer {
-      width: 100%;
-      .newProject {
-        margin: 2rem 0;
-      }
-      .archivedProjects {
-        width: auto;
-      }
-    }
-  }
-
-  @media (max-width: 550px) {
-    .componentContainer {
-      h1 {
-        font-size: 1.75rem;
-      }
-      .newProject {
-        font-size: 0.75rem;
-      }
-      .archivedProjects {
-        font-size: 0.75rem;
+}
+@media (max-width: 970px) {
+  .componentContainer {
+    width: 100%;
+    .upperButtons {
+      margin: 4rem 2rem 3rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      #editProject {
+        margin-left: 0;
       }
     }
   }
