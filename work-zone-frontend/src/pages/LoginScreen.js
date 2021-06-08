@@ -21,32 +21,36 @@ export const LoginScreen = () => {
       title: 'Te ayudaremos a recordar!',
       input: 'email',
       inputLabel: 'Por favor ingrese el correo con el que se registro',
-      inputPlaceholder: 'prueba@gmail.com'
+      inputPlaceholder: 'prueba@gmail.com',
+      showCloseButton: true,
     })
     let body = { email: email}
-
-    postData(
-      "http://localhost:8080/api/auth/resetPassword",
-      body
-    ).then((r) => {
-      console.log("me respondio" + r);
-      if (r.ok) {
-        Swal.fire({
-          icon: "info",
-          title: "Listo!",
-          text: `Se ha enviado una contraseña provicional al email: ${email}`,
-          confirmButtonColor: "#22B4DE",
-        });
-      } else {
-        console.log("error");
+    if(email){
+        postData(
+        "http://localhost:8080/api/auth/resetPassword",
+        body
+      ).then((r) => {
+        console.log("me respondio" + r);
+        if (r.ok) {
           Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: `El correo: ${email} no se encuentra registrado`,
-          confirmButtonColor: "#22B4DE",
-        });
-      }
+            icon: "info",
+            title: "Listo!",
+            text: `Se ha enviado una contraseña provicional al email: ${email}`,
+            confirmButtonColor: "#22B4DE",
+          });
+        } else {
+          console.log("error");
+            Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: `El correo: ${email} no se encuentra registrado`,
+            confirmButtonColor: "#22B4DE",
+          });
+        }
     });
+
+    }
+    
 
   }
 
