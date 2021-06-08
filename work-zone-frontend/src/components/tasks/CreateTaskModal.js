@@ -43,8 +43,38 @@ export const CreateTaskModal = (props) => {
           console.log("todo bien. CREE TAREAAAAAA");
           console.log(r.data);
           console.log(newColumns);
-          // newColumns[task_status].items.push(r.data);
-          // props.setcolumns(newColumns);
+          newColumns[task_status].items.push(r.data);
+
+          console.log(newColumns[task_status].items);
+          console.log('ACTU LISTA');
+          console.log(newColumns[task_status].items.map(i => i._id))
+          
+          console.log(task_status);
+          
+          const body = {
+            id_lista: task_status,
+            items: newColumns[task_status].items.map(i => i._id)
+          };
+
+          postData(
+            "https://workzone-backend-mdb.herokuapp.com/api/lists/update",
+            body
+          ).then((res) => {
+            console.log("me respondio" + res);
+            if (res.ok) {
+              console.log("todo bien", res.data);
+            } else {
+              console.log("error");
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Algo ha salido mal, intenta de nuevo",
+                confirmButtonColor: "#22B4DE",
+              });
+            }
+          });
+
+          props.setcolumns(newColumns);
           reset();
           // Swal.fire({
           //   icon: "success",
