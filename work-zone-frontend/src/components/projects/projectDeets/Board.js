@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Button } from "react-bootstrap";
 import { useHistory } from "react-router";
 import Swal from "sweetalert2";
 import { getData } from "../../../helpers/getData";
 import { CreateTaskModal } from "../../tasks/CreateTaskModal";
 import { CreateColumnModal } from "../../tasks/CreateColumnModal";
+import { EditColumnModal } from "../../tasks/EditColumnModal";
+import { BsThreeDots } from "react-icons/bs";
+import { TaskDeetsModal } from "../../tasks/TaskDeetsModal";
 
 
 const onDragEnd = (result, columns, setColumns) => {
@@ -50,15 +53,22 @@ export const Board = ({ project }) => {
   const [lists, setLists] = useState([]);
   const [tasksNum, setTasksNum] = useState(0);
 
-  console.log(columns);
+  /*console.log(columns);*/
 
   const [modalShow, setModalShow] = useState(false);
 
-  const [columnModalShow, setColumnModalShow] = useState(false)
+  const [columnModalShow, setColumnModalShow] = useState(false);
+
+  const [editColumnModalShow, setEditColumnModalShow] = useState(false);
+  
+  const [taskModalShow, setTaskModalShow] = useState(false);
 
   const history = useHistory();
 
+  console.log('AQUI ESTOY Y ESTAS SON MIS COLUMNAS')
+  console.log(columns);
   useEffect(() => {
+    console.log('vy a empezas')
     //Buscando las listas del proyecto con sus respectivas tareas
     getData(
       `https://workzone-backend-mdb.herokuapp.com/api/lists/from/${project._id}`
@@ -79,7 +89,7 @@ export const Board = ({ project }) => {
         console.log("error");
       }
     });
-  }, [modalShow, columnModalShow]);
+  }, [modalShow, columnModalShow, editColumnModalShow]);
 
   useEffect(() => {
     let n = 0;
@@ -88,6 +98,8 @@ export const Board = ({ project }) => {
     });
     setTasksNum(n);
   }, [lists]);
+
+
 
   const handleCreateTask = () => {
     if (project.id_plan.max_tareas === 0) {
@@ -98,7 +110,7 @@ export const Board = ({ project }) => {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: `Has alcanzado el máximo de tareas para el plan ${project.id_plan.nombre}.\nPara crear más tareas debes actualizar tu plan.`,
+        text: `Has alcanzado el máximo de tareas para el plan. Mejora tu plan para seguir trabajando! ${project.id_plan.nombre}.\nPara crear más tareas debes actualizar tu plan.`,
         confirmButtonColor: "#22B4DE",
       });
 
@@ -123,15 +135,42 @@ export const Board = ({ project }) => {
 
   const handleCreateColumn = () => {
     setColumnModalShow(true);
+  };
+
+  const handleEditColumn = () => {
+    setEditColumnModalShow(true)
+  };
+
+
+  
+
+  const [taskToShow = {}, setTaskToShow] = useState();
+
+  
+
+  const handleOpenTaskDeets = (item) => {
+    setTaskToShow(item);
+    console.log(taskToShow);
+    setTaskModalShow(true);
+    console.log("yes");
+    //console.log(taskModalShow);
+    //console.log(item);
+    //console.log(taskModalShow);
+    console.log(taskToShow.nombre);
+    
+    //console.log(item.nombre);
+
   }
+
+
+
 
   return (
     <Container className="componentContainer pt-4">
       <h1>Tasks</h1>
 
-      <Row className="create_buttons_row"> 
-
-      <button className="btn-create" onClick={() => handleCreateTask()}>
+      <Row className="create_buttons_row">
+        <button className="btn-create" onClick={() => handleCreateTask()}>
           + Crear Tarea
         </button>
         {lists.length > 0 && (
@@ -159,6 +198,19 @@ export const Board = ({ project }) => {
           />
         )}
 
+        <button className="btn-create" onClick={() => handleEditColumn()}>
+          <BsThreeDots />
+        </button>
+        {lists.length > 0 && (
+          <EditColumnModal
+            project={project}
+            show={editColumnModalShow}
+            onHide={() => setEditColumnModalShow(false)}
+            columns={columns}
+            lists={lists}
+            setcolumns={setColumns}
+          />
+        )}
       </Row>
 
       <div className="task_container">
@@ -182,7 +234,9 @@ export const Board = ({ project }) => {
                               : "linear-gradient(158.55deg, #6487A5 -48.1%, rgba(59, 86, 110, 0.5) 162.82%)",
                           }}
                         >
-                          <h2>{column.nombre}</h2>
+                          <div className="column_header">
+                            <h2>{column.nombre}</h2>
+                          </div>
                           {column.items.map((item, index) => {
                             return (
                               <Draggable
@@ -198,7 +252,24 @@ export const Board = ({ project }) => {
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
                                     >
-                                      {item.nombre}
+                                      <button
+                                        onClick={() => handleOpenTaskDeets(item)}>
+                                        {item.nombre}
+                                      </button>
+                                      { item === taskToShow &&
+                                        //console.log("yeesyeyeyeyes", index)
+                                        <TaskDeetsModal
+                                          project={project}
+                                          task={item}
+                                          show={taskModalShow}
+                                          onHide={() => setTaskModalShow(false)}
+                                          columns={columns}
+                                          lists={lists}
+                                          setcolumns={setColumns}
+                                        />
+                                        
+                                    }
+                                      
                                     </div>
                                   );
                                 }}
@@ -216,6 +287,7 @@ export const Board = ({ project }) => {
           })}
         </DragDropContext>
       </div>
+                          
     </Container>
   );
 };

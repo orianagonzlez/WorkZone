@@ -6,6 +6,7 @@ import {
   FaChartLine,
   FaArchive,
   FaArrowCircleRight,
+  FaSearch,
 } from "react-icons/fa";
 import { useHistory } from "react-router";
 import { AppContext } from "../../context/AppContext";
@@ -17,6 +18,7 @@ export const ProjectTable = ({ show }) => {
   const history = useHistory();
 
   const [projects, setProjects] = useState([]);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     //Una vez que se tenga el id del usuario, se buscan los proyectos donde participa
@@ -34,9 +36,25 @@ export const ProjectTable = ({ show }) => {
     }
   }, [user, show]);
 
+
+  // filtrar proyectos por nombre
+  const filteredProjects = projects?.filter((project) => {
+    return (project.nombre.toLowerCase().includes(search.toLowerCase()))
+  });
+
+
   return (
-    <div>
-      {/* Los style estan en _preview.scss */}
+    <div className="screen-container">
+      {/* Los style estan en Table.scss */}
+      <div className="search-container">
+          <input
+            type="text"
+            placeholder="Buscar proyecto"
+            className="search-input"
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <FaSearch />
+        </div>
       <div className="Preview__container">
         <ul className="Preview__responsive-table">
           <li className="Preview__table-header">
@@ -57,7 +75,7 @@ export const ProjectTable = ({ show }) => {
             </div>
           </li>
 
-          {projects.map((project) => {
+          {filteredProjects.map((project) => {
             if (!show && !project.archivado) {
               return (
                 <li className="Preview__table-row" key={project._id}>
