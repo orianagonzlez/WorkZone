@@ -9,11 +9,11 @@ import { CreateColumnModal } from "../../tasks/CreateColumnModal";
 import { EditColumnModal } from "../../tasks/EditColumnModal";
 import { BsThreeDots } from "react-icons/bs";
 import { TaskDeetsModal } from "../../tasks/TaskDeetsModal";
+import { Members } from "../../common/Member";
 import { postData } from "../../../helpers/postData";
 
-
 const onDragEnd = (result, columns, setColumns) => {
-  console.log('ARRASTRE')
+  console.log("ARRASTRE");
   if (!result.destination) return;
   const { source, destination } = result;
 
@@ -39,28 +39,28 @@ const onDragEnd = (result, columns, setColumns) => {
     // se actualiza la lista de origen
     const sourceBody = {
       id_lista: source.droppableId,
-      items: sourceItems.map(i => i._id)
+      items: sourceItems.map((i) => i._id),
     };
 
-    console.log('SOURCE BODY', sourceBody);
+    console.log("SOURCE BODY", sourceBody);
     updateList(sourceBody);
 
     // se actualiza la lista destino
     const destBody = {
       id_lista: destination.droppableId,
-      items: destItems.map(i => i._id)
+      items: destItems.map((i) => i._id),
     };
 
-    console.log('dest BODY', destBody);
+    console.log("dest BODY", destBody);
     updateList(destBody);
 
     // se actualiza la tarea
     const newTask = {
       id_tarea: removed._id,
-      id_lista: destination.droppableId
-    }
+      id_lista: destination.droppableId,
+    };
 
-    console.log('tarei', newTask);
+    console.log("tarei", newTask);
     updateTask(newTask);
   } else {
     const column = columns[source.droppableId];
@@ -78,10 +78,10 @@ const onDragEnd = (result, columns, setColumns) => {
     // solo hay que actualizar la lista para mantener el orden de los items
     const body = {
       id_lista: source.droppableId,
-      items: copiedItems.map(i => i._id)
+      items: copiedItems.map((i) => i._id),
     };
 
-    console.log('BODY', body);
+    console.log("BODY", body);
     updateList(body);
   }
 };
@@ -138,14 +138,16 @@ export const Board = ({ project }) => {
   const [columnModalShow, setColumnModalShow] = useState(false);
 
   const [editColumnModalShow, setEditColumnModalShow] = useState(false);
-  
+
   const [taskModalShow, setTaskModalShow] = useState(false);
 
   const history = useHistory();
 
   useEffect(() => {
-    console.log('vy a empezas')
-    //Buscando las listas del proyecto con sus respectivas tareas
+    refreshList();
+  }, [modalShow, columnModalShow, editColumnModalShow]);
+
+  const refreshList = () => {
     getData(
       `https://workzone-backend-mdb.herokuapp.com/api/lists/from/${project._id}`
     ).then((r) => {
@@ -165,7 +167,7 @@ export const Board = ({ project }) => {
         console.log("error");
       }
     });
-  }, [modalShow, columnModalShow, editColumnModalShow]);
+  };
 
   useEffect(() => {
     let n = 0;
@@ -174,8 +176,6 @@ export const Board = ({ project }) => {
     });
     setTasksNum(n);
   }, [lists]);
-
-
 
   const handleCreateTask = () => {
     if (project.id_plan.max_tareas === 0) {
@@ -214,15 +214,10 @@ export const Board = ({ project }) => {
   };
 
   const handleEditColumn = () => {
-    setEditColumnModalShow(true)
+    setEditColumnModalShow(true);
   };
 
-
-  
-
   const [taskToShow = {}, setTaskToShow] = useState();
-
-  
 
   const handleOpenTaskDeets = (item) => {
     setTaskToShow(item);
@@ -233,13 +228,9 @@ export const Board = ({ project }) => {
     //console.log(item);
     //console.log(taskModalShow);
     console.log(taskToShow.nombre);
-    
+
     //console.log(item.nombre);
-
-  }
-
-
-
+  };
 
   return (
     <Container className="componentContainer pt-4">
@@ -329,10 +320,32 @@ export const Board = ({ project }) => {
                                       {...provided.dragHandleProps}
                                     >
                                       <button
-                                        onClick={() => handleOpenTaskDeets(item)}>
+                                        onClick={() =>
+                                          handleOpenTaskDeets(item)
+                                        }
+                                      >
                                         {item.nombre}
+                                        {console.log(item.miembro, "ITEM")}
+                                        {item.miembro != undefined
+                                          ? project.miembros.map((miembro) => {
+                                              console.log(miembro._id);
+                                              if (
+                                                item.miembro === miembro._id
+                                              ) {
+                                                return (
+                                                  <div className="d-flex justify-content-center">
+                                                    <Members
+                                                      member={miembro}
+                                                      placement={"task"}
+                                                    />
+                                                  </div>
+                                                );
+                                              }
+                                              return null;
+                                            })
+                                          : null}
                                       </button>
-                                      { item === taskToShow &&
+                                      {item === taskToShow && (
                                         //console.log("yeesyeyeyeyes", index)
                                         <TaskDeetsModal
                                           project={project}
@@ -342,10 +355,11 @@ export const Board = ({ project }) => {
                                           columns={columns}
                                           lists={lists}
                                           setcolumns={setColumns}
+                                          animation={false}
+                                          key={1}
+                                          refreshList={refreshList}
                                         />
-                                        
-                                    }
-                                      
+                                      )}
                                     </div>
                                   );
                                 }}
@@ -363,7 +377,6 @@ export const Board = ({ project }) => {
           })}
         </DragDropContext>
       </div>
-                          
     </Container>
   );
 };

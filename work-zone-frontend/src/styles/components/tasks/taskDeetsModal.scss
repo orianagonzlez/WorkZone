@@ -1,165 +1,184 @@
 .deets-container {
-    color: $font;
-    width: 100%;
+  color: $font;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  .header-container {
+    padding: 0 40px 8px 40px;
+    .title-container {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      #contained-modal-title-vcenter {
+        font-size: 40px;
+        font-weight: bold;
+      }
+    }
+    .p-column {
+      color: $primary-blue-500;
+      span {
+        font-weight: bold;
+        font-style: italic;
+      }
+    }
+  }
+  .taskTitle {
+    font-weight: 700;
+    font-size: 36px;
+  }
+
+  .border-none {
+    border: none;
+  }
+  .sectionTitle {
+    font-weight: 700;
+    color: $primary-blue-500;
+    padding-bottom: 8px;
+    span {
+      padding-left: 0.5rem;
+    }
+  }
+
+  .info-container {
+    padding: 0 40px 8px 40px;
     display: flex;
-    flex-direction: column;
-    .header-container {
-        padding: 0 40px 8px 40px;
-        .title-container {
-            display: flex;
-            flex-direction: row;
-            align-items: baseline;
-            #contained-modal-title-vcenter {
-                font-size: 40px;
-                padding-right: 36px;
-                font-weight: bold;
-            }
-        }
-        .p-column {
-            color: $primary-blue-500;
-            span {
-                font-weight: bold;
-                font-style: italic;
-            }
-        }
-    }
-    .info-container {
-        padding: 0 40px 8px 40px;
-        display: flex;
-        flex-direction: row;
-        .sectionTitle {
-            font-weight: 700;
-            color: $primary-blue-500;
-            padding-bottom: 8px;
-            span {
-                padding-left: 0.5rem;
-            }
-        }
-        #subtasks {
-            width: 40%;
-            .subtasks-checkboxes {
-                padding-left: 1rem;
-            }
-        }
-        .info-subcontainer {
-            width: 60%;
-            .subsubcontainer {
-                display: flex;
-                flex-direction: row;
-                .subcont-item {
-                    width: 50%;
-                }
-                #files {
-                    .file-buttons {
-                        display: flex;
-                        flex-direction: row;
-                        #see-files {
-                            padding: 4px;
-                            height: 2rem;
-                            width: 2rem;
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: center;
-                            align-items: center;
-                            border-radius: 5px;
-                            margin-left: 1rem;
-                            color: $font;
-                            background-color: $neutral-100;
-                            border: none;
-                            transition: all 0.5s ease;
-                            box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px 0px,
-                            rgba(0, 0, 0, 0.5) 0px 0px 1px 0px;
-                            &:hover {
-                                background-color: $neutral-100;
-                                box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.25);
-                                transition: all 0.5s ease;
-                            }
-                        }
-                        input[type="file"] {
-                            display: none;
-                        }
-                        .upload-file-label {
-                            padding: 4px;
-                            height: 2rem;
-                            width: 2rem;
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: center;
-                            align-items: center;
-                            background-color: $neutral-100;
-                            cursor: pointer;
-                            border-radius: 5px;
-                            margin-left: 1rem;
-                            color: $font;
-                            background-color: $neutral-100;
-                            border: none;
-                            transition: all 0.5s ease;
-                            box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px 0px,
-                            rgba(0, 0, 0, 0.5) 0px 0px 1px 0px;
-                            &:hover {
-                                background-color: $neutral-100;
-                                box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.25);
-                                transition: all 0.5s ease;
-                            }
-                        }
-                    }
-                    
-                }
-            }
-            #labels {
-                .labels-container {
-                    display: flex;
-                    flex-direction: row;
-                    flex-wrap: wrap;
-                    padding-left: 1rem;
-                    .label {
-                        background-color: rgba(3, 218, 166, 0.75);
-                        font-weight: 500;
-                        padding: 2px 8px;
-                        border-radius: 7.5px;
-                        margin: 6px;
-                    }
-                }
-            }
-        }
-        
-    }
-    .delete-task {
-      border-radius: 10px;
-      font-size: small;
-      width: fit-content;
-      align-self: flex-end;
-      margin: 16px 0;
-      
-    }
-}
+    flex-direction: row;
 
+    #subtasks {
+      width: 100%;
+      .subtasks-checkboxes {
+        padding-left: 1rem;
+      }
+    }
+  }
+  .check {
+    color: $color-blue;
+  }
 
-@media (max-width: 992px) {
-    .deets-container {
-        .header-container {
-            .title-container {
-                display: flex;
-                flex-direction: column;
-            }
-        }
-        .info-container {
+  .delete-subtask {
+    color: $color-red;
+  }
+
+  .cursor {
+    cursor: pointer;
+  }
+
+  .add {
+    background-color: $color-blue;
+  }
+
+  .button-task {
+    border-radius: 10px;
+    font-size: small;
+    width: fit-content;
+    align-self: flex-end;
+  }
+  .info-subcontainer {
+    width: 100%;
+    .subsubcontainer {
+      display: flex;
+      flex-direction: row;
+      .subcont-item {
+        width: 50%;
+      }
+      #files {
+        .file-buttons {
+          display: flex;
+          flex-direction: row;
+          #see-files {
+            padding: 4px;
+            height: 2rem;
+            width: 2rem;
             display: flex;
             flex-direction: column;
-            #subtasks {
-                width: 100%;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            margin-left: 1rem;
+            color: $font;
+            background-color: $neutral-100;
+            border: none;
+            transition: all 0.5s ease;
+            box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px 0px,
+              rgba(0, 0, 0, 0.5) 0px 0px 1px 0px;
+            &:hover {
+              background-color: $neutral-100;
+              box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.25);
+              transition: all 0.5s ease;
             }
-            .info-subcontainer {
-                width: 100%;
-                .subsubcontainer {
-                    display: flex;
-                    flex-direction: column;
-                    .subcont-item {
-                        width: 100%;
-                    }
-                }
+          }
+          input[type="file"] {
+            display: none;
+          }
+          .upload-file-label {
+            padding: 4px;
+            height: 2rem;
+            width: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: $neutral-100;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-left: 1rem;
+            color: $font;
+            background-color: $neutral-100;
+            border: none;
+            transition: all 0.5s ease;
+            box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px 0px,
+              rgba(0, 0, 0, 0.5) 0px 0px 1px 0px;
+            &:hover {
+              background-color: $neutral-100;
+              box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.25);
+              transition: all 0.5s ease;
             }
+          }
         }
+      }
     }
-    
+    #labels {
+      .labels-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding-left: 1rem;
+        .label {
+          background-color: rgba(3, 218, 166, 0.75);
+          font-weight: 500;
+          padding: 2px 8px;
+          border-radius: 7.5px;
+          margin: 6px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .deets-container {
+    .header-container {
+      .title-container {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+    .info-container {
+      display: flex;
+      flex-direction: column;
+      #subtasks {
+        width: 100%;
+      }
+      .info-subcontainer {
+        width: 100%;
+        .subsubcontainer {
+          display: flex;
+          flex-direction: column;
+          .subcont-item {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
 }

@@ -16,6 +16,41 @@ export const LoginScreen = () => {
 
   const { email, password } = formValues;
 
+  const handleRecoveryPassword = async () => {
+    const { value: email } = await Swal.fire({
+      title: "Te ayudaremos a recordar!",
+      input: "email",
+      inputLabel: "Por favor ingrese el correo con el que se registro",
+      inputPlaceholder: "prueba@gmail.com",
+      showCloseButton: true,
+    });
+    let body = { email: email };
+    if (email) {
+      postData(
+        "https://workzone-backend-mdb.herokuapp.com/api/auth/resetPassword",
+        body
+      ).then((r) => {
+        console.log("me respondio" + r);
+        if (r.ok) {
+          Swal.fire({
+            icon: "info",
+            title: "Listo!",
+            text: `Se ha enviado una contraseña provicional al email: ${email}`,
+            confirmButtonColor: "#22B4DE",
+          });
+        } else {
+          console.log("error");
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: `El correo: ${email} no se encuentra registrado`,
+            confirmButtonColor: "#22B4DE",
+          });
+        }
+      });
+    }
+  };
+
   const handleLogin = (e) => {
     e.preventDefault();
 
@@ -48,12 +83,13 @@ export const LoginScreen = () => {
       }
     });
   };
-
   return (
     <div className="login_main">
       <Container className="login_container">
         <h2 className="auth_title">¡WorkZone!</h2>
-        <h3 className="auth_subtitle">Trabajar a distancia nunca había sido tan fácil</h3>
+        <h3 className="auth_subtitle">
+          Trabajar a distancia nunca había sido tan fácil
+        </h3>
 
         <Form className="login_form" onSubmit={handleLogin}>
           <Form.Row className="d-flex align-items-center justify-content-start">
@@ -100,7 +136,13 @@ export const LoginScreen = () => {
             </div>
 
             <Form.Group>
-              <div className="auth_link"> ¿Olvidaste tu contraseña?</div>
+              <div
+                className="auth_link"
+                onClick={() => handleRecoveryPassword()}
+              >
+                {" "}
+                ¿Olvidaste tu contraseña?
+              </div>
             </Form.Group>
           </Container>
         </Form>
