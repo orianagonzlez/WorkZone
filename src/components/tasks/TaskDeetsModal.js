@@ -21,6 +21,7 @@ import { Members } from "../common/Member";
 import validator from "validator";
 import { useFetch2 } from "../../hooks/useFetch2";
 import { getData } from "../../helpers/getData";
+import { UploadFilesModal } from "../tasks/UploadFilesModal";
 
 export const TaskDeetsModal = (props) => {
   const [formValues, handleInputChange, reset] = useForm({
@@ -99,6 +100,12 @@ export const TaskDeetsModal = (props) => {
     const list = [...inputList];
     list[index].status = newStatus;
     setInputList(list);
+  };
+
+  const [fileModalShow, setFileModalShow] = useState(false);
+
+  const handleUploadFile = () => {
+    setFileModalShow(true);
   };
 
   // useEffect(() => {
@@ -304,8 +311,13 @@ export const TaskDeetsModal = (props) => {
                     <FaEye />
                   </button>
                   <label className="upload-file-label">
-                    <FaPlus />
-                    <input type="file" id="upload-file" />
+                    <FaPlus onClick={handleUploadFile} />
+                    <UploadFilesModal
+                      project={props.project}
+                      show={fileModalShow}
+                      onHide={() => setFileModalShow(false)}
+                      task={props.task}
+                    />
                   </label>
                 </div>
               </div>
