@@ -1,5 +1,13 @@
 //Lo pongo aqui mientras
 
+//LINKS UTILES
+
+//https://dev.to/coderko/paypal-integration-in-react-3a57
+
+//el primer comentario es la manera en que se hace, en vez de crear los botones usa los que estan en el siguiente repo
+
+//https://github.com/paypal/react-paypal-js
+
 // usa el modulo @paypal/react-paypal-js, habria que hacer ese npm i si se usa
 
 //en index.html antes de <title></title> sale esto
