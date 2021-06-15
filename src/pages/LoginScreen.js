@@ -62,6 +62,7 @@ export const LoginScreen = () => {
     const url = "https://workzone-backend-mdb.herokuapp.com/api/auth/login";
     postData(url, body).then((r) => {
       if (r.ok) {
+        localStorage.setItem("token", r.token);
         const { email, uid, nombre, apellido, fechaNacimiento, username } =
           r.data;
         setUser({
@@ -71,6 +72,7 @@ export const LoginScreen = () => {
           username: username,
           fechaNacimiento: fechaNacimiento,
           isLogged: true,
+          checking: false,
         });
       } else {
         console.log("error");

@@ -1,6 +1,12 @@
 import React, { useContext } from "react";
 import { Container, Button } from "react-bootstrap";
-import { FaUserCircle, FaBoxes, FaCog, FaSignOutAlt, FaUserCog } from "react-icons/fa";
+import {
+  FaUserCircle,
+  FaBoxes,
+  FaCog,
+  FaSignOutAlt,
+  FaUserCog,
+} from "react-icons/fa";
 import { GoSignOut } from "react-icons/go";
 
 import { Link, NavLink } from "react-router-dom";
@@ -22,6 +28,7 @@ export default function Sidebar() {
     const url = "https://workzone-backend-mdb.herokuapp.com/api/auth/update";
     postData(url, body).then((r) => {
       if (r.ok) {
+        localStorage.removeItem("token");
         setUser({
           email: "",
           id: "",
@@ -42,97 +49,103 @@ export default function Sidebar() {
     });
   };
 
-    return (
-        <Container fluid className="sidebarContainer">
-            <button
-                type="button"
-                className="burgerMenu"
-                onClick={(e) => {
-                    setVisible(!visible);
-                }}
-            >
-                <svg
-                    className=""
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-                </svg>
-            </button>
-            {visible ?
-                <div className="sidebarMobile">
-                    <div>
-                        <div className="logo">
-                            LOGO HERE
-                        </div>
-                        <li>
-                            <ul>
-                              <NavLink exact={true} activeClassName='is-active' to="/projects">
-                                  <Button>
-                                      <FaBoxes /><span>Proyectos</span>
-                                  </Button>
-                              </NavLink>
-                            </ul>
-                            <ul>
-                                <Button >
-                                    <FaCog /><span>Otro</span>
-                                </Button>
-                            </ul>
-                            <ul>
-                              <NavLink exact={true} activeClassName='is-active' to="/profile">
-                                <Button >
-                                    <FaUserCog /><span>Perfil</span>
-                                </Button>
-                              </NavLink>
-                            </ul>
-                            <ul>
-                              <Button onClick={ () => signOut()} >
-                                <GoSignOut /><span>Cerrar sesión</span>
-                              </Button>
-                            </ul>
-                        </li>
-                    </div>
-                </div>
-            : null}
+  return (
+    <Container fluid className="sidebarContainer">
+      <button
+        type="button"
+        className="burgerMenu"
+        onClick={(e) => {
+          setVisible(!visible);
+        }}
+      >
+        <svg
+          className=""
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+        </svg>
+      </button>
+      {visible ? (
+        <div className="sidebarMobile">
+          <div>
+            <div className="logo">LOGO HERE</div>
+            <li>
+              <ul>
+                <NavLink
+                  exact={true}
+                  activeClassName="is-active"
+                  to="/projects"
+                >
+                  <Button>
+                    <FaBoxes />
+                    <span>Proyectos</span>
+                  </Button>
+                </NavLink>
+              </ul>
+              <ul>
+                <Button>
+                  <FaCog />
+                  <span>Otro</span>
+                </Button>
+              </ul>
+              <ul>
+                <NavLink exact={true} activeClassName="is-active" to="/profile">
+                  <Button>
+                    <FaUserCog />
+                    <span>Perfil</span>
+                  </Button>
+                </NavLink>
+              </ul>
+              <ul>
+                <Button onClick={() => signOut()}>
+                  <GoSignOut />
+                  <span>Cerrar sesión</span>
+                </Button>
+              </ul>
+            </li>
+          </div>
+        </div>
+      ) : null}
 
-            <div className="sidebarVisible">
-                <div>
-                    <div className="logo">
-                        LOGO HERE
-                    </div>
-                    <li>
-                        <ul>
-                            <NavLink exact={true} activeClassName='is-active' to="/projects">
-                                <Button>
-                                    <FaBoxes /><span>Proyectos</span>
-                                </Button>
-                            </NavLink>
-                        </ul>
-                        <ul>
-                            <Button >
-                                <FaCog /><span>Otro</span>
-                            </Button>
-                        </ul>
-                        <ul>
-                          <NavLink exact={true} activeClassName='is-active' to="/profile">
-                            <Button >
-                                <FaUserCog /><span>Perfil</span>
-                            </Button>
-                          </NavLink>
-                            
-                        </ul>
-                        <ul>
-                            <Button onClick={ () => signOut()} >
-                              <GoSignOut /><span>Cerrar sesión</span>
-                            </Button>
-                        </ul>
-                    </li>
-                </div>
-            </div>
-        </Container>
-    )
+      <div className="sidebarVisible">
+        <div>
+          <div className="logo">LOGO HERE</div>
+          <li>
+            <ul>
+              <NavLink exact={true} activeClassName="is-active" to="/projects">
+                <Button>
+                  <FaBoxes />
+                  <span>Proyectos</span>
+                </Button>
+              </NavLink>
+            </ul>
+            <ul>
+              <Button>
+                <FaCog />
+                <span>Otro</span>
+              </Button>
+            </ul>
+            <ul>
+              <NavLink exact={true} activeClassName="is-active" to="/profile">
+                <Button>
+                  <FaUserCog />
+                  <span>Perfil</span>
+                </Button>
+              </NavLink>
+            </ul>
+            <ul>
+              <Button onClick={() => signOut()}>
+                <GoSignOut />
+                <span>Cerrar sesión</span>
+              </Button>
+            </ul>
+          </li>
+        </div>
+      </div>
+    </Container>
+  );
 }
-
 
 /*
 
