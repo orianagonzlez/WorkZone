@@ -378,17 +378,9 @@ export default function CreateProjects() {
             ))}
           </div>
 
-          {checkout ? (
-            <Paypal />
-          ) : (
-            <button
-              onClick={() => {
-                setCheckout(true);
-              }}
-            >
-              Checkout
-            </button>
-          )}
+          {selectedPlan.precio !== 0 && selectedPlan !== "" ? (
+            <Paypal price={selectedPlan.precio} description={selectedPlan.nombre} />
+          ) : null}
 
           <Container className="justify-content-center">
             <div className="button">

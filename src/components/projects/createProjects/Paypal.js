@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { PayPalButtons } from "@paypal/react-paypal-js";
+import { FaMoneyBillWave } from 'react-icons/fa';
 
 
-export default function Paypal() {
+export default function Paypal({price, description}) {
   
   const paypal = useRef()
 
@@ -13,10 +14,10 @@ export default function Paypal() {
             intent: "CAPTURE",
             purchase_units: [
               {
-                description: "Plan intermedio",
+                description: description,
                 amount: {
                   currency_code: "USD",
-                  value: 9.00 
+                  value: price
                 }
               }
             ]
@@ -37,9 +38,14 @@ export default function Paypal() {
 
   return (
       <div>
-          <div ref={paypal}>
+        <div className="sectionTitle">
+          <FaMoneyBillWave />
+          <span>Pago</span>
+        </div>
 
-          </div>
+        <div ref={paypal} id="paypal-inner-cont">
+
+        </div>
       </div>
   );
 }
