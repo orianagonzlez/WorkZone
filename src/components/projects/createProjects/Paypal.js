@@ -1,15 +1,17 @@
 import React, { useEffect, useRef } from "react";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { FaMoneyBillWave } from 'react-icons/fa';
+import Swal from "sweetalert2";
 
 
-export default function Paypal({price, description}) {
+export default function Paypal({price, description, paid, setPaid}) {
   
   const paypal = useRef()
 
   useEffect(()=>{
       window.paypal.Buttons({
         createOrder: (data, actions, err) =>{
+          console.log(price)
           return actions.order.create({
             intent: "CAPTURE",
             purchase_units: [
@@ -27,6 +29,13 @@ export default function Paypal({price, description}) {
         onApprove: async(data, actions) => {
           const order = await actions.order.capture()
           console.log(order)
+          setPaid(true)
+          Swal.fire({
+            icon: "success",
+            title: "Pago exitoso!",
+            text: "Hemos recibido su pago.",
+            confirmButtonColor: "#22B4DE",
+          });
         },
         onError: (err) => {
           console.log(err)

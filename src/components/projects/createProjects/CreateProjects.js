@@ -29,6 +29,8 @@ export default function CreateProjects() {
 
   const [selectedPlan, setSelectedPlan] = useState("");
 
+  const [paid, setPaid] = React.useState(false);
+
   const { user } = useContext(AppContext);
 
   const { project } = useParams();
@@ -157,6 +159,13 @@ export default function CreateProjects() {
     let invalid = false;
     let msg = "";
 
+    console.log("plan: ",selectedPlan)
+    //en caso de que no haga falta hacer el pago
+    if (selectedPlan.precio == 0) {
+      setPaid(true);
+    }
+    console.log("paid: ",paid)
+
     //validar campos vacios
     if (validator.isEmpty(name) || validator.isEmpty(descripcion)) {
       msg = `Requerimos de todos los campos para crear tu proyecto`;
@@ -165,6 +174,12 @@ export default function CreateProjects() {
     //que elija un plan
     if (!selectedPlan) {
       msg = `Selecciona el plan que mas adapte a tus necesidades`;
+      invalid = true;
+    }
+
+    //validar que haya pagado
+    if (!paid) {
+      msg = `Debes pagar antes de crear tu proyecto`;
       invalid = true;
     }
 
@@ -379,7 +394,7 @@ export default function CreateProjects() {
           </div>
 
           {selectedPlan.precio !== 0 && selectedPlan !== "" ? (
-            <Paypal price={selectedPlan.precio} description={selectedPlan.nombre} />
+            <Paypal price={selectedPlan.precio} description={selectedPlan.nombre} paid={paid} setPaid={setPaid} />
           ) : null}
 
           <Container className="justify-content-center">
