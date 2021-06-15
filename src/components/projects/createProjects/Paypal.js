@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import { PayPalButtons } from "@paypal/react-paypal-js";
 import { FaMoneyBillWave } from 'react-icons/fa';
 
 
