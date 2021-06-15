@@ -232,7 +232,7 @@ export const TaskDeetsModal = (props) => {
               <BiTask />
               Descripción
             </span>
-            <p className="description pt-2">
+            <p className="description ">
               <Form.Control
                 type="text"
                 name="task_content"
@@ -242,6 +242,7 @@ export const TaskDeetsModal = (props) => {
                 onChange={handleInputChange}
               />
             </p>
+
             {/* <p className="p-column">
               en
               {props.lists.map((column) => {

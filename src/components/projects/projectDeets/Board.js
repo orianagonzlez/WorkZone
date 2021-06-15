@@ -148,13 +148,13 @@ export const Board = ({ project }) => {
     refreshList();
   }, [modalShow, columnModalShow, editColumnModalShow]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      console.log("me ejecute");
-      refreshList();
-    }, 80000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     console.log("me ejecute");
+  //     refreshList();
+  //   }, 80000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const refreshList = () => {
     getData(
