@@ -31,6 +31,10 @@ export default function CreateProjects() {
 
   const [paid, setPaid] = React.useState(false);
 
+  const [freelance, setFreelance] = useState(false);
+
+  const [empresa, setEmpresa] = useState(false);
+
   const { user } = useContext(AppContext);
 
   const { project } = useParams();
@@ -393,7 +397,14 @@ export default function CreateProjects() {
             ))}
           </div>
 
-          {selectedPlan.precio !== 0 && selectedPlan !== "" ? (
+              
+
+
+          {selectedPlan.precio !== 0 && selectedPlan.nombre == "Empresa" ? (
+            <Paypal price={selectedPlan.precio} description={selectedPlan.nombre} paid={paid} setPaid={setPaid} />
+          ) : null}
+
+          {selectedPlan.precio !== 0 && selectedPlan.nombre == "Freelance" ? (
             <Paypal price={selectedPlan.precio} description={selectedPlan.nombre} paid={paid} setPaid={setPaid} />
           ) : null}
 
