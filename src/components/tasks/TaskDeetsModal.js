@@ -17,6 +17,8 @@ import {
 } from "react-icons/fa";
 
 import { ImCheckboxChecked, ImCheckboxUnchecked } from "react-icons/im";
+import { BiTask } from "react-icons/bi";
+
 import { Members } from "../common/Member";
 import validator from "validator";
 import { useFetch2 } from "../../hooks/useFetch2";
@@ -226,9 +228,12 @@ export const TaskDeetsModal = (props) => {
                 />
               </Modal.Title>
             </div>
+            <span className="sectionTitle">
+              <BiTask />
+              Descipción
+            </span>
             <p className="description">
               <Form.Control
-                className="border-none "
                 type="text"
                 name="task_content"
                 autoComplete="off"

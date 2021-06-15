@@ -147,6 +147,14 @@ export const Board = ({ project }) => {
     refreshList();
   }, [modalShow, columnModalShow, editColumnModalShow]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log("me ejecute");
+      refreshList();
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
   const refreshList = () => {
     getData(
       `https://workzone-backend-mdb.herokuapp.com/api/lists/from/${project._id}`
@@ -325,10 +333,9 @@ export const Board = ({ project }) => {
                                         }
                                       >
                                         {item.nombre}
-                                        {console.log(item.miembro, "ITEM")}
+
                                         {item.miembro != undefined
                                           ? project.miembros.map((miembro) => {
-                                              console.log(miembro._id);
                                               if (
                                                 item.miembro === miembro._id
                                               ) {
