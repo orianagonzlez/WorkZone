@@ -68,7 +68,7 @@ export const ProjectTable = ({ show }) => {
               <FaThList /> Tareas
             </div>
             <div className="column column-3">
-              <FaChartLine /> Progreso
+              <FaUsers /> Miembros
             </div>
             <div className="column column-3">
               <FaArchive /> {show ? "Devolver" : "Archivar"}{" "}

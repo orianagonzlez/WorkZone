@@ -10,6 +10,7 @@ import { getData } from "../../../helpers/getData";
 import Swal from "sweetalert2";
 import validator from "validator";
 import { useFetch2 } from "../../../hooks/useFetch2";
+import Paypal from './Paypal';
 
 export default function CreateProjects() {
   const [name, setName] = React.useState("");
@@ -28,11 +29,15 @@ export default function CreateProjects() {
 
   const [selectedPlan, setSelectedPlan] = useState("");
 
+  const [paid, setPaid] = React.useState(false);
+
   const { user } = useContext(AppContext);
 
   const { project } = useParams();
 
   const history = useHistory();
+
+  const [checkout, setCheckout] = useState(false);
 
   // aqui vienen los planes
   const {
@@ -162,6 +167,13 @@ export default function CreateProjects() {
     let invalid = false;
     let msg = "";
 
+    console.log("plan: ",selectedPlan)
+    //en caso de que no haga falta hacer el pago
+    if (selectedPlan.precio == 0) {
+      setPaid(true);
+    }
+    console.log("paid: ",paid)
+
     //validar campos vacios
     if (validator.isEmpty(name) || validator.isEmpty(descripcion)) {
       msg = `Requerimos de todos los campos para crear tu proyecto`;
@@ -170,6 +182,12 @@ export default function CreateProjects() {
     //que elija un plan
     if (!selectedPlan) {
       msg = `Selecciona el plan que mas adapte a tus necesidades`;
+      invalid = true;
+    }
+
+    //validar que haya pagado
+    if (!paid) {
+      msg = `Debes pagar antes de crear tu proyecto`;
       invalid = true;
     }
 
@@ -274,6 +292,8 @@ export default function CreateProjects() {
   if (editMode && !selectedPlan) {
     return <div className="componentContainer"></div>;
   }
+
+  
 
   return (
     <div className="componentContainer">
@@ -423,6 +443,10 @@ export default function CreateProjects() {
               />
             ))}
           </div>
+
+          {selectedPlan.precio !== 0 && selectedPlan !== "" ? (
+            <Paypal price={selectedPlan.precio} description={selectedPlan.nombre} paid={paid} setPaid={setPaid} />
+          ) : null}
 
           <Container className="justify-content-center">
             <div className="button">
