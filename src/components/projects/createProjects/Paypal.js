@@ -41,7 +41,7 @@ export default function Paypal({price, description, paid, setPaid}) {
           console.log(err)
         }
       }).render(paypal.current)
-  }, [])
+  }, [price])
 
 
 
