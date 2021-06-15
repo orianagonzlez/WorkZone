@@ -10,6 +10,7 @@ import { getData } from "../../../helpers/getData";
 import Swal from "sweetalert2";
 import validator from "validator";
 import { useFetch2 } from "../../../hooks/useFetch2";
+import Paypal from './Paypal';
 
 export default function CreateProjects() {
   const [name, setName] = React.useState("");
@@ -33,6 +34,8 @@ export default function CreateProjects() {
   const { project } = useParams();
 
   const history = useHistory();
+
+  const [checkout, setCheckout] = useState(false);
 
   // aqui vienen los planes
   const {
@@ -266,9 +269,10 @@ export default function CreateProjects() {
     return <div className="componentContainer"></div>;
   }
 
+  
+
   return (
-    
-      <div className="componentContainer">
+    <div className="componentContainer">
       <div className="divArrowLeft">
         <div>
           <Link to="/">
@@ -279,118 +283,127 @@ export default function CreateProjects() {
         </div>
         <h1>Nuevo proyecto</h1>
       </div>
-      <div className= "d-flex justify-content-center">  
-      <Form className="create-project-form ">
-        <Form.Row className="d-flex align-items-center justify-content-center pr-5">
-          <Form.Group as={Col}>
-            <Form.Control
-              className="projectName"
-              type="text"
-              placeholder="Project Name"
-              name="name"
-              autoComplete="off"
-              value={name}
-              onChange={(e) => {
-                e.preventDefault();
-                setName(e.target.value);
-              }}
-            />
-          </Form.Group>
-        </Form.Row>
+      <div className="d-flex justify-content-center">
+        <Form className="create-project-form ">
+          <Form.Row className="d-flex align-items-center justify-content-center pr-5">
+            <Form.Group as={Col}>
+              <Form.Control
+                className="projectName"
+                type="text"
+                placeholder="Project Name"
+                name="name"
+                autoComplete="off"
+                value={name}
+                onChange={(e) => {
+                  e.preventDefault();
+                  setName(e.target.value);
+                }}
+              />
+            </Form.Group>
+          </Form.Row>
 
-        <Form.Row className="d-flex align-items-center justify-content-center pr-5">
-          <Form.Group as={Col}>
-            <Form.Control
-              className="projectDescription "
-              type="text"
-              placeholder="Descripcion"
-              name="descripcion"
-              autoComplete="off"
-              value={descripcion}
-              onChange={(e) => {
-                e.preventDefault();
-                setDescripcion(e.target.value);
-              }}
-            />
-          </Form.Group>
-        </Form.Row>
+          <Form.Row className="d-flex align-items-center justify-content-center pr-5">
+            <Form.Group as={Col}>
+              <Form.Control
+                className="projectDescription "
+                type="text"
+                placeholder="Descripcion"
+                name="descripcion"
+                autoComplete="off"
+                value={descripcion}
+                onChange={(e) => {
+                  e.preventDefault();
+                  setDescripcion(e.target.value);
+                }}
+              />
+            </Form.Group>
+          </Form.Row>
 
-        <div className="sectionTitle">
-          <FaUsers />
-          <span>Miembros</span>
-        </div>
-        {inputList.map((email, i) => {
-          return (
-            <div className="box">
-              <Form.Row className="emailInputRow">
-                <Form.Group as={Col} className="formGroup">
-                  <Form.Control
-                    className="inputCorreo"
-                    type="email"
-                    placeholder="Correo del colaborador"
-                    name="email"
-                    autoComplete="off"
-                    value={email}
-                    onChange={(e) => {
-                      e.preventDefault();
-                      const list = [...inputList];
-                      list[i] = e.target.value;
-                      setInputList(list);
-                    }}
-                  />
-                </Form.Group>
-              </Form.Row>
-              <div className="btn-box">
-                {inputList.length !== 1 && (
-                  <FaTrash
-                    className="addOrDeleteCollaboratorButtons delete"
-                    onClick={() => handleRemoveClick(i)}
-                  ></FaTrash>
-                )}
-                {inputList.length - 1 === i && (
-                  <FaPlusCircle
-                    className="addOrDeleteCollaboratorButtons "
-                    onClick={handleAddClick}
-                  ></FaPlusCircle>
-                )}
-              </div>
-            </div>
-          );
-        })}
-
-        <div className="sectionTitle">
-          <FaMapSigns />
-          <span>Plan</span>
-        </div>
-        <div className="plansContainer">
-          {planes.map((plan) => (
-            <PlanCard
-              plan={plan}
-              selectedPlan={selectedPlan}
-              setSelectedPlan={setSelectedPlan}
-              planes={planes}
-              editMode={editMode}
-            />
-          ))}
-        </div>
-
-        <Container className="justify-content-center">
-          <div className="button">
-            <Button
-              className="create-button"
-              variant="primary"
-              onClick={(e) => handleCreateProject(e)}
-            >
-              {editMode ? "GUARDAR" : "CREAR"}
-            </Button>
+          <div className="sectionTitle">
+            <FaUsers />
+            <span>Miembros</span>
           </div>
-        </Container>
-      </Form>
+          {inputList.map((email, i) => {
+            return (
+              <div className="box">
+                <Form.Row className="emailInputRow">
+                  <Form.Group as={Col} className="formGroup">
+                    <Form.Control
+                      className="inputCorreo"
+                      type="email"
+                      placeholder="Correo del colaborador"
+                      name="email"
+                      autoComplete="off"
+                      value={email}
+                      onChange={(e) => {
+                        e.preventDefault();
+                        const list = [...inputList];
+                        list[i] = e.target.value;
+                        setInputList(list);
+                      }}
+                    />
+                  </Form.Group>
+                </Form.Row>
+                <div className="btn-box">
+                  {inputList.length !== 1 && (
+                    <FaTrash
+                      className="addOrDeleteCollaboratorButtons delete"
+                      onClick={() => handleRemoveClick(i)}
+                    ></FaTrash>
+                  )}
+                  {inputList.length - 1 === i && (
+                    <FaPlusCircle
+                      className="addOrDeleteCollaboratorButtons "
+                      onClick={handleAddClick}
+                    ></FaPlusCircle>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+
+          <div className="sectionTitle">
+            <FaMapSigns />
+            <span>Plan</span>
+          </div>
+          <div className="plansContainer">
+            {planes.map((plan) => (
+              <PlanCard
+                plan={plan}
+                selectedPlan={selectedPlan}
+                setSelectedPlan={setSelectedPlan}
+                planes={planes}
+                editMode={editMode}
+              />
+            ))}
+          </div>
+
+          {checkout ? (
+            <Paypal />
+          ) : (
+            <button
+              onClick={() => {
+                setCheckout(true);
+              }}
+            >
+              Checkout
+            </button>
+          )}
+
+          <Container className="justify-content-center">
+            <div className="button">
+              <Button
+                className="create-button"
+                variant="primary"
+                onClick={(e) => handleCreateProject(e)}
+              >
+                {editMode ? "GUARDAR" : "CREAR"}
+              </Button>
+            </div>
+          </Container>
+        </Form>
       </div>
     </div>
-
-  
-   
   );
 }
 
