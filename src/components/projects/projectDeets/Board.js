@@ -11,6 +11,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { TaskDeetsModal } from "../../tasks/TaskDeetsModal";
 import { Members } from "../../common/Member";
 import { postData } from "../../../helpers/postData";
+import { CgDetailsMore } from "react-icons/cg";
 
 const onDragEnd = (result, columns, setColumns) => {
   console.log("ARRASTRE");
@@ -151,7 +152,7 @@ export const Board = ({ project }) => {
     const interval = setInterval(() => {
       console.log("me ejecute");
       refreshList();
-    }, 10000);
+    }, 80000);
     return () => clearInterval(interval);
   }, []);
 
@@ -327,31 +328,38 @@ export const Board = ({ project }) => {
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
                                     >
-                                      <button
-                                        onClick={() =>
-                                          handleOpenTaskDeets(item)
-                                        }
-                                      >
+                                      <div className=" card-box  px-2">
                                         {item.nombre}
-
-                                        {item.miembro != undefined
-                                          ? project.miembros.map((miembro) => {
-                                              if (
-                                                item.miembro === miembro._id
-                                              ) {
-                                                return (
-                                                  <div className="d-flex justify-content-center">
-                                                    <Members
-                                                      member={miembro}
-                                                      placement={"task"}
-                                                    />
-                                                  </div>
-                                                );
-                                              }
-                                              return null;
-                                            })
-                                          : null}
-                                      </button>
+                                        <div className="d-flex justify-content-between align-items-center">
+                                          <div
+                                            className="cursor"
+                                            onClick={() =>
+                                              handleOpenTaskDeets(item)
+                                            }
+                                          >
+                                            <BsThreeDots></BsThreeDots>
+                                          </div>
+                                          {item.miembro != undefined
+                                            ? project.miembros.map(
+                                                (miembro) => {
+                                                  if (
+                                                    item.miembro === miembro._id
+                                                  ) {
+                                                    return (
+                                                      <div>
+                                                        <Members
+                                                          member={miembro}
+                                                          placement={"task"}
+                                                        />
+                                                      </div>
+                                                    );
+                                                  }
+                                                  return null;
+                                                }
+                                              )
+                                            : null}
+                                        </div>
+                                      </div>
                                       {item === taskToShow && (
                                         //console.log("yeesyeyeyeyes", index)
                                         <TaskDeetsModal

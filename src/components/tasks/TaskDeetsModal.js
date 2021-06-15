@@ -228,11 +228,11 @@ export const TaskDeetsModal = (props) => {
                 />
               </Modal.Title>
             </div>
-            <span className="sectionTitle">
+            <span className="sectionTitle ">
               <BiTask />
-              Descipción
+              Descripción
             </span>
-            <p className="description">
+            <p className="description pt-2">
               <Form.Control
                 type="text"
                 name="task_content"
