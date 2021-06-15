@@ -17,7 +17,7 @@ export default function CreateProjects() {
 
   const [descripcion, setDescripcion] = React.useState("");
 
-  const [inputList, setInputList] = useState([""]);
+  const [inputList, setInputList] = useState([{ email: "", canDelete: true }]);
 
   const [users, setUsers] = useState([]);
 
@@ -70,7 +70,15 @@ export default function CreateProjects() {
           //esto es para filtrar los emails y no puedas eliminar al lider y a los admins
           r.data.miembros.forEach((myUser) => {
             if (myUser._id !== user.id && myUser._id !== r.data.owner) {
-              emails.push(myUser.email);
+              emails.push({
+                email: myUser.email,
+                canDelete: true,
+              });
+            } else {
+              emails.push({
+                email: myUser.email,
+                canDelete: false,
+              });
             }
           });
           setInputList([...emails]);
@@ -186,13 +194,14 @@ export default function CreateProjects() {
     //validar que sean correos este tengo que dispare aqui porque sino se dispara el que esa persona no esta registrada
     //obvio no esta registrada porque eso no es un correo
     let invalidEmail = false;
-    inputList.forEach((email) => {
-      if (!validator.isEmail(email) && !validator.isEmpty(email)) {
+    console.log(inputList);
+    inputList.forEach((item) => {
+      if (!validator.isEmail(item.email) && !validator.isEmpty(item.email)) {
         invalidEmail = true;
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: `Necesitamos el email de la persona: ${email}, para agregarlo a tu proyecto`,
+          text: `Necesitamos el email de la persona: ${item.email}, para agregarlo a tu proyecto`,
           confirmButtonColor: "#22B4DE",
         });
       }
@@ -204,16 +213,16 @@ export default function CreateProjects() {
 
     //esto es para saber si los correos ingresados son de gente que esta registrada
     let membersIds = [];
-    inputList.forEach((email) => {
-      if (!validator.isEmpty(email)) {
+    inputList.forEach((item) => {
+      if (!validator.isEmpty(item.email)) {
         let myUser = users.filter((user) => {
-          if (String(user.email) === email) {
+          if (String(user.email) === item.email) {
             return user;
           }
         });
         myUser = myUser[0];
         if (!myUser) {
-          msg = `Invita a ${email} a registrar en Workzone para poder añadirla a tu proyecto`;
+          msg = `Invita a ${item.email} a registrar en Workzone para poder añadirla a tu proyecto`;
           invalid = true;
         } else {
           let uid = myUser.uid;
@@ -274,7 +283,7 @@ export default function CreateProjects() {
   };
 
   const handleAddClick = () => {
-    setInputList([...inputList, ""]);
+    setInputList([...inputList, { email: "", canDelete: true }]);
   };
 
   if (loadingPlans || !planes)
@@ -296,7 +305,7 @@ export default function CreateProjects() {
             </Button>
           </Link>
         </div>
-        <h1>Nuevo proyecto</h1>
+        {!editMode ? <h1>Nuevo proyecto</h1> : <h1>Editar proyecto</h1>}
       </div>
       <div className="d-flex justify-content-center">
         <Form className="create-project-form ">
@@ -338,34 +347,76 @@ export default function CreateProjects() {
             <FaUsers />
             <span>Miembros</span>
           </div>
-          {inputList.map((email, i) => {
+          {inputList.map((item, i) => {
             return (
               <div className="box">
                 <Form.Row className="emailInputRow">
                   <Form.Group as={Col} className="formGroup">
-                    <Form.Control
-                      className="inputCorreo"
-                      type="email"
-                      placeholder="Correo del colaborador"
-                      name="email"
-                      autoComplete="off"
-                      value={email}
-                      onChange={(e) => {
-                        e.preventDefault();
-                        const list = [...inputList];
-                        list[i] = e.target.value;
-                        setInputList(list);
-                      }}
-                    />
+                    {!editMode ? (
+                      <Form.Control
+                        className="inputCorreo"
+                        type="email"
+                        placeholder="Correo del colaborador"
+                        name="email"
+                        autoComplete="off"
+                        value={item.email}
+                        onChange={(e) => {
+                          e.preventDefault();
+                          const list = [...inputList];
+                          list[i].email = e.target.value;
+                          setInputList(list);
+                        }}
+                      />
+                    ) : item.canDelete ? (
+                      <Form.Control
+                        className="inputCorreo"
+                        type="email"
+                        placeholder="Correo del colaborador"
+                        name="email"
+                        autoComplete="off"
+                        value={item.email}
+                        onChange={(e) => {
+                          e.preventDefault();
+                          const list = [...inputList];
+                          list[i].email = e.target.value;
+                          setInputList(list);
+                        }}
+                      />
+                    ) : (
+                      <Form.Control
+                        className="inputCorreo"
+                        type="email"
+                        placeholder="Correo del colaborador"
+                        name="email"
+                        autoComplete="off"
+                        value={item.email}
+                        onChange={(e) => {
+                          e.preventDefault();
+                          const list = [...inputList];
+                          list[i].email = e.target.value;
+                          setInputList(list);
+                        }}
+                        disabled
+                      />
+                    )}
                   </Form.Group>
                 </Form.Row>
                 <div className="btn-box">
-                  {inputList.length !== 1 && (
-                    <FaTrash
-                      className="addOrDeleteCollaboratorButtons delete"
-                      onClick={() => handleRemoveClick(i)}
-                    ></FaTrash>
-                  )}
+                  {!editMode
+                    ? inputList.length !== 1 && (
+                        <FaTrash
+                          className="addOrDeleteCollaboratorButtons delete"
+                          onClick={() => handleRemoveClick(i)}
+                        ></FaTrash>
+                      )
+                    : inputList.length !== 1 &&
+                      inputList[i].canDelete && (
+                        <FaTrash
+                          className="addOrDeleteCollaboratorButtons delete"
+                          onClick={() => handleRemoveClick(i)}
+                        ></FaTrash>
+                      )}
+
                   {inputList.length - 1 === i && (
                     <FaPlusCircle
                       className="addOrDeleteCollaboratorButtons "

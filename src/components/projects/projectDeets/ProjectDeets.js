@@ -97,15 +97,18 @@ export default function ProjectDeets() {
   return (
     <Container fluid className="componentContainer">
       <div className="upperButtons">
-        <Button
-          className="upperButton"
-          id="editProject"
-          onClick={() => {
-            history.push(`/projects/edit/${project}`);
-          }}
-        >
-          <FaEdit /> Editar Proyecto
-        </Button>
+        {user?.id && projectInfo?.owner && projectInfo.owner == user.id && (
+          <Button
+            className="upperButton"
+            id="editProject"
+            onClick={() => {
+              history.push(`/projects/edit/${project}`);
+            }}
+          >
+            <FaEdit /> Editar Proyecto
+          </Button>
+        )}
+
         {user?.id && projectInfo?.owner && projectInfo.owner != user.id && (
           <Button
             variant="light"

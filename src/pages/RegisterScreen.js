@@ -41,6 +41,7 @@ export const RegisterScreen = () => {
       postData(url, body).then((r) => {
         console.log("me respondio" + r);
         if (r.ok) {
+          localStorage.setItem("token", r.token);
           const { email, uid, nombre, apellido, fechaNacimiento, username } =
             r.data;
           setUser({

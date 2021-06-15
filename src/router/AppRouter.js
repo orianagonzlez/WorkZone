@@ -8,12 +8,22 @@ import { PrivateRoute } from "./PrivateRoute";
 import { PublicRoute } from "./PublicRoute";
 import { AppContext } from "../context/AppContext";
 import { ProfileRouter } from "./ProfileRouter";
+import { useEffect } from "react";
+import { fetchToken } from "../helpers/getData";
+import { useCallback } from "react";
 
 export const AppRouter = () => {
-  const { user } = useContext(AppContext);
+  const { user, verifyToken } = useContext(AppContext);
 
-  console.log('prueba', user);
+  console.log("prueba", user);
 
+  useEffect(() => {
+    verifyToken();
+  }, []);
+
+  if (user.checking) {
+    return <div></div>;
+  }
   return (
     <Router>
       <div>
