@@ -9,7 +9,7 @@ export default function ProjectCard(props) {
 
   const history = useHistory();
 
-  const { _id, nombre, archivado, miembros } = project;
+  const { _id, nombre, archivado, miembros, tareas } = project;
 
   const archive = () => {
     console.log("ejecutandome");
@@ -38,12 +38,11 @@ export default function ProjectCard(props) {
         {nombre}
       </div>
       <div className="column column-3" data-label="Tareas">
-        {" "}
-        0
+        {tareas}
       </div>
 
-      <div className="column column-3" data-label="Progreso">
-        0
+      <div className="column column-3" data-label="Miembros">
+        {miembros}
       </div>
       <div
         className="column column-3"
