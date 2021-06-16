@@ -11,6 +11,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { TaskDeetsModal } from "../../tasks/TaskDeetsModal";
 import { Members } from "../../common/Member";
 import { postData } from "../../../helpers/postData";
+import { storage } from "../../../firebase/index";
 
 const onDragEnd = (result, columns, setColumns) => {
   console.log("ARRASTRE");
@@ -147,13 +148,13 @@ export const Board = ({ project }) => {
     refreshList();
   }, [modalShow, columnModalShow, editColumnModalShow]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      console.log("me ejecute");
-      refreshList();
-    }, 10000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     console.log("me ejecute");
+  //     refreshList();
+  //   }, 10000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const refreshList = () => {
     getData(
@@ -225,11 +226,43 @@ export const Board = ({ project }) => {
     setEditColumnModalShow(true);
   };
 
+  const[files, setFiles] = useState([]);
+  const [view, setView] = useState(false);
+
+  const getFiles = (item) => {
+
+    const storageRef = storage.ref(`images/${project._id}/${item._id}`);
+    storageRef.listAll().then(function(result) {
+      result.items.forEach(function(imageRef) {
+        displayImage(imageRef);
+      });
+    }).catch(function(error) {
+      console.log(error)
+    });
+
+    function displayImage(imageRef) {
+      imageRef.getDownloadURL().then(function(url) {
+
+        let newList = files;
+        newList.push(url);
+        setFiles(newList);
+
+        
+      }).catch(function(error) {
+        console.log(error)
+      });
+    }
+
+    console.log('URLs', files)
+    console.log('View', view);
+  }
+
   const [taskToShow = {}, setTaskToShow] = useState();
 
   const handleOpenTaskDeets = (item) => {
+    getFiles(item)
     setTaskToShow(item);
-    console.log(taskToShow);
+    console.log('Task', taskToShow);
     setTaskModalShow(true);
     console.log("yes");
     //console.log(taskModalShow);
@@ -354,11 +387,15 @@ export const Board = ({ project }) => {
                                       </button>
                                       {item === taskToShow && (
                                         //console.log("yeesyeyeyeyes", index)
-                                        <TaskDeetsModal
+                                          <TaskDeetsModal
                                           project={project}
                                           task={item}
                                           show={taskModalShow}
-                                          onHide={() => setTaskModalShow(false)}
+                                          files = {files}
+                                          onHide={() => {
+                                            setTaskModalShow(false) 
+                                            setFiles([])
+                                          }}
                                           columns={columns}
                                           lists={lists}
                                           setcolumns={setColumns}

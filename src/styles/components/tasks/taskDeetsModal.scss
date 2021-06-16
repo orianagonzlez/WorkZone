@@ -83,6 +83,7 @@
       }
       #files {
         .file-buttons {
+          // background-color: green;
           display: flex;
           flex-direction: row;
           #see-files {
@@ -90,7 +91,7 @@
             height: 2rem;
             width: 2rem;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             justify-content: center;
             align-items: center;
             border-radius: 5px;
@@ -181,4 +182,41 @@
       }
     }
   }
+}
+.modal-file-container{
+  display: flex;
+  flex-direction: column;
+  .modal-upload-container{
+    display: flex;
+    flex-direction: column;
+    .modal-upload{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      progress{
+        justify-self: center;
+        width: 80%;
+      }
+      .upload-input{
+        margin: 20px;
+        justify-content: center;
+      }
+    }
+  }
+  .modal-download-container{
+    .modal-download{
+      height: 300px;
+      overflow-y: scroll;
+      
+    }
+  }
+}
+
+.link-files{
+  margin: 10px;
+  background-color: $neutral-100;
+  border-radius: 5px;
+  font-style: italic;
+  padding: 10px;
+  
 }
