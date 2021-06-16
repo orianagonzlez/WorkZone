@@ -226,10 +226,10 @@ export default function Sidebar() {
                   <span>{days}</span>:<span>{hours}</span>:
                   <span>{minutes}</span>:<span>{seconds}</span>
                 </div>
-                {running ? <button onClick={() => setTimer({...timer, running: false})}>Pause</button>
-                : <button onClick={() => setTimer({...timer, running: true})}>Start</button>
+                {running ? <button onClick={pause} disabled={!taskId}>Pause</button>
+                : <button onClick={start} disabled={!taskId}>Start</button>
                 }
-                <button onClick={reset}>Reset</button>
+                <button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}>Reset</button>
               </div>
             </ul>
             </li>
