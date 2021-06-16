@@ -362,24 +362,26 @@ export const TaskDeetsModal = (props) => {
               </div>
               <ProgressBar now={progressPercentage()} />
             </div>
-          {(!props.task.miembro || props.task.miembro == user?.id) &&
+          
             <div className="my-3" id="progress">
               <div className="sectionTitle">
                 <RiTimerFill />
                 <span>Cronómetro</span>
-                <Button
+                {(!props.task.miembro || props.task.miembro == user?.id) &&
+                 <Button
                   className="add button-task cursor-pointer float-right"
                   onClick={runStopwatch}
                 >
                   Iniciar crónometro
-                </Button>
+                </Button>}
               </div>
+              <div>Tiempo anterior: {props.task.cronometro}</div>
               <div className="alert alert-primary my-3" role="alert">
-                Lleva el tiempo de cuanto inviertes en cada tarea, para llevar
+                Lleva el tiempo de cuanto inviertes en tus tareas asignadas o generales para llevar
                 un mejor control del proyecto! Podras manejar el mismo desde el
                 menu lateral para mayor comodidad.
               </div>
-            </div>}
+            </div>
             {/* <div id="labels">
               <div className="sectionTitle mt-3">
                 <FaTag />
