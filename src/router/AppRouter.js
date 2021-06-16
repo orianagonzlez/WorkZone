@@ -27,6 +27,7 @@ export const AppRouter = () => {
   }
   return (
     <Router>
+      
       <div>
         <Switch>
           <PrivateRoute

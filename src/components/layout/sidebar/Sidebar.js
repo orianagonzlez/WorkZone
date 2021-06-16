@@ -18,24 +18,26 @@ import { useStopwatch } from "react-timer-hook";
 import { useEffect } from "react";
 import { TimerContext } from "../../../context/TimerContext";
 import { getData } from "../../../helpers/getData";
+import { Stopwatch } from "./Stopwatch";
 
 export default function Sidebar() {
   const [visible, setVisible] = useState(false);
+
   const [initialTime, setInitialTime] = useState([]);
   const [saveTimeInterval, setSaveTimeInterval] = useState(null);
 
   const { setUser, user } = useContext(AppContext);
 
-  const { setTimer, timer } = useContext(TimerContext);
+  const { setTimer, timer } = useContext(TimerContext); 
 
   const { taskId, running } = timer;
-
+  console.log(timer)
   //Esto es por si le quieren mandar el tiempo en que debe iniciarse
   // const stopwatchOffset = new Date();
   // 300 segundos son 5 min
   // stopwatchOffset.setSeconds(stopwatchOffset.getSeconds() + 300);
 
-  let { seconds, minutes, hours, days, isRunning, start, pause, reset } =
+  const { seconds, minutes, hours, days, isRunning, start, pause, reset } =
     useStopwatch({
       autoStart: false,
       // offsetTimestamp: initialTime
@@ -77,7 +79,7 @@ export default function Sidebar() {
       });
     }
   }, [taskId]);
-
+  
   useEffect(() => {
 
     if (taskId) {
@@ -101,7 +103,11 @@ export default function Sidebar() {
       }
     }
     
-  }, [isRunning])
+  }, [isRunning]);
+
+  useEffect(() => {
+    console.log('sidebar otra vezzz')
+  }, [])
 
   const signOut = () => {
     if (running) {
@@ -222,14 +228,7 @@ export default function Sidebar() {
               </ul>
               <ul>
               <div style={{ textAlign: "center" }}>
-                <div>
-                  <span>{days}</span>:<span>{hours}</span>:
-                  <span>{minutes}</span>:<span>{seconds}</span>
-                </div>
-                {running ? <button onClick={pause} disabled={!taskId}>Pause</button>
-                : <button onClick={start} disabled={!taskId}>Start</button>
-                }
-                <button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}>Reset</button>
+                <Stopwatch/>
               </div>
             </ul>
             </li>
