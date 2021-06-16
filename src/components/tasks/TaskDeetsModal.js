@@ -27,6 +27,7 @@ import { getData } from "../../helpers/getData";
 import { UploadFilesModal } from "../tasks/UploadFilesModal";
 import { useContext } from "react";
 import { TimerContext } from "../../context/TimerContext";
+import { AppContext } from "../../context/AppContext";
 
 export const TaskDeetsModal = (props) => {
   const [formValues, handleInputChange, reset] = useForm({
@@ -35,6 +36,13 @@ export const TaskDeetsModal = (props) => {
     task_member: props.task.miembro,
     task_status: props.task.lista,
   });
+
+  console.log('task', props)
+
+  const {user} = useContext(AppContext);
+
+  console.log(props.task.miembro == user?.id);
+  console.log(user)
 
   const { timer, setTimer } = useContext(TimerContext);
 
@@ -116,7 +124,7 @@ export const TaskDeetsModal = (props) => {
   };
 
   const runStopwatch = () => {
-    setTimer({ ...timer, running: true, taskId: props.task._id });
+    setTimer({ ...timer, taskId: props.task._id });
   };
 
   // useEffect(() => {
@@ -344,6 +352,7 @@ export const TaskDeetsModal = (props) => {
               </div>
               <ProgressBar now={progressPercentage()} />
             </div>
+          {(!props.task.miembro || props.task.miembro == user?.id) &&
             <div className="my-3" id="progress">
               <div className="sectionTitle">
                 <RiTimerFill />
@@ -360,7 +369,7 @@ export const TaskDeetsModal = (props) => {
                 un mejor control del proyecto! Podras manejar el mismo desde el
                 menu lateral para mayor comodidad.
               </div>
-            </div>
+            </div>}
             {/* <div id="labels">
               <div className="sectionTitle mt-3">
                 <FaTag />

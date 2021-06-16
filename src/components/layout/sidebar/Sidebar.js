@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Container, Button } from "react-bootstrap";
 import {
   FaUserCircle,
@@ -17,33 +17,104 @@ import { postData } from "../../../helpers/postData";
 import { useStopwatch } from "react-timer-hook";
 import { useEffect } from "react";
 import { TimerContext } from "../../../context/TimerContext";
+import { getData } from "../../../helpers/getData";
 
 export default function Sidebar() {
-  const [visible, setVisible] = React.useState(false);
+  const [visible, setVisible] = useState(false);
+  const [initialTime, setInitialTime] = useState([]);
+  const [saveTimeInterval, setSaveTimeInterval] = useState(null);
 
   const { setUser, user } = useContext(AppContext);
 
   const { setTimer, timer } = useContext(TimerContext);
+
+  const { taskId, running } = timer;
 
   //Esto es por si le quieren mandar el tiempo en que debe iniciarse
   // const stopwatchOffset = new Date();
   // 300 segundos son 5 min
   // stopwatchOffset.setSeconds(stopwatchOffset.getSeconds() + 300);
 
-  const { seconds, minutes, hours, days, isRunning, start, pause, reset } =
+  let { seconds, minutes, hours, days, isRunning, start, pause, reset } =
     useStopwatch({
       autoStart: false,
-      //offsetTimestamp: stopwatchOffset
+      // offsetTimestamp: initialTime
     });
 
   useEffect(() => {
-    console.log("fe");
-    if (timer?.running) {
-      start();
+    console.log(taskId);
+    if (taskId) {
+      if (isRunning) {
+        clearInterval(saveTimeInterval);
+        let body = {
+          id_tarea: taskId,
+          cronometro: `${days}:${hours}:${minutes}:${seconds}`
+        };
+
+        updateTask(body);
+      }
+      getData(
+        `https://workzone-backend-mdb.herokuapp.com/api/tasks/${taskId}`
+      ).then((r) => {
+        if (r.ok) {
+          const newTime = new Date();
+          let time = r.data.cronometro;
+          console.log('esto recibo', time)
+          if (time != '0:0:0:0') {
+            time = time.split(":");
+
+            const newTime = getNewTime(time);
+
+            console.log('esto envio', newTime);
+            setInitialTime(time);
+            reset(newTime, true);
+          } else {
+            reset();
+          }
+        } else {
+          console.log("error", r.data);
+        }
+      });
     }
-  }, [timer]);
+  }, [taskId]);
+
+  useEffect(() => {
+
+    if (taskId) {
+      setTimer({...timer, running: isRunning});
+
+      let body = {
+        id_tarea: taskId,
+        cronometro: `${days}:${hours}:${minutes}:${seconds}`
+      }
+
+      if (isRunning) {
+        console.log('empiezo')
+    
+        setSaveTimeInterval(setInterval((body) => {
+          updateTask(body);
+        }, 30000)); 
+      } else {
+        console.log('me pare');
+        clearInterval(saveTimeInterval);
+        updateTask(body);
+      }
+    }
+    
+  }, [isRunning])
 
   const signOut = () => {
+    if (running) {
+      clearInterval(saveTimeInterval);
+      let body = {
+        id_tarea: taskId,
+        cronometro: `${days}:${hours}:${minutes}:${seconds}`
+      };
+
+      console.log('aqui')
+      updateTask(body);
+    }
+
     const body = {
       uid: user.id,
       onLine: false,
@@ -72,6 +143,28 @@ export default function Sidebar() {
       }
     });
   };
+
+  const getNewTime = (time) => {
+    const newTime = new Date();
+    newTime.setHours(newTime.getHours() + parseInt(time[1]) + (24 * parseInt(time[0])));
+    newTime.setMinutes(newTime.getMinutes() + parseInt(time[2]));
+    newTime.setSeconds(newTime.getSeconds() + parseInt(time[3]));
+    
+    return newTime;
+  }
+
+  const updateTask = (body) => {
+    postData(
+      "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
+      body
+    ).then((r) => {
+      if (r.ok) {
+        console.log("guarde nuevo tiempo", r.data);
+      } else {
+        console.log("error guardando tiempo");
+      }
+    });
+  }
 
   return (
     <Container fluid className="sidebarContainer">
@@ -127,6 +220,18 @@ export default function Sidebar() {
                   <span>Cerrar sesión</span>
                 </Button>
               </ul>
+              <ul>
+              <div style={{ textAlign: "center" }}>
+                <div>
+                  <span>{days}</span>:<span>{hours}</span>:
+                  <span>{minutes}</span>:<span>{seconds}</span>
+                </div>
+                {running ? <button onClick={() => setTimer({...timer, running: false})}>Pause</button>
+                : <button onClick={() => setTimer({...timer, running: true})}>Start</button>
+                }
+                <button onClick={reset}>Reset</button>
+              </div>
+            </ul>
             </li>
           </div>
         </div>
@@ -170,9 +275,10 @@ export default function Sidebar() {
                   <span>{days}</span>:<span>{hours}</span>:
                   <span>{minutes}</span>:<span>{seconds}</span>
                 </div>
-                <button onClick={start}>Start</button>
-                <button onClick={pause}>Pause</button>
-                <button onClick={reset}>Reset</button>
+                {running ? <button onClick={pause} disabled={!taskId}>Pause</button>
+                : <button onClick={start} disabled={!taskId}>Start</button>
+                }
+                <button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}>Reset</button>
               </div>
             </ul>
           </li>
