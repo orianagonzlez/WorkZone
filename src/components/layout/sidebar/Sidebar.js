@@ -14,10 +14,34 @@ import Swal from "sweetalert2";
 import { AppContext } from "../../../context/AppContext";
 import { postData } from "../../../helpers/postData";
 
+import { useStopwatch } from "react-timer-hook";
+import { useEffect } from "react";
+import { TimerContext } from "../../../context/TimerContext";
+
 export default function Sidebar() {
   const [visible, setVisible] = React.useState(false);
 
   const { setUser, user } = useContext(AppContext);
+
+  const { setTimer, timer } = useContext(TimerContext);
+
+  //Esto es por si le quieren mandar el tiempo en que debe iniciarse
+  // const stopwatchOffset = new Date();
+  // 300 segundos son 5 min
+  // stopwatchOffset.setSeconds(stopwatchOffset.getSeconds() + 300);
+
+  const { seconds, minutes, hours, days, isRunning, start, pause, reset } =
+    useStopwatch({
+      autoStart: false,
+      //offsetTimestamp: stopwatchOffset
+    });
+
+  useEffect(() => {
+    console.log("fe");
+    if (timer?.running) {
+      start();
+    }
+  }, [timer]);
 
   const signOut = () => {
     const body = {
@@ -139,6 +163,17 @@ export default function Sidebar() {
                 <GoSignOut />
                 <span>Cerrar sesión</span>
               </Button>
+            </ul>
+            <ul>
+              <div style={{ textAlign: "center" }}>
+                <div>
+                  <span>{days}</span>:<span>{hours}</span>:
+                  <span>{minutes}</span>:<span>{seconds}</span>
+                </div>
+                <button onClick={start}>Start</button>
+                <button onClick={pause}>Pause</button>
+                <button onClick={reset}>Reset</button>
+              </div>
             </ul>
           </li>
         </div>

@@ -10,7 +10,7 @@ import { getData } from "../../../helpers/getData";
 import Swal from "sweetalert2";
 import validator from "validator";
 import { useFetch2 } from "../../../hooks/useFetch2";
-import Paypal from './Paypal';
+import Paypal from "./Paypal";
 
 export default function CreateProjects() {
   const [name, setName] = React.useState("");
@@ -69,6 +69,7 @@ export default function CreateProjects() {
           //parcheo del formulario
           setprojectEdit(r.data);
           setSelectedPlan(r.data.id_plan);
+          setPaid(true);
           //console.log(selectedPlan, "pls ayuda");
           let emails = [];
           //esto es para filtrar los emails y no puedas eliminar al lider y a los admins
@@ -170,13 +171,12 @@ export default function CreateProjects() {
     e.preventDefault();
     let invalid = false;
     let msg = "";
-
-    console.log("plan: ",selectedPlan)
+    console.log("plan: ", selectedPlan);
     //en caso de que no haga falta hacer el pago
     if (selectedPlan.precio == 0) {
       setPaid(true);
     }
-    console.log("paid: ",paid)
+    console.log("paid: ", paid);
 
     //validar campos vacios
     if (validator.isEmpty(name) || validator.isEmpty(descripcion)) {
@@ -296,8 +296,6 @@ export default function CreateProjects() {
   if (editMode && !selectedPlan) {
     return <div className="componentContainer"></div>;
   }
-
-  
 
   return (
     <div className="componentContainer">
@@ -437,27 +435,58 @@ export default function CreateProjects() {
             <span>Plan</span>
           </div>
           <div className="plansContainer">
-            {planes.map((plan) => (
+            {planes.map((plan, i) => (
               <PlanCard
+                key={plan.nombre}
                 plan={plan}
                 selectedPlan={selectedPlan}
                 setSelectedPlan={setSelectedPlan}
                 planes={planes}
                 editMode={editMode}
+                paid={paid}
+                setPaid={setPaid}
               />
             ))}
           </div>
 
-              
-
-
-          {selectedPlan.precio !== 0 && selectedPlan.nombre == "Empresa" ? (
-            <Paypal price={selectedPlan.precio} description={selectedPlan.nombre} paid={paid} setPaid={setPaid} />
+          {selectedPlan.precio !== 0 &&
+          selectedPlan.nombre == "Empresa" &&
+          !paid ? (
+            <Paypal
+              price={selectedPlan.precio}
+              description={selectedPlan.nombre}
+              paid={paid}
+              setPaid={setPaid}
+              editMode={editMode}
+              updateProject={updateProyecto}
+              selectedPlan={selectedPlan._id}
+              //QUITAR
+              projectid={projectEdit?._id}
+              key={"Empresa"}
+            />
           ) : null}
 
-          {selectedPlan.precio !== 0 && selectedPlan.nombre == "Freelance" ? (
-            <Paypal price={selectedPlan.precio} description={selectedPlan.nombre} paid={paid} setPaid={setPaid} />
+          {selectedPlan.precio !== 0 &&
+          selectedPlan.nombre == "Freelance" &&
+          !paid ? (
+            <Paypal
+              price={selectedPlan.precio}
+              description={selectedPlan.nombre}
+              paid={paid}
+              setPaid={setPaid}
+              editMode={editMode}
+              updateProject={updateProyecto}
+              selectedPlan={selectedPlan._id}
+              projectid={projectEdit?._id}
+              key={"Freelance"}
+            />
           ) : null}
+
+          {paid && !editMode && (
+            <div class="alert alert-success" role="alert">
+              Tu pago ha sido registrado con éxito!
+            </div>
+          )}
 
           <Container className="justify-content-center">
             <div className="button">
@@ -475,7 +504,3 @@ export default function CreateProjects() {
     </div>
   );
 }
-
-// {<Form.Label>Nombre</Form.Label>}
-
-// onSubmit={handleCreateProject}

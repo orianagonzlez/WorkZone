@@ -8,6 +8,7 @@ export default function PlanCard({
   setSelectedPlan,
   modal = false,
   editMode,
+  setPaid,
 }) {
   plan = {
     ...plan,
@@ -29,14 +30,13 @@ export default function PlanCard({
   });
 
   const selectPlan = (plan) => {
-    if (editMode === true) {
-      console.log("entre2");
+    if (editMode === true && plan._id !== selectedPlan._id) {
       console.log(selectedPlan.max_miembros, plan.max_miembros);
       if (selectedPlan.max_miembros > plan.max_miembros) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: "No puedes actualizar a ese plan, tienes uno mejor!",
+          text: "No puedes actualizar a ese plan, tienes uno mejor o estas en proceso de pago! Si decides no mejorar tu plan vuelve al panel de tu proyecto",
           confirmButtonColor: "#22B4DE",
         });
       } else {
@@ -52,10 +52,11 @@ export default function PlanCard({
         }).then((result) => {
           if (result.isConfirmed) {
             setSelectedPlan(plan);
+            setPaid(false);
           }
         });
       }
-    } else {
+    } else if (!editMode) {
       setSelectedPlan(plan);
     }
   };

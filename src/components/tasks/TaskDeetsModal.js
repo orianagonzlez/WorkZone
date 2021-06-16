@@ -18,12 +18,15 @@ import {
 
 import { ImCheckboxChecked, ImCheckboxUnchecked } from "react-icons/im";
 import { BiTask } from "react-icons/bi";
+import { RiTimerFill } from "react-icons/ri";
 
 import { Members } from "../common/Member";
 import validator from "validator";
 import { useFetch2 } from "../../hooks/useFetch2";
 import { getData } from "../../helpers/getData";
 import { UploadFilesModal } from "../tasks/UploadFilesModal";
+import { useContext } from "react";
+import { TimerContext } from "../../context/TimerContext";
 
 export const TaskDeetsModal = (props) => {
   const [formValues, handleInputChange, reset] = useForm({
@@ -32,6 +35,8 @@ export const TaskDeetsModal = (props) => {
     task_member: props.task.miembro,
     task_status: props.task.lista,
   });
+
+  const { timer, setTimer } = useContext(TimerContext);
 
   // const {
   //   data: thisTask,
@@ -108,6 +113,10 @@ export const TaskDeetsModal = (props) => {
 
   const handleUploadFile = () => {
     setFileModalShow(true);
+  };
+
+  const runStopwatch = () => {
+    setTimer({ ...timer, running: true, taskId: props.task._id });
   };
 
   // useEffect(() => {
@@ -334,6 +343,23 @@ export const TaskDeetsModal = (props) => {
                 <span>Progreso</span>
               </div>
               <ProgressBar now={progressPercentage()} />
+            </div>
+            <div className="my-3" id="progress">
+              <div className="sectionTitle">
+                <RiTimerFill />
+                <span>Cronómetro</span>
+                <Button
+                  className="add button-task cursor-pointer float-right"
+                  onClick={runStopwatch}
+                >
+                  Iniciar crónometro
+                </Button>
+              </div>
+              <div className="alert alert-primary my-3" role="alert">
+                Lleva el tiempo de cuanto inviertes en cada tarea, para llevar
+                un mejor control del proyecto! Podras manejar el mismo desde el
+                menu lateral para mayor comodidad.
+              </div>
             </div>
             {/* <div id="labels">
               <div className="sectionTitle mt-3">

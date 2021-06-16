@@ -5,6 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // import ModalNewProyect from "./ModalNewProyect";
 import { AppRouter } from "./router/AppRouter";
 import { AppProvider } from "./context/AppContext";
+import { TimerProvider } from "./context/TimerContext";
+
 import { HomeScreen } from "./pages/HomeScreen";
 
 function App() {
@@ -14,7 +16,6 @@ function App() {
   //handleSubmit(name) => //some code
 
   return (
-    
     //<div className="m-5">
     //  <h1>WORK ZONE!!</h1>
     //  <Button variant="info" onClick={onClick}>
@@ -23,11 +24,12 @@ function App() {
     //  </Button>
     //
     <div className="main-container">
-        <AppProvider>
+      <AppProvider>
+        <TimerProvider>
           <AppRouter />
-        </AppProvider>
-
-        {/* <HomeScreen />*/}
+        </TimerProvider>
+      </AppProvider>
+      {/* <HomeScreen />*/}
 
       <div className="footer"></div>
     </div>

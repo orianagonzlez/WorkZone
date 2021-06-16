@@ -80,13 +80,6 @@ export const AppProvider = ({ children }) => {
     }
   }, []);
 
-  useEffect(() => {
-    //console.log('ME EJECUTO 2 ')
-    // localStorage.setItem("user", JSON.stringify(user));
-    // let myUser = localStorage.getItem("user", JSON.stringify(user));
-    //console.log(myUser, "ayudame pls")
-  }, [user]);
-
   return (
     <AppContext.Provider
       value={{

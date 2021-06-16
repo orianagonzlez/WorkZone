@@ -11,6 +11,7 @@ import { ProfileRouter } from "./ProfileRouter";
 import { useEffect } from "react";
 import { fetchToken } from "../helpers/getData";
 import { useCallback } from "react";
+import { TimerProvider } from "../context/TimerContext";
 
 export const AppRouter = () => {
   const { user, verifyToken } = useContext(AppContext);
