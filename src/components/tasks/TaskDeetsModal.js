@@ -3,6 +3,7 @@ import { Modal, Button, Form, Col, ProgressBar, Row } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { postData } from "../../helpers/postData";
 import { useForm } from "../../hooks/useForm";
+import { storage } from "../../firebase/index";
 import {
   FaEdit,
   FaChartLine,
@@ -217,6 +218,8 @@ export const TaskDeetsModal = (props) => {
     });
   };
 
+  const [view, setView] = useState(false);
+
   return (
     <Modal
       show={props.show}
@@ -331,8 +334,14 @@ export const TaskDeetsModal = (props) => {
                 </div>
                 <div className="file-buttons">
                   <button type="button" id="see-files">
-                    <FaEye />
+                    <FaEye onClick={() => setView(!view)} />
                   </button>
+                  {/* <Form.Group>
+                      {view ? <Form.Control as="textarea">
+
+                      </Form.Control> : ""}
+                    </Form.Group> */}
+
                   <label className="upload-file-label">
                     <FaPlus onClick={handleUploadFile} />
                     <UploadFilesModal
@@ -340,6 +349,7 @@ export const TaskDeetsModal = (props) => {
                       show={fileModalShow}
                       onHide={() => setFileModalShow(false)}
                       task={props.task}
+                      files = {props.files}
                     />
                   </label>
                 </div>
