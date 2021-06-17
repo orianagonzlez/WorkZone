@@ -96,9 +96,10 @@ export const TaskDeetsModal = (props) => {
     return (progress * 100) / total;
   };
 
-  const [assigned, setAssigned] = useState();
+  const [assigned, setAssigned] = useState(props.task.miembro ? props.task.miembro : '');
 
   const onAssignedChange = async (e) => {
+    console.log(e.target.value);
     setAssigned(e.target.value);
   };
 
@@ -130,7 +131,7 @@ export const TaskDeetsModal = (props) => {
 
   const handleCreate = (e) => {
     e.preventDefault();
-    console.log(formValues);
+    console.log(formValues, assigned);
     console.log(inputList);
     console.log(props);
 
@@ -292,31 +293,30 @@ export const TaskDeetsModal = (props) => {
                     value={assigned}
                     onChange={onAssignedChange}
                   >
-                    {
+                    {/* {
                       // esto es para poner por default el que ya tiene la tarea asiganada
                       //si es que esta asiganda
                       formValues.task_member != undefined ? (
                         props.project.miembros.map((miembro) => {
                           if (assigned === miembro._id) {
-                            return <option>{miembro.nombre}</option>;
+                            return <option>{miembro.nombre} {miembro.apellido}</option>;
                           }
                         })
                       ) : (
                         <option>Elegir miembro</option>
                       )
-                    }
-
+                    } */}
+                    <option value="">Elegir miembro</option>
                     {
                       //para que salgan en el select el resto de los miembros
                       props.project.miembros.map((miembro) => {
-                        if (assigned !== miembro._id) {
+                        
                           return (
                             <option value={miembro._id} key={miembro._id}>
-                              {miembro.nombre}
+                              {miembro.nombre} {miembro.apellido}
                             </option>
                           );
-                        }
-                        return null;
+                       
                       })
                     }
                   </Form.Control>

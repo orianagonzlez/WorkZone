@@ -4,6 +4,9 @@ import {
   FaBoxes,
   FaCog,
   FaUserCog,
+  FaPlay, 
+  FaPause,
+  FaRedoAlt
 } from "react-icons/fa";
 import { GoSignOut } from "react-icons/go";
 
@@ -277,11 +280,13 @@ export default function Sidebar() {
                   <span>{days}</span>:<span>{hours}</span>:
                   <span>{minutes}</span>:<span>{seconds}</span>
                 </div>
-                {running ? <button onClick={pause} disabled={!taskId}>Pause</button>
-                : <button onClick={start} disabled={!taskId}>Start</button>
+                <div className="d-flex justify-content-between">
+                 {running ? <Button onClick={pause} disabled={!taskId}><FaPause/></Button>
+                : <Button onClick={start} disabled={!taskId}><FaPlay/></Button>
                 }
-                <button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}>Reset</button>
-              </div>
+                <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button>
+                </div>
+                </div>
             </ul>
           </li>
         </div>
