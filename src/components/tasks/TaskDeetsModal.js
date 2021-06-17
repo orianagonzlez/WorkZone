@@ -155,7 +155,7 @@ export const TaskDeetsModal = (props) => {
       nombre: formValues.task_name,
       descripcion: formValues.task_content,
       subtareas: inputList,
-      miembro: assigned,
+      miembro: assigned ? assigned : null,
     };
 
     console.log(body);
