@@ -155,6 +155,7 @@ export const Board = ({ project }) => {
 
   const [taskModalShow, setTaskModalShow] = useState(false);
 
+  console.log('AHORA SOY', taskModalShow)
   const history = useHistory();
 
   useEffect(() => {

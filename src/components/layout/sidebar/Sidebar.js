@@ -46,14 +46,10 @@ export default function Sidebar() {
   useEffect(() => {
     if (taskId) {
       if (isRunning) {
-        clearInterval(saveTimeInterval);
-        let body = {
-          id_tarea: taskId,
-          cronometro: `${days}:${hours}:${minutes}:${seconds}`
-        };
-
-        updateTask(body);
+        pause();
       }
+
+      console.log(taskId)
       getData(
         `https://workzone-backend-mdb.herokuapp.com/api/tasks/${taskId}`
       ).then((r) => {
@@ -103,10 +99,6 @@ export default function Sidebar() {
     }
     
   }, [isRunning]);
-
-  useEffect(() => {
-    console.log('sidebar otra vezzz')
-  }, [])
 
   const signOut = () => {
     if (running) {
@@ -226,16 +218,21 @@ export default function Sidebar() {
                 </Button>
               </ul>
               <ul>
-                <div style={{ textAlign: "center" }}>
-                  <div>
-                    <span>{days}</span>:<span>{hours}</span>:
-                    <span>{minutes}</span>:<span>{seconds}</span>
-                  </div>
-                  {running ? <button onClick={pause} disabled={!taskId}>Pause</button>
-                  : <button onClick={start} disabled={!taskId}>Start</button>
-                  }
-                  <button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}>Reset</button>
+              <div style={{ textAlign: "center" }}>
+                <div>
+                  <span>{days}</span>:<span>{hours}</span>:
+                  <span>{minutes}</span>:<span>{seconds}</span>
                 </div>
+                <div className="d-flex justify-content-between">
+                 {running ? <Button onClick={pause} disabled={!taskId}><FaPause/></Button>
+                : <Button onClick={start} disabled={!taskId}><FaPlay/></Button>
+                }
+                {/* para resetear al tiempo con el que inicio a correr */}
+                {/* <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button> */}
+                <Button onClick={() => {running ? reset() : reset(initialTime, false)}} disabled={!taskId}><FaRedoAlt/></Button>
+
+                </div>
+              </div>
             </ul>
             </li>
           </div>
@@ -284,9 +281,12 @@ export default function Sidebar() {
                  {running ? <Button onClick={pause} disabled={!taskId}><FaPause/></Button>
                 : <Button onClick={start} disabled={!taskId}><FaPlay/></Button>
                 }
-                <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button>
+                {/* para resetear al tiempo con el que inicio a correr */}
+                {/* <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button> */}
+                <Button onClick={() => {running ? reset() : reset(initialTime, false)}} disabled={!taskId}><FaRedoAlt/></Button>
+
                 </div>
-                </div>
+              </div>
             </ul>
           </li>
         </div>
