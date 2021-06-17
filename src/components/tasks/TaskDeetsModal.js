@@ -29,6 +29,7 @@ import { UploadFilesModal } from "../tasks/UploadFilesModal";
 import { useContext } from "react";
 import { TimerContext } from "../../context/TimerContext";
 import { AppContext } from "../../context/AppContext";
+import { SocketContext } from "../../context/SocketContext";
 
 export const TaskDeetsModal = (props) => {
   const [formValues, handleInputChange, reset] = useForm({
@@ -46,6 +47,8 @@ export const TaskDeetsModal = (props) => {
   console.log(user)
 
   const { timer, setTimer } = useContext(TimerContext);
+
+  const { socket } = useContext(SocketContext);
 
   // const {
   //   data: thisTask,
@@ -85,9 +88,6 @@ export const TaskDeetsModal = (props) => {
 
   const { task_name, task_content, task_member, task_status } = formValues;
 
-  console.log(props);
-  console.log(props.task.miembro); // esto es un id. hay que buscar en la base de datos a la persona con este id para poner la fotico
-
   const [inputList, setInputList] = React.useState([...props.task.subtareas]);
 
   const progressPercentage = () => {
@@ -96,7 +96,7 @@ export const TaskDeetsModal = (props) => {
     return (progress * 100) / total;
   };
 
-  const [assigned, setAssigned] = useState(props.task.miembro);
+  const [assigned, setAssigned] = useState();
 
   const onAssignedChange = async (e) => {
     setAssigned(e.target.value);
@@ -127,12 +127,6 @@ export const TaskDeetsModal = (props) => {
   const runStopwatch = () => {
     setTimer({ ...timer, taskId: props.task._id });
   };
-
-  // useEffect(() => {
-  //   console.log("soy props", props);
-  //   let mylists = props.lists;
-  //   console.log(mylists);
-  // }, []);
 
   const handleCreate = (e) => {
     e.preventDefault();
@@ -170,6 +164,8 @@ export const TaskDeetsModal = (props) => {
       body
     ).then((r) => {
       console.log("me respondio" + r);
+      socket.emit("refresh-project", { id_proyecto: props.project._id });
+
       if (r.ok) {
         console.log("todo bien", r.data);
         props.refreshList();
@@ -202,6 +198,7 @@ export const TaskDeetsModal = (props) => {
         ).then((r) => {
           console.log("me respondio" + r);
           if (r.ok) {
+            socket.emit("refresh-project", { id_proyecto: props.project._id });
             props.refreshList();
             console.log("todo bien", r.data);
           } else {
@@ -300,8 +297,6 @@ export const TaskDeetsModal = (props) => {
                       //si es que esta asiganda
                       formValues.task_member != undefined ? (
                         props.project.miembros.map((miembro) => {
-                          console.log("task member ", formValues.task_member);
-
                           if (assigned === miembro._id) {
                             return <option>{miembro.nombre}</option>;
                           }
@@ -403,66 +398,70 @@ export const TaskDeetsModal = (props) => {
               <div className="sectionTitle mt-3">
                 <FaThList />
                 <span>Subtareas</span>
-
-                <div className="d-flex justify-content-end">
-                  <Button
-                    className="add button-task cursor-pointer"
-                    onClick={handleAddClick}
-                  >
-                    Agregar subtarea
-                  </Button>
-                </div>
+                <Button
+                  className="add button-task cursor-pointer  float-right"
+                  onClick={handleAddClick}
+                >
+                  Agregar subtarea
+                </Button>
               </div>
-              <div className="subtasks-checkboxes mb-5">
-                {inputList.map((subtask, i) => {
-                  return (
-                    <div className="d-flex align-items-center ">
-                      <div className=" ">
-                        {subtask.status === 1 ? (
-                          <ImCheckboxChecked
-                            className="cursor mb-3 check"
-                            onClick={() => {
-                              return handleCheck(i, 0);
-                            }}
-                          ></ImCheckboxChecked>
-                        ) : (
-                          <ImCheckboxUnchecked
-                            className="cursor mb-3 check"
-                            onClick={() => handleCheck(i, 1)}
-                          ></ImCheckboxUnchecked>
-                        )}
-                      </div>
+              <div className="subtasks-checkboxes mb-5 mt-3">
+                {inputList.length === 0 ? (
+                  <div className="alert alert-primary my-3" role="alert">
+                    Da mayores detalles sobre la tarea añadiendo subtaras que
+                    permitan ver el progreso. que se lleva en ella
+                  </div>
+                ) : (
+                  inputList.map((subtask, i) => {
+                    return (
+                      <div className="d-flex align-items-center ">
+                        <div className=" ">
+                          {subtask.status === 1 ? (
+                            <ImCheckboxChecked
+                              className="cursor mb-3 check"
+                              onClick={() => {
+                                return handleCheck(i, 0);
+                              }}
+                            ></ImCheckboxChecked>
+                          ) : (
+                            <ImCheckboxUnchecked
+                              className="cursor mb-3 check"
+                              onClick={() => handleCheck(i, 1)}
+                            ></ImCheckboxUnchecked>
+                          )}
+                        </div>
 
-                      <Form.Row className="subtaskInputRow flex-grow-1 m-2">
-                        <Form.Group as={Col} className="formGroup">
-                          <Form.Control
-                            type="text"
-                            placeholder="Reunión con el cliente"
-                            name="email"
-                            autoComplete="off"
-                            value={subtask.nombre}
-                            as="textarea"
-                            onChange={(e) => {
-                              e.preventDefault();
-                              const list = [...inputList];
-                              list[i].nombre = e.target.value;
-                              setInputList(list);
-                            }}
-                          />
-                        </Form.Group>
-                      </Form.Row>
+                        <Form.Row className="subtaskInputRow flex-grow-1 m-2">
+                          <Form.Group as={Col} className="formGroup">
+                            <Form.Control
+                              type="text"
+                              placeholder="Descripción de la subtarea"
+                              name="email"
+                              autoComplete="off"
+                              value={subtask.nombre}
+                              as="textarea"
+                              onChange={(e) => {
+                                e.preventDefault();
+                                const list = [...inputList];
+                                list[i].nombre = e.target.value;
+                                setInputList(list);
+                              }}
+                            />
+                          </Form.Group>
+                        </Form.Row>
 
-                      <div className="btn-box">
-                        {
-                          <FaTrash
-                            className="delete-subtask delete cursor"
-                            onClick={() => handleRemoveClick(i)}
-                          ></FaTrash>
-                        }
+                        <div className="btn-box">
+                          {
+                            <FaTrash
+                              className="delete-subtask delete cursor"
+                              onClick={() => handleRemoveClick(i)}
+                            ></FaTrash>
+                          }
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })
+                )}
               </div>
 
               {/* 

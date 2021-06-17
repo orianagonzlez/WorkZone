@@ -1,6 +1,9 @@
 import React from "react";
+import { useContext } from "react";
+import { useEffect } from "react";
 import { Modal, Button, Form, Col } from "react-bootstrap";
 import Swal from "sweetalert2";
+import { SocketContext } from "../../context/SocketContext";
 import { postData } from "../../helpers/postData";
 import { useForm } from "../../hooks/useForm";
 
@@ -13,6 +16,8 @@ export const CreateTaskModal = (props) => {
   });
 
   const { task_name, task_content, task_member, task_status } = formValues;
+
+  const { socket } = useContext(SocketContext);
 
   const handleCreate = (e) => {
     console.log(task_name, task_content, task_status);
@@ -39,6 +44,7 @@ export const CreateTaskModal = (props) => {
         newTask
       ).then((r) => {
         console.log("me respondio" + r);
+
         if (r.ok) {
           console.log("todo bien. CREE TAREAAAAAA");
           console.log(r.data);
@@ -46,14 +52,14 @@ export const CreateTaskModal = (props) => {
           newColumns[task_status].items.push(r.data);
 
           console.log(newColumns[task_status].items);
-          console.log('ACTU LISTA');
-          console.log(newColumns[task_status].items.map(i => i._id))
-          
+          console.log("ACTU LISTA");
+          console.log(newColumns[task_status].items.map((i) => i._id));
+
           console.log(task_status);
-          
+
           const body = {
             id_lista: task_status,
-            items: newColumns[task_status].items.map(i => i._id)
+            items: newColumns[task_status].items.map((i) => i._id),
           };
 
           postData(
@@ -61,6 +67,9 @@ export const CreateTaskModal = (props) => {
             body
           ).then((res) => {
             console.log("me respondio" + res);
+            socket.emit("refresh-project", {
+              id_proyecto: newTask.id_proyecto,
+            });
             if (res.ok) {
               console.log("todo bien", res.data);
             } else {
@@ -77,14 +86,13 @@ export const CreateTaskModal = (props) => {
           });
 
           // props.setcolumns(newColumns);
-          
+
           // Swal.fire({
           //   icon: "success",
           //   title: "Tarea creada",
           //   text: "La tarea fue creada de forma exitosa",
           //   confirmButtonColor: "#22B4DE",
           // });
-          
         } else {
           console.log("error");
           Swal.fire({
