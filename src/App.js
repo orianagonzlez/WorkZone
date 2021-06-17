@@ -8,29 +8,21 @@ import { AppProvider } from "./context/AppContext";
 import { TimerProvider } from "./context/TimerContext";
 
 import { HomeScreen } from "./pages/HomeScreen";
+import { SocketProvider } from "./context/SocketContext";
+import { ChatProvider } from "./context/ChatContext";
 
 function App() {
-  const [showModal, setShowModal] = React.useState(false);
-  const onClick = () => setShowModal(true);
-
-  //handleSubmit(name) => //some code
-
   return (
-    //<div className="m-5">
-    //  <h1>WORK ZONE!!</h1>
-    //  <Button variant="info" onClick={onClick}>
-    //    {showModal ? <ModalNewProyect /> : null}
-    //    Show modal
-    //  </Button>
-    //
     <div className="main-container">
       <AppProvider>
-        <TimerProvider>
-          <AppRouter />
-        </TimerProvider>
+        <ChatProvider>
+          <SocketProvider>
+            <TimerProvider>
+              <AppRouter />
+            </TimerProvider>
+          </SocketProvider>
+        </ChatProvider>
       </AppProvider>
-      {/* <HomeScreen />*/}
-
       <div className="footer"></div>
     </div>
   );

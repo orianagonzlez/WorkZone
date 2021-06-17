@@ -7,19 +7,19 @@ import { useForm } from "../../hooks/useForm";
 export const EditColumnModal = (props) => {
   const [formValues, handleInputChange, reset] = useForm({
     column_name: "",
-    task_status: props.columns[0]?._id
+    task_status: props.columns[0]?._id,
   });
 
   const { column_name, task_status } = formValues;
 
   const handleEdit = (e) => {
     e.preventDefault();
-    if ( task_status && column_name) {
+    if (task_status && column_name) {
       console.log(column_name, task_status);
 
       const body = {
         id_lista: task_status,
-        nombre: column_name
+        nombre: column_name,
       };
 
       console.log(body);
