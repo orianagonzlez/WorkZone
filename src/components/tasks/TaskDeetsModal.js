@@ -367,7 +367,7 @@ export const TaskDeetsModal = (props) => {
               <div className="sectionTitle">
                 <RiTimerFill />
                 <span>Cronómetro</span>
-                {(!props.task.miembro || props.task.miembro == user?.id) &&
+                {(!props.task.miembro || props.task.miembro == user?.id) && timer.taskId != props.task._id &&
                  <Button
                   className="add button-task cursor-pointer float-right"
                   onClick={runStopwatch}
@@ -375,6 +375,8 @@ export const TaskDeetsModal = (props) => {
                   Iniciar crónometro
                 </Button>}
               </div>
+              {timer.taskId == props.task._id &&
+                <div className="font-weight-bold my-2">Cronometrando tarea</div>}
               <div>Tiempo anterior: {props.task.cronometro}</div>
               <div className="alert alert-primary my-3" role="alert">
                 Lleva el tiempo de cuanto inviertes en tus tareas asignadas o generales para llevar

@@ -5,6 +5,8 @@ export const TimerContext = createContext();
 
 const initialTimer = {
   taskId: "",
+  // taskName: "",
+  // projectName: "",
   running: false,
 };
 

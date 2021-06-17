@@ -122,11 +122,9 @@ export default function ProjectDeets() {
 
       <div className="divArrowLeft">
         <div>
-          <Link to="/">
-            <Button className="arrowLeft">
-              <FaArrowCircleLeft />
-            </Button>
-          </Link>
+          <Button className="arrowLeft" onClick={() => history.push('/projects')}>
+            <FaArrowCircleLeft />
+          </Button>
         </div>
         <h1>{projectInfo.nombre}</h1>
       </div>

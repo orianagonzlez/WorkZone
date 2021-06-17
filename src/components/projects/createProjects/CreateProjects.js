@@ -301,11 +301,11 @@ export default function CreateProjects() {
     <div className="componentContainer">
       <div className="divArrowLeft">
         <div>
-          <Link to="/">
-            <Button className="arrowLeft">
+            <Button className="arrowLeft" onClick={() => {!editMode ? history.push('/projects') :
+            history.push(`/projects/details/${project._id}`)
+          }}>
               <FaArrowCircleLeft />
             </Button>
-          </Link>
         </div>
         {!editMode ? <h1>Nuevo proyecto</h1> : <h1>Editar proyecto</h1>}
       </div>
