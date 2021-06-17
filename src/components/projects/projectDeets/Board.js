@@ -228,6 +228,7 @@ export const Board = ({ project }) => {
   };
 
   const[files, setFiles] = useState([]);
+  const[fileNames, setFileNames] = useState([]);
   const [view, setView] = useState(false);
 
   const getFiles = (item) => {
@@ -252,9 +253,20 @@ export const Board = ({ project }) => {
       }).catch(function(error) {
         console.log(error)
       });
+      imageRef.getMetadata().then(function(metadata) {
+
+        let newListNames = fileNames;
+        newListNames.push(metadata.name);
+        setFileNames(newListNames);
+
+        
+      }).catch(function(error) {
+        console.log(error)
+      });
     }
 
     console.log('URLs', files)
+    console.log('Names', fileNames)
     console.log('View', view);
   }
 
@@ -400,6 +412,7 @@ export const Board = ({ project }) => {
                                           task={item}
                                           show={taskModalShow}
                                           files = {files}
+                                          fileNames = {fileNames}
                                           onHide={() => {
                                             setTaskModalShow(false) 
                                             setFiles([])

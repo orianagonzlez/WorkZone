@@ -350,6 +350,7 @@ export const TaskDeetsModal = (props) => {
                       onHide={() => setFileModalShow(false)}
                       task={props.task}
                       files = {props.files}
+                      fileNames = {props.fileNames}
                     />
                   </label>
                 </div>
