@@ -271,18 +271,18 @@ export const Board = ({ project }) => {
     console.log('View', view);
   }
 
-  const [taskToShow = {}, setTaskToShow] = useState();
+  const [taskToShow, setTaskToShow] = useState({});
 
   const handleOpenTaskDeets = (item) => {
     getFiles(item)
-    setTaskToShow(item);
-    console.log('Task', taskToShow);
+    setTaskToShow(item._id);
+    console.log('Task', item);
     setTaskModalShow(true);
     console.log("yes");
     //console.log(taskModalShow);
     //console.log(item);
     //console.log(taskModalShow);
-    console.log(taskToShow.nombre);
+    // console.log(taskToShow.nombre);
 
     //console.log(item.nombre);
   };
@@ -521,7 +521,7 @@ export const Board = ({ project }) => {
                                             : null}
                                         </div>
                                       </div>
-                                      {item === taskToShow && (
+                                      {item._id === taskToShow && (
                                         //console.log("yeesyeyeyeyes", index)
                                           <TaskDeetsModal
                                           project={project}
@@ -532,11 +532,9 @@ export const Board = ({ project }) => {
                                             setTaskModalShow(false) 
                                             setFiles([])
                                           }}
-                                          columns={columns}
                                           lists={lists}
-                                          setcolumns={setColumns}
                                           animation={false}
-                                          key={1}
+                                          key={item._id}
                                           refreshList={refreshList}
                                         />
                                       )}
