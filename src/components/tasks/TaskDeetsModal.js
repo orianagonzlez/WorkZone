@@ -31,19 +31,24 @@ import { TimerContext } from "../../context/TimerContext";
 import { AppContext } from "../../context/AppContext";
 import { SocketContext } from "../../context/SocketContext";
 
-export const TaskDeetsModal = (props) => {
+export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files }) => {
+  
+  const { _id, nombre, descripcion, miembro, lista, subtareas, cronometro } = task;
+
+  console.log('mi nombreee ', nombre)
+
   const [formValues, handleInputChange, reset] = useForm({
-    task_name: props.task.nombre,
-    task_content: props.task.descripcion,
-    task_member: props.task.miembro,
-    task_status: props.task.lista,
+    task_name: nombre,
+    task_content: descripcion,
+    task_member: miembro,
+    task_status: lista
   });
 
-  console.log('task', props)
+  console.log('task', task)
 
   const {user} = useContext(AppContext);
 
-  console.log(props.task.miembro == user?.id);
+  console.log(miembro == user?.id);
   console.log(user)
 
   const { timer, setTimer } = useContext(TimerContext);
@@ -88,7 +93,9 @@ export const TaskDeetsModal = (props) => {
 
   const { task_name, task_content, task_member, task_status } = formValues;
 
-  const [inputList, setInputList] = React.useState([...props.task.subtareas]);
+  const [inputList, setInputList] = React.useState([]);
+
+  console.log('si bien mis subtareas son ', subtareas, 'yo muestro ', inputList);
 
   const progressPercentage = () => {
     let progress = inputList.filter((subtask) => subtask.status === 1).length;
@@ -96,7 +103,7 @@ export const TaskDeetsModal = (props) => {
     return (progress * 100) / total;
   };
 
-  const [assigned, setAssigned] = useState(props.task.miembro ? props.task.miembro : '');
+  const [assigned, setAssigned] = useState();
 
   const onAssignedChange = async (e) => {
     console.log(e.target.value);
@@ -126,21 +133,20 @@ export const TaskDeetsModal = (props) => {
   };
 
   const runStopwatch = () => {
-    setTimer({ ...timer, taskId: props.task._id, running: true });
+    setTimer({ ...timer, taskId: _id, running: true });
   };
 
   const handleCreate = (e) => {
     e.preventDefault();
     console.log(formValues, assigned);
     console.log(inputList);
-    console.log(props);
 
     //por is hay una subtask vacia
     setInputList(inputList.filter((subtask) => subtask.nombre !== ""));
 
     if (
-      validator.isEmpty(formValues.task_name) ||
-      validator.isEmpty(formValues.task_content)
+      validator.isEmpty(task_name) ||
+      validator.isEmpty(task_content)
     ) {
       Swal.fire({
         icon: "error",
@@ -151,9 +157,9 @@ export const TaskDeetsModal = (props) => {
     }
 
     let body = {
-      id_tarea: props.task._id,
-      nombre: formValues.task_name,
-      descripcion: formValues.task_content,
+      id_tarea: _id,
+      nombre: task_name,
+      descripcion: task_content,
       subtareas: inputList,
       miembro: assigned ? assigned : null,
     };
@@ -165,16 +171,16 @@ export const TaskDeetsModal = (props) => {
       body
     ).then((r) => {
       console.log("me respondio" + r);
-      socket.emit("refresh-project", { id_proyecto: props.project._id });
+      socket.emit("refresh-project", { id_proyecto: project._id });
 
       if (r.ok) {
         console.log("todo bien", r.data);
-        props.refreshList();
+        refreshList();
       } else {
         console.log("error");
       }
     });
-    props.onHide();
+    onHide();
   };
 
   const handleDelete = () => {
@@ -189,8 +195,8 @@ export const TaskDeetsModal = (props) => {
     }).then((result) => {
       if (result.isConfirmed) {
         let body = {
-          id_tarea: props.task._id,
-          id_lista: props.task.lista,
+          id_tarea: _id,
+          id_lista: lista,
           active: false,
         };
         postData(
@@ -199,8 +205,8 @@ export const TaskDeetsModal = (props) => {
         ).then((r) => {
           console.log("me respondio" + r);
           if (r.ok) {
-            socket.emit("refresh-project", { id_proyecto: props.project._id });
-            props.refreshList();
+            socket.emit("refresh-project", { id_proyecto: project._id });
+            refreshList();
             console.log("todo bien", r.data);
           } else {
             console.log("error");
@@ -218,10 +224,18 @@ export const TaskDeetsModal = (props) => {
 
   const [view, setView] = useState(false);
 
+  useEffect(() => {
+    setAssigned(miembro ? miembro : '');
+  }, [miembro]);
+
+  useEffect(() => {
+    setInputList([...subtareas]);
+  }, [subtareas]);
+
   return (
     <Modal
-      show={props.show}
-      onHide={props.onHide}
+      show={show}
+      onHide={onHide}
       size="lg"
       backdrop="static"
       data-keyboard="false"
@@ -230,7 +244,7 @@ export const TaskDeetsModal = (props) => {
       animation={false}
     >
       <Form className="subtask_form" onSubmit={handleCreate}>
-        <Modal.Header onClick={props.onHide} />
+        <Modal.Header onClick={onHide} />
         <Modal.Body className="deets-container">
           <div className="header-container">
             <div className="">
@@ -240,7 +254,7 @@ export const TaskDeetsModal = (props) => {
                   type="text"
                   name="task_name"
                   autoComplete="off"
-                  value={formValues.task_name}
+                  value={task_name}
                   onChange={handleInputChange}
                   as="textarea"
                 />
@@ -256,14 +270,14 @@ export const TaskDeetsModal = (props) => {
                 name="task_content"
                 autoComplete="off"
                 as="textarea"
-                value={formValues.task_content}
+                value={task_content}
                 onChange={handleInputChange}
               />
             </p>
 
             {/* <p className="p-column">
               en
-              {props.lists.map((column) => {
+              {lists.map((column) => {
                 if (column._id === task_status) {
                   return <span> "{column.nombre}"</span>;
                 }
@@ -309,7 +323,7 @@ export const TaskDeetsModal = (props) => {
                     <option value="">Elegir miembro</option>
                     {
                       //para que salgan en el select el resto de los miembros
-                      props.project.miembros.map((miembro) => {
+                      project.miembros.map((miembro) => {
                         
                           return (
                             <option value={miembro._id} key={miembro._id}>
@@ -340,12 +354,11 @@ export const TaskDeetsModal = (props) => {
                   <label className="upload-file-label">
                     <FaPlus onClick={handleUploadFile} />
                     <UploadFilesModal
-                      project={props.project}
+                      project={project}
                       show={fileModalShow}
                       onHide={() => setFileModalShow(false)}
-                      task={props.task}
-                      files = {props.files}
-                      fileNames = {props.fileNames}
+                      task={task}
+                      files = {files}
                     />
                   </label>
                 </div>
@@ -363,7 +376,7 @@ export const TaskDeetsModal = (props) => {
               <div className="sectionTitle">
                 <RiTimerFill />
                 <span>Cronómetro</span>
-                {(!props.task.miembro || props.task.miembro == user?.id) && timer.taskId != props.task._id &&
+                {(!miembro || miembro == user?.id) && timer.taskId != _id &&
                  <Button
                   className="add button-task cursor-pointer float-right"
                   onClick={runStopwatch}
@@ -371,9 +384,9 @@ export const TaskDeetsModal = (props) => {
                   Iniciar crónometro
                 </Button>}
               </div>
-              {timer.taskId == props.task._id &&
+              {timer.taskId == _id &&
                 <div className="font-weight-bold my-2">Cronometrando tarea</div>}
-              <div>Tiempo anterior: {props.task.cronometro}</div>
+              <div>Tiempo anterior: {cronometro}</div>
               <div className="alert alert-primary my-3" role="alert">
                 Lleva el tiempo de cuanto inviertes en tus tareas asignadas o generales para llevar
                 un mejor control del proyecto! Podras manejar el mismo desde el
@@ -409,13 +422,13 @@ export const TaskDeetsModal = (props) => {
               <div className="subtasks-checkboxes mb-5 mt-3">
                 {inputList.length === 0 ? (
                   <div className="alert alert-primary my-3" role="alert">
-                    Da mayores detalles sobre la tarea añadiendo subtaras que
-                    permitan ver el progreso. que se lleva en ella
+                    Da mayores detalles sobre la tarea añadiendo subtareas que
+                    permitan ver el progreso que se lleva en ella
                   </div>
                 ) : (
                   inputList.map((subtask, i) => {
                     return (
-                      <div className="d-flex align-items-center ">
+                      <div className="d-flex align-items-center " key={subtask._id}>
                         <div className=" ">
                           {subtask.status === 1 ? (
                             <ImCheckboxChecked
