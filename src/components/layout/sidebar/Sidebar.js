@@ -45,11 +45,22 @@ export default function Sidebar() {
 
   useEffect(() => {
     if (taskId) {
+
+      //Si otra tarea esta corriendo, guardo el valor antes del cambio
       if (isRunning) {
-        pause();
+        clearInterval(saveTimeInterval);
+        let body = {
+          id_tarea: taskId,
+          cronometro: `${days}:${hours}:${minutes}:${seconds}`
+        };
+
+        console.log('aqui')
+        updateTask(body);
       }
 
       console.log(taskId)
+
+      //busco el ultimo tiempo guardado
       getData(
         `https://workzone-backend-mdb.herokuapp.com/api/tasks/${taskId}`
       ).then((r) => {
@@ -57,15 +68,20 @@ export default function Sidebar() {
           const newTime = new Date();
           let time = r.data.cronometro;
           console.log('esto recibo', time)
+
           if (time != '0:0:0:0') {
+            //empiezo el cronometro desde donde quedo
             time = time.split(":");
 
             const newTime = getNewTime(time);
 
             console.log('esto envio', newTime);
             setInitialTime(time);
-            reset(newTime, true);
+            running ? reset(newTime, true) : reset(newTime, false);
+
           } else {
+            time = time.split(":");
+            setInitialTime(time);
             reset();
           }
         } else {
@@ -78,6 +94,8 @@ export default function Sidebar() {
   useEffect(() => {
 
     if (taskId) {
+
+      console.log('YA TENGO EL TASK')
       setTimer({...timer, running: isRunning});
 
       let body = {
@@ -88,11 +106,15 @@ export default function Sidebar() {
       if (isRunning) {
         console.log('empiezo')
     
+        // como empezo el cronometro, se empieza a guardar el tiempo cada cierto tiempo
         setSaveTimeInterval(setInterval((body) => {
           updateTask(body);
         }, 10000)); 
-      } else {
+      } else if (initialTime.length > 0) {
         console.log('me pare');
+
+        // como se pauso el cronometro, se deja de guardar por intervalos y 
+        //se guarda el tiempo donde quedo
         clearInterval(saveTimeInterval);
         updateTask(body);
       }
@@ -102,6 +124,7 @@ export default function Sidebar() {
 
   const signOut = () => {
     if (running) {
+      // si el cronometro esta corriendo, se guarda el tiempo
       clearInterval(saveTimeInterval);
       let body = {
         id_tarea: taskId,
@@ -109,8 +132,16 @@ export default function Sidebar() {
       };
 
       console.log('aqui')
-      updateTask(body);
+      updateTask(body); 
     }
+
+    // se limpia el local storage
+    localStorage.removeItem("stopwatch");
+
+      setTimer({
+        taskId: "",
+        running: false
+      });
 
     const body = {
       uid: user.id,
@@ -129,6 +160,7 @@ export default function Sidebar() {
           fechaNacimiento: "",
           isLogged: false,
         });
+
       } else {
         console.log("error");
         Swal.fire({
@@ -141,6 +173,7 @@ export default function Sidebar() {
     });
   };
 
+  // formatea el tiempo desde el que iniciara el cronometro
   const getNewTime = (time) => {
     const newTime = new Date();
     newTime.setHours(newTime.getHours() + parseInt(time[1]) + (24 * parseInt(time[0])));
@@ -151,6 +184,7 @@ export default function Sidebar() {
   }
 
   const updateTask = (body) => {
+    console.log('voy a guardar esto', body);
     postData(
       "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
       body

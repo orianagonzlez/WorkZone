@@ -126,7 +126,7 @@ export const TaskDeetsModal = (props) => {
   };
 
   const runStopwatch = () => {
-    setTimer({ ...timer, taskId: props.task._id });
+    setTimer({ ...timer, taskId: props.task._id, running: true });
   };
 
   const handleCreate = (e) => {

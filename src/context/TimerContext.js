@@ -11,7 +11,17 @@ const initialTimer = {
 };
 
 export const TimerProvider = ({ children }) => {
-  const [timer, setTimer] = useState(initialTimer);
+  const [timer, setTimer] = useState(() => {
+  if (localStorage.getItem("stopwatch")) {
+    return JSON.parse(localStorage.getItem("stopwatch"));
+  } else {
+    return initialTimer;
+  }
+  });
+
+  useEffect(() => {
+    localStorage.setItem("stopwatch", JSON.stringify(timer));
+  }, [timer]);
 
   return (
     <TimerContext.Provider
