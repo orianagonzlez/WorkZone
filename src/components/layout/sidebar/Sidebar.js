@@ -4,6 +4,9 @@ import {
   FaBoxes,
   FaCog,
   FaUserCog,
+  FaPlay, 
+  FaPause,
+  FaRedoAlt
 } from "react-icons/fa";
 import { GoSignOut } from "react-icons/go";
 
@@ -42,6 +45,8 @@ export default function Sidebar() {
 
   useEffect(() => {
     if (taskId) {
+
+      //Si otra tarea esta corriendo, guardo el valor antes del cambio
       if (isRunning) {
         clearInterval(saveTimeInterval);
         let body = {
@@ -49,8 +54,13 @@ export default function Sidebar() {
           cronometro: `${days}:${hours}:${minutes}:${seconds}`
         };
 
+        console.log('aqui')
         updateTask(body);
       }
+
+      console.log(taskId)
+
+      //busco el ultimo tiempo guardado
       getData(
         `https://workzone-backend-mdb.herokuapp.com/api/tasks/${taskId}`
       ).then((r) => {
@@ -58,15 +68,20 @@ export default function Sidebar() {
           const newTime = new Date();
           let time = r.data.cronometro;
           console.log('esto recibo', time)
+
           if (time != '0:0:0:0') {
+            //empiezo el cronometro desde donde quedo
             time = time.split(":");
 
             const newTime = getNewTime(time);
 
             console.log('esto envio', newTime);
             setInitialTime(time);
-            reset(newTime, true);
+            running ? reset(newTime, true) : reset(newTime, false);
+
           } else {
+            time = time.split(":");
+            setInitialTime(time);
             reset();
           }
         } else {
@@ -79,6 +94,8 @@ export default function Sidebar() {
   useEffect(() => {
 
     if (taskId) {
+
+      console.log('YA TENGO EL TASK')
       setTimer({...timer, running: isRunning});
 
       let body = {
@@ -89,11 +106,15 @@ export default function Sidebar() {
       if (isRunning) {
         console.log('empiezo')
     
+        // como empezo el cronometro, se empieza a guardar el tiempo cada cierto tiempo
         setSaveTimeInterval(setInterval((body) => {
           updateTask(body);
         }, 10000)); 
-      } else {
+      } else if (initialTime.length > 0) {
         console.log('me pare');
+
+        // como se pauso el cronometro, se deja de guardar por intervalos y 
+        //se guarda el tiempo donde quedo
         clearInterval(saveTimeInterval);
         updateTask(body);
       }
@@ -101,12 +122,9 @@ export default function Sidebar() {
     
   }, [isRunning]);
 
-  useEffect(() => {
-    console.log('sidebar otra vezzz')
-  }, [])
-
   const signOut = () => {
     if (running) {
+      // si el cronometro esta corriendo, se guarda el tiempo
       clearInterval(saveTimeInterval);
       let body = {
         id_tarea: taskId,
@@ -114,8 +132,16 @@ export default function Sidebar() {
       };
 
       console.log('aqui')
-      updateTask(body);
+      updateTask(body); 
     }
+
+    // se limpia el local storage
+    localStorage.removeItem("stopwatch");
+
+      setTimer({
+        taskId: "",
+        running: false
+      });
 
     const body = {
       uid: user.id,
@@ -134,6 +160,7 @@ export default function Sidebar() {
           fechaNacimiento: "",
           isLogged: false,
         });
+
       } else {
         console.log("error");
         Swal.fire({
@@ -146,6 +173,7 @@ export default function Sidebar() {
     });
   };
 
+  // formatea el tiempo desde el que iniciara el cronometro
   const getNewTime = (time) => {
     const newTime = new Date();
     newTime.setHours(newTime.getHours() + parseInt(time[1]) + (24 * parseInt(time[0])));
@@ -156,6 +184,7 @@ export default function Sidebar() {
   }
 
   const updateTask = (body) => {
+    console.log('voy a guardar esto', body);
     postData(
       "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
       body
@@ -223,16 +252,21 @@ export default function Sidebar() {
                 </Button>
               </ul>
               <ul>
-                <div style={{ textAlign: "center" }}>
-                  <div>
-                    <span>{days}</span>:<span>{hours}</span>:
-                    <span>{minutes}</span>:<span>{seconds}</span>
-                  </div>
-                  {running ? <button onClick={pause} disabled={!taskId}>Pause</button>
-                  : <button onClick={start} disabled={!taskId}>Start</button>
-                  }
-                  <button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}>Reset</button>
+              <div style={{ textAlign: "center" }}>
+                <div>
+                  <span>{days}</span>:<span>{hours}</span>:
+                  <span>{minutes}</span>:<span>{seconds}</span>
                 </div>
+                <div className="d-flex justify-content-between">
+                 {running ? <Button onClick={pause} disabled={!taskId}><FaPause/></Button>
+                : <Button onClick={start} disabled={!taskId}><FaPlay/></Button>
+                }
+                {/* para resetear al tiempo con el que inicio a correr */}
+                {/* <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button> */}
+                <Button onClick={() => {running ? reset() : reset(initialTime, false)}} disabled={!taskId}><FaRedoAlt/></Button>
+
+                </div>
+              </div>
             </ul>
             </li>
           </div>
@@ -277,10 +311,15 @@ export default function Sidebar() {
                   <span>{days}</span>:<span>{hours}</span>:
                   <span>{minutes}</span>:<span>{seconds}</span>
                 </div>
-                {running ? <button onClick={pause} disabled={!taskId}>Pause</button>
-                : <button onClick={start} disabled={!taskId}>Start</button>
+                <div className="d-flex justify-content-between">
+                 {running ? <Button onClick={pause} disabled={!taskId}><FaPause/></Button>
+                : <Button onClick={start} disabled={!taskId}><FaPlay/></Button>
                 }
-                <button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}>Reset</button>
+                {/* para resetear al tiempo con el que inicio a correr */}
+                {/* <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button> */}
+                <Button onClick={() => {running ? reset() : reset(initialTime, false)}} disabled={!taskId}><FaRedoAlt/></Button>
+
+                </div>
               </div>
             </ul>
           </li>

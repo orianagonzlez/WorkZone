@@ -1,8 +1,11 @@
 import React from "react";
+import { useContext } from "react";
 import { Modal, Button, Form, Col } from "react-bootstrap";
 import Swal from "sweetalert2";
+import { SocketContext } from "../../context/SocketContext";
 import { postData } from "../../helpers/postData";
 import { useForm } from "../../hooks/useForm";
+import { useSocket } from "../../hooks/useSocket";
 
 export const CreateColumnModal = (props) => {
   const [formValues, handleInputChange, reset] = useForm({
@@ -11,8 +14,9 @@ export const CreateColumnModal = (props) => {
 
   const { column_name } = formValues;
 
-  const handleCreate = (e) => {
+  const { socket } = useContext(SocketContext);
 
+  const handleCreate = (e) => {
     e.preventDefault();
     const currentColumns = props.columns;
     const newColumn = {
@@ -32,10 +36,12 @@ export const CreateColumnModal = (props) => {
         newColumn
       ).then((r) => {
         console.log("me respondio" + r);
+        console.log(socket, "SOCKETTT");
+        socket.emit("refresh-project", { id_proyecto: newColumn.id_proyecto });
+
         if (r.ok) {
           console.log("todo bien", r.data);
           reset();
-          
 
           // Swal.fire({
           //   icon: "success",
@@ -44,10 +50,9 @@ export const CreateColumnModal = (props) => {
           //   confirmButtonColor: "#22B4DE",
           // });
           props.onHide();
-
         } else {
           console.log("error");
-          
+
           Swal.fire({
             icon: "error",
             title: "Oops...",
