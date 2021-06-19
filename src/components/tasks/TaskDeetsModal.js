@@ -95,8 +95,6 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
 
   const [inputList, setInputList] = React.useState([]);
 
-  console.log('si bien mis subtareas son ', subtareas, 'yo muestro ', inputList);
-
   const progressPercentage = () => {
     let progress = inputList.filter((subtask) => subtask.status === 1).length;
     let total = inputList.length;
@@ -133,7 +131,7 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
   };
 
   const runStopwatch = () => {
-    setTimer({ ...timer, taskId: _id, running: true });
+    setTimer({ ...timer, taskId: _id, projectId: project._id, running: true });
   };
 
   const handleCreate = (e) => {
