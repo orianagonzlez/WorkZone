@@ -6,7 +6,8 @@ import {
   FaUserCog,
   FaPlay, 
   FaPause,
-  FaRedoAlt
+  FaRedoAlt,
+  FaComments
 } from "react-icons/fa";
 import { GoSignOut } from "react-icons/go";
 
@@ -19,6 +20,7 @@ import { useStopwatch } from "react-timer-hook";
 import { useEffect } from "react";
 import { TimerContext } from "../../../context/TimerContext";
 import { getData } from "../../../helpers/getData";
+import { SocketContext } from "../../../context/SocketContext";
 
 export default function Sidebar() {
   const [visible, setVisible] = useState(false);
@@ -30,7 +32,11 @@ export default function Sidebar() {
 
   const { setTimer, timer } = useContext(TimerContext); 
 
-  const { taskId, running } = timer;
+  const { socket } = useContext(SocketContext);
+
+  const { taskId, projectId, running } = timer;
+
+  console.log(timer);
   
   //Esto es por si le quieren mandar el tiempo en que debe iniciarse
   // const stopwatchOffset = new Date();
@@ -51,7 +57,8 @@ export default function Sidebar() {
         clearInterval(saveTimeInterval);
         let body = {
           id_tarea: taskId,
-          cronometro: `${days}:${hours}:${minutes}:${seconds}`
+          cronometro: `${days}:${hours}:${minutes}:${seconds}`,
+          running: false
         };
 
         console.log('aqui')
@@ -64,26 +71,36 @@ export default function Sidebar() {
       getData(
         `https://workzone-backend-mdb.herokuapp.com/api/tasks/${taskId}`
       ).then((r) => {
+        // si obtuve informacion
         if (r.ok) {
-          const newTime = new Date();
-          let time = r.data.cronometro;
-          console.log('esto recibo', time)
+          // si se encontro la tarea
+          if (r.data && !r.data.running) {
+            const newTime = new Date();
+            let time = r.data.cronometro;
+            console.log('esto recibo', time)
 
-          if (time != '0:0:0:0') {
-            //empiezo el cronometro desde donde quedo
-            time = time.split(":");
+            // si ya habia un tiempo guardado
+            if (time != '0:0:0:0') {
+              //empiezo el cronometro desde donde quedo
+              time = time.split(":");
 
-            const newTime = getNewTime(time);
+              const newTime = getNewTime(time);
 
-            console.log('esto envio', newTime);
-            setInitialTime(time);
-            running ? reset(newTime, true) : reset(newTime, false);
+              console.log('esto envio', newTime);
+              setInitialTime(time);
+              running ? reset(newTime, true) : reset(newTime, false);
 
+            } else {
+              time = time.split(":");
+              setInitialTime(time);
+              reset();
+            }
           } else {
-            time = time.split(":");
-            setInitialTime(time);
-            reset();
+            //TODO PONER UNA ALERTA
+            console.log('NO SE ENCONTRO LA TAREA, SEGURO FUE ELIMINADA')
+            setTimer({...timer, taskId: "", projectId: "", running: false});
           }
+          
         } else {
           console.log("error", r.data);
         }
@@ -105,18 +122,24 @@ export default function Sidebar() {
 
       if (isRunning) {
         console.log('empiezo')
-    
+        updateTask({id_tarea: taskId, running: true});
+
         // como empezo el cronometro, se empieza a guardar el tiempo cada cierto tiempo
-        setSaveTimeInterval(setInterval((body) => {
-          updateTask(body);
-        }, 10000)); 
+        setSaveTimeInterval(setInterval(() => {
+          const b = {
+            id_tarea: taskId,
+            cronometro: `${days}:${hours}:${minutes}:${seconds}`
+          }
+          console.log(b, 'acaaaaaaaaaaa');
+          updateTask(b);
+        }, 30000)); 
       } else if (initialTime.length > 0) {
         console.log('me pare');
 
         // como se pauso el cronometro, se deja de guardar por intervalos y 
         //se guarda el tiempo donde quedo
         clearInterval(saveTimeInterval);
-        updateTask(body);
+        updateTask({...body, running: false});
       }
     }
     
@@ -128,7 +151,8 @@ export default function Sidebar() {
       clearInterval(saveTimeInterval);
       let body = {
         id_tarea: taskId,
-        cronometro: `${days}:${hours}:${minutes}:${seconds}`
+        cronometro: `${days}:${hours}:${minutes}:${seconds}`,
+        running: false
       };
 
       console.log('aqui')
@@ -140,6 +164,7 @@ export default function Sidebar() {
 
       setTimer({
         taskId: "",
+        projectId: "",
         running: false
       });
 
@@ -190,7 +215,18 @@ export default function Sidebar() {
       body
     ).then((r) => {
       if (r.ok) {
+        // si encontre la tarea y la actualice
+        if (r.data) {
         console.log("guarde nuevo tiempo", r.data);
+        socket.emit("refresh-project", { id_proyecto: projectId });
+        } else {
+          //TODO SE MUESTRA LA MISMA ALERTA QUE SE MENCIONO CUANDO NO SE ENCUENTRA LA TAREA
+          console.log('NO SE ENCONTRO LA TAREA INTENTANDO EDITAR, SEGURO FUE ELIMINADA');
+          reset(new Date(), false);
+          clearInterval(saveTimeInterval);
+          setTimer({...timer, taskId: "", projectId: "", running: false});
+        }
+        
       } else {
         console.log("error guardando tiempo");
       }
@@ -233,8 +269,8 @@ export default function Sidebar() {
               </ul>
               <ul>
                 <Button>
-                  <FaCog />
-                  <span>Otro</span>
+                  <FaComments />
+                  <span>Chats</span>
                 </Button>
               </ul>
               <ul>
@@ -286,10 +322,12 @@ export default function Sidebar() {
               </NavLink>
             </ul>
             <ul>
-              <Button>
-                <FaCog />
-                <span>Otro</span>
-              </Button>
+              <NavLink exact={true} activeClassName="is-active" to="/chats">
+                <Button>
+                  <FaComments />
+                  <span>Chats</span>
+                </Button>
+              </NavLink>
             </ul>
             <ul>
               <NavLink exact={true} activeClassName="is-active" to="/profile">
@@ -317,7 +355,7 @@ export default function Sidebar() {
                 }
                 {/* para resetear al tiempo con el que inicio a correr */}
                 {/* <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button> */}
-                <Button onClick={() => {running ? reset() : reset(initialTime, false)}} disabled={!taskId}><FaRedoAlt/></Button>
+                <Button onClick={() => {running ? reset() : reset(new Date(), false)}} disabled={!taskId}><FaRedoAlt/></Button>
 
                 </div>
               </div>

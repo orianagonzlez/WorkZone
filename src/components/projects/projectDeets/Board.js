@@ -16,6 +16,7 @@ import { storage } from "../../../firebase/index";
 import { useSocket } from "../../../hooks/useSocket";
 import { SocketContext } from "../../../context/SocketContext";
 import { useContext } from "react";
+import { TimerContext } from "../../../context/TimerContext";
 
 const onDragEnd = (result, columns, setColumns) => {
   console.log("ARRASTRE");
@@ -139,8 +140,11 @@ export const Board = ({ project }) => {
 
   const { socket } = useContext(SocketContext);
 
+  const { timer } = useContext(TimerContext);
+
   useEffect(() => {
     socket?.on("refresh", (event) => {
+      console.log(event);
       refreshList();
     });
   }, [socket]);
@@ -155,7 +159,6 @@ export const Board = ({ project }) => {
 
   const [taskModalShow, setTaskModalShow] = useState(false);
 
-  console.log('AHORA SOY', taskModalShow)
   const history = useHistory();
 
   useEffect(() => {
@@ -501,7 +504,7 @@ export const Board = ({ project }) => {
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
                                     >
-                                      <div className=" card-box  px-2">
+                                      <div className={`card-box  px-2 ${item.running && 'text-success'} ${item.running && timer.taskId == item._id && 'text-info'}`}>
                                         {item.nombre}
                                         <div className="d-flex justify-content-between align-items-center">
                                           <div

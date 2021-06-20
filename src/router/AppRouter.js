@@ -8,6 +8,7 @@ import { PrivateRoute } from "./PrivateRoute";
 import { PublicRoute } from "./PublicRoute";
 import { AppContext } from "../context/AppContext";
 import { ProfileRouter } from "./ProfileRouter";
+import { ChatRouter } from "./ChatRouter";
 import { useEffect } from "react";
 import { fetchToken } from "../helpers/getData";
 import { useCallback } from "react";
@@ -41,6 +42,12 @@ export const AppRouter = () => {
                 path="/profile"
                 component={ProfileRouter}
               />    
+
+              <PrivateRoute
+                isAuthenticated={user.isLogged}
+                path="/chats"
+                component={ChatRouter}
+              />
           
           <PublicRoute
             path="/"
