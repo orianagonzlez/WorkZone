@@ -6,7 +6,8 @@ import {
   FaUserCog,
   FaPlay, 
   FaPause,
-  FaRedoAlt
+  FaRedoAlt,
+  FaComments
 } from "react-icons/fa";
 import { GoSignOut } from "react-icons/go";
 
@@ -268,8 +269,8 @@ export default function Sidebar() {
               </ul>
               <ul>
                 <Button>
-                  <FaCog />
-                  <span>Otro</span>
+                  <FaComments />
+                  <span>Chats</span>
                 </Button>
               </ul>
               <ul>
@@ -321,10 +322,12 @@ export default function Sidebar() {
               </NavLink>
             </ul>
             <ul>
-              <Button>
-                <FaCog />
-                <span>Otro</span>
-              </Button>
+              <NavLink exact={true} activeClassName="is-active" to="/chats">
+                <Button>
+                  <FaComments />
+                  <span>Chats</span>
+                </Button>
+              </NavLink>
             </ul>
             <ul>
               <NavLink exact={true} activeClassName="is-active" to="/profile">
