@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Modal, Button, Form, Col, InputGroup, Alert } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { useForm } from "../../hooks/useForm";
 import { storage } from "../../firebase/index";
 import { FcCheckmark } from "react-icons/fc";
 import { TakeScreenShot } from "../capture/TakeScreenShot";
-
 
 export const UploadFilesModal = (props) => {
   const [images, setImages] = useState([]);
@@ -55,7 +54,7 @@ export const UploadFilesModal = (props) => {
             .child(image.name)
             .getDownloadURL()
             .then((urls) => {
-              setUrls((prevState) => [...prevState, urls])
+              setUrls((prevState) => [...prevState, urls]);
             });
         }
       );
@@ -77,8 +76,8 @@ export const UploadFilesModal = (props) => {
     setImages([]);
     setUrls([]);
     setNames([]);
-    setSuccess(false)
-  }
+    setSuccess(false);
+  };
 
   return (
     <Modal
@@ -100,7 +99,9 @@ export const UploadFilesModal = (props) => {
               <div className="upload-input">
                 <input type="file" multiple onChange={handleChange} />
                 <TakeScreenShot />
-                <button className="btn-create" onClick={handleClean}>Limpiar</button>
+                <button className="btn-create" onClick={handleClean}>
+                  Limpiar
+                </button>
               </div>
               <div>
                 {showProgress ? <progress value={progress} max="100" /> : ""}
