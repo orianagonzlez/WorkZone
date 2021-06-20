@@ -1,0 +1,122 @@
+.stopwatch {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-self: flex-end;
+
+  .stopwatch-numbers {
+    font-size: 2rem;
+  }
+
+  .stopwatch-buttons {
+    padding: 10px 0px 10px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.25rem;
+
+    .play-button {
+      text-align: center;
+      padding-left: 20px;
+      border-radius: 100%;
+      margin: 5px 2.5px 5px 2.5px;
+      background-color: $primary-mint-500;
+      color: $neutral-50;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: darken($primary-mint-500, 5%);
+        color: $neutral-50;
+      }
+    }
+    .stop-button {
+      text-align: center;
+      border-radius: 100%;
+      margin: 5px 2.5px 5px 2.5px;
+      background-color: $primary-mint-500;
+      color: $neutral-50;
+      transition: all 0.3s ease;
+      &:hover {
+        background-color: darken($primary-mint-500, 5%);
+        color: $neutral-50;
+      }
+    }
+    .reset-button {
+      text-align: center;
+      border-radius: 100%;
+      margin: 5px 2.5px 5px 2.5px;
+      transition: all 0.3s ease;
+      color: $primary-mint-500;
+      &:hover {
+        color: darken($primary-mint-500, 5%);
+      }
+    }
+  }
+}
+
+.stopwatch-nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-self: flex-end;
+
+  .stopwatch-numbers-nav {
+    font-size: 2rem;
+  }
+
+  .stopwatch-buttons-nav {
+    padding: 10px 0px 10px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.25rem;
+
+    .play-button-nav {
+      width: 70px;
+      height: 70px;
+      text-align: center;
+      padding-left: 20px;
+      border-radius: 100%;
+      margin: 5px 2.5px 5px 2.5px;
+      background-color: $primary-mint-500;
+      color: $neutral-50;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: darken($primary-mint-500, 10%);
+        color: $neutral-50;
+      }
+    }
+    .stop-button-nav {
+      width: 70px;
+      height: 70px;
+      text-align: center;
+      border-radius: 100%;
+      margin: 5px 2.5px 5px 2.5px;
+      background-color: $primary-mint-500;
+      color: $neutral-50;
+      transition: all 0.3s ease;
+      &:hover {
+        background-color: darken($primary-mint-500, 10%);
+        color: $neutral-50;
+      }
+    }
+    .reset-button-nav {
+      width: 70px;
+      height: 70px;
+      text-align: center;
+      border-radius: 100%;
+      margin: 5px 2.5px 5px 2.5px;
+      transition: all 0.3s ease;
+      color: $primary-mint-500;
+      &:hover {
+        color: lighten($primary-mint-500, 10%);
+        background-color: lighten($font, 2.5%);
+      }
+    }
+  }
+}
