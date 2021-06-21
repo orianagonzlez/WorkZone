@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Container, Button } from "react-bootstrap";
 import {
   FaBoxes,
@@ -49,6 +49,12 @@ export default function Sidebar() {
       // offsetTimestamp: initialTime
     });
 
+  const t = useRef(`${days}:${hours}:${minutes}:${seconds}`);
+
+  useEffect(() => {
+    t.current = `${days}:${hours}:${minutes}:${seconds}`;
+  }, [seconds, minutes, hours, days]);
+
   useEffect(() => {
     if (taskId) {
       //Si otra tarea esta corriendo, guardo el valor antes del cambio
@@ -73,7 +79,7 @@ export default function Sidebar() {
         // si obtuve informacion
         if (r.ok) {
           // si se encontro la tarea
-          if (r.data && !r.data.running) {
+          if (r.data) {
             const newTime = new Date();
             let time = r.data.cronometro;
             console.log("esto recibo", time);
@@ -116,26 +122,17 @@ export default function Sidebar() {
       console.log("YA TENGO EL TASK");
       setTimer({ ...timer, running: isRunning });
 
-      let body = {
+      const body = {
         id_tarea: taskId,
-        cronometro: `${days}:${hours}:${minutes}:${seconds}`,
+        cronometro: `${days}:${hours}:${minutes}:${seconds}`
       };
 
       if (isRunning) {
-        console.log("empiezo");
-        updateTask({ id_tarea: taskId, running: true });
+        console.log('empiezo', body);
+        updateTask({id_tarea: taskId, running: true});
 
         // como empezo el cronometro, se empieza a guardar el tiempo cada cierto tiempo
-        setSaveTimeInterval(
-          setInterval(() => {
-            const b = {
-              id_tarea: taskId,
-              cronometro: `${days}:${hours}:${minutes}:${seconds}`,
-            };
-            console.log(b, "acaaaaaaaaaaa");
-            updateTask(b);
-          }, 30000)
-        );
+        setSaveTimeInterval(setInterval(updateTaskInterval, 30000)); 
       } else if (initialTime.length > 0) {
         console.log("me pare");
 
@@ -146,6 +143,16 @@ export default function Sidebar() {
       }
     }
   }, [isRunning]);
+
+  const updateTaskInterval = () => {
+    let b = {
+      id_tarea: taskId,
+      cronometro: t.current
+    }
+    console.log(b, 'acaaaaaaaaaaa');
+   
+    updateTask(b);
+  }
 
   const signOut = () => {
     if (running) {
@@ -212,16 +219,8 @@ export default function Sidebar() {
     return newTime;
   };
 
-  const getTime = () => {
-    console.log('voy aganin', `${days}:${hours}:${minutes}:${seconds}`)
-    return {
-      id_tarea: taskId,
-      cronometro: `${days}:${hours}:${minutes}:${seconds}`
-    }
-  };
-
   const updateTask = (body) => {
-    console.log("voy a guardar esto", body);
+    console.log('voy a guardar esto', body);
     postData(
       "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
       body
