@@ -23,38 +23,44 @@ export const chatReducer = (state, action) => {
 
       return {
         ...state,
-        activeChat: action.payload,
+        activeChat: action.payload.projectId,
+        project: action.payload.projectName,
         messages: [],
       };
 
     case types.newMessage:
-      if (state.activeChat === action.payload.para) {
+      if (state.activeChat === action.payload.para._id) {
         return {
           ...state,
           messages: [...state.messages, action.payload],
         };
       } else {
-        console.log("ESTAS CERCA");
-        toast(action.payload.mensaje, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast(
+          `💬 \n De: ${action.payload.para.nombre} \n Mensaje: ${action.payload.mensaje} `,
+          {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          }
+        );
         return state;
-        // return {
-        //   ...state,
-        //   notification: action.payload,
-        // };
       }
 
     case types.loadChat:
       return {
         ...state,
         messages: [...action.payload],
+      };
+
+    case types.logout:
+      return {
+        activeChat: "",
+        projects: [],
+        messages: [],
+        notification: "",
       };
 
     default:

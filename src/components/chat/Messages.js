@@ -8,6 +8,13 @@ import { SocketContext } from "../../context/SocketContext";
 import { IncomingMessage } from "./IncomingMessage";
 import { OutgoingMessage } from "./OutgoingMessage";
 import validator from "validator";
+import { useRef } from "react";
+
+const AlwaysScrollToBottom = () => {
+  const elementRef = useRef();
+  useEffect(() => elementRef.current.scrollIntoView({ behavior: "smooth" }));
+  return <div ref={elementRef} />;
+};
 
 export const Messages = () => {
   const [msg, setMsg] = useState("");
@@ -37,29 +44,32 @@ export const Messages = () => {
 
   return (
     <>
-      {chat.messages.map((msg) =>
-        msg.de._id !== user.id ? (
-          <IncomingMessage key={msg._id} msg={msg} />
-        ) : (
-          <OutgoingMessage key={msg._id} msg={msg} />
-        )
-      )}
-      <form className="d-flex" onSubmit="onSubmit">
-        <div className="new-message-container">
-          <input
-            type="text"
-            value={msg}
-            onChange={(e) => {
-              e.preventDefault();
-              setMsg(e.target.value);
-            }}
-          ></input>
+      <div className="message-container" id="chat-area">
+        {chat.messages.map((msg) =>
+          msg.de._id !== user.id ? (
+            <IncomingMessage key={msg._id} msg={msg} />
+          ) : (
+            <OutgoingMessage key={msg._id} msg={msg} />
+          )
+        )}
+        <form className="d-flex" onSubmit="onSubmit">
+          <div className="new-message-container">
+            <input
+              type="text"
+              value={msg}
+              onChange={(e) => {
+                e.preventDefault();
+                setMsg(e.target.value);
+              }}
+            ></input>
 
-          <button type="submit" onClick={onSubmit}>
-            <FaPaperPlane />
-          </button>
-        </div>
-      </form>
+            <button type="submit" onClick={onSubmit}>
+              <FaPaperPlane />
+            </button>
+          </div>
+        </form>
+        <AlwaysScrollToBottom />
+      </div>
     </>
   );
 };

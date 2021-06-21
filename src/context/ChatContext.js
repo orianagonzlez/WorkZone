@@ -6,11 +6,11 @@ const { createContext, useState, useEffect } = require("react");
 export const ChatContext = createContext();
 
 const initialState = {
-  uid: null,
   activeChat: "", //aqui va el uid a quien le quiero mandar el mensaje que en este caso es un array
   projects: [],
   messages: [],
   notification: "",
+  project: "",
 };
 
 export const ChatProvider = ({ children }) => {

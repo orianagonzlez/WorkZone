@@ -11,6 +11,10 @@ export const ProjectsRouter = () => {
       <div className="AppPage">
         <Switch>
           <Route
+            path="/projects/chats" // /chats/:chat
+            component={ChatScreen}
+          />
+          <Route
             path="/projects/details/:project"
             component={ProjectDeetsScreen}
           />
@@ -19,10 +23,7 @@ export const ProjectsRouter = () => {
             path="/projects/edit/:project"
             component={CreateProjectsScreen}
           />
-          <Route
-            path="/projects/chats/chat" // /chats/:chat
-            component={ChatScreen}
-          />
+
           <Route path="/projects" component={ProjectsScreen} />
 
           <Redirect to="/projects" />

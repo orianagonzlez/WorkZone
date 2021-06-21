@@ -6,15 +6,13 @@ export const ChatRouter = () => {
   return (
     <div className="App">
       <div className="AppPage">
-          <Switch>
-            <Route
-              path="/chats/chat" // /chats/:chat
-              component={ChatScreen}
-            />
-
-            <Redirect to="/projects" />
-          </Switch>
-        
+        <Switch>
+          <Route
+            path="/chats" // /chats/:chat
+            component={ChatScreen}
+          />
+          <Redirect to="/projects" />
+        </Switch>
       </div>
     </div>
   );

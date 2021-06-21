@@ -42,6 +42,12 @@ export const AppRouter = () => {
             component={ProfileRouter}
           />
 
+          <PrivateRoute
+            isAuthenticated={user.isLogged}
+            path="/chats"
+            component={ChatRouter}
+          />
+
           <PublicRoute
             path="/"
             component={AuthRouter}

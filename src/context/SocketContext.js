@@ -9,8 +9,8 @@ export const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
   const { socket, online, connectSocket, disconnectSocket } = useSocket(
-    //"https://workzone-backend-mdb.herokuapp.com/"
-    "http://localhost:8080/"
+    "https://workzone-backend-mdb.herokuapp.com/"
+    // "http://localhost:8080/"
   );
 
   const { chat, dispatch } = useContext(ChatContext);

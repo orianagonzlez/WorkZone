@@ -23,12 +23,11 @@
 
     .message-container {
       padding: 2rem;
-      padding-bottom: 4rem;
       display: flex;
       flex-direction: column;
       justify-content: end;
       height: 80%;
-      overflow-y: scroll;
+      overflow-y: auto;
       .text-bubble {
         padding: 1rem;
         font-size: small;
@@ -64,6 +63,7 @@
       justify-content: center;
       background-color: $neutral-100;
       padding: 1rem;
+      padding-top: 0.5rem;
       input {
         width: 90%;
         border-radius: 15px;
@@ -92,6 +92,7 @@
     flex-direction: column;
     overflow-y: scroll;
     width: 100%;
+    max-height: 700px;
 
     h1 {
       margin-left: 4rem;

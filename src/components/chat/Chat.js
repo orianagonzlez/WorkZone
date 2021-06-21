@@ -11,17 +11,22 @@ import { getData } from "../../helpers/getData";
 export default function Chat({ project }) {
   // supongo que en vez de project podría recibir chat o algo así pero bueno
 
-  project = { nombre: "Project name" };
-
   const { chat, dispatch } = useContext(ChatContext);
+
+  project = { nombre: chat.project };
 
   const selectChat = async (project) => {
     dispatch({
       type: types.activateChat,
-      payload: project,
+      payload: {
+        projectId: project._id,
+        projectName: project.nombre,
+      },
     });
 
-    getData(`http://localhost:8080/api/messages/${project}`).then((r) => {
+    getData(
+      `https://workzone-backend-mdb.herokuapp.com/api/messages/${project._id}`
+    ).then((r) => {
       if (r.ok) {
         dispatch({
           type: types.loadChat,
@@ -31,87 +36,22 @@ export default function Chat({ project }) {
         console.log("error");
       }
     });
-
-    //mover el scroll
   };
 
   return (
     <div className="chat-container">
       <div className="main-chat">
-        {true ? (
+        {chat.activeChat ? (
           <>
             <div className="chat-name">
               <h1>{project.nombre}</h1>
             </div>
-            <div className="message-container">
-              <Messages />
-            </div>
+
+            <Messages />
           </>
         ) : (
           // <h2>Seleccione chat </h2>
-          <>
-            <div className="chat-name">
-              <h1>{project.nombre}</h1>
-            </div>
-
-            <div className="message-container">
-              <div className="text-bubble text-user">
-                texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext
-              </div>
-
-              <div className="message">
-                <span className="sender-name">John Doe</span>
-                <div className="text-bubble text-other">aaaaaaaaaaaaaaa</div>
-              </div>
-              <div className="text-bubble text-user">
-                texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext
-              </div>
-
-              <div className="message">
-                <span className="sender-name">John Doe</span>
-                <div className="text-bubble text-other">aaaaaaaaaaaaaaa</div>
-              </div>
-              <div className="text-bubble text-user">
-                texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext
-              </div>
-
-              <div className="message">
-                <span className="sender-name">John Doe</span>
-                <div className="text-bubble text-other">aaaaaaaaaaaaaaa</div>
-              </div>
-              <div className="text-bubble text-user">
-                texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext
-              </div>
-
-              <div className="message">
-                <span className="sender-name">John Doe</span>
-                <div className="text-bubble text-other">aaaaaaaaaaaaaaa</div>
-              </div>
-              <div className="text-bubble text-user">
-                texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext
-              </div>
-
-              <div className="message">
-                <span className="sender-name">John Doe</span>
-                <div className="text-bubble text-other">aaaaaaaaaaaaaaa</div>
-              </div>
-              <div className="text-bubble text-user">
-                texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext
-              </div>
-
-              <div className="message">
-                <span className="sender-name">John Doe</span>
-                <div className="text-bubble text-other">aaaaaaaaaaaaaaa</div>
-              </div>
-            </div>
-
-            <div className="new-message-container">
-              <input type="text"></input>
-              <button type="button">
-                <FaPaperPlane />
-              </button>
-            </div>
-          </>
+          <></>
         )}
       </div>
       <div className="chat-selection">
@@ -120,7 +60,7 @@ export default function Chat({ project }) {
           <div
             className="chat-individual"
             onClick={() => {
-              selectChat(project._id);
+              selectChat(project);
             }}
           >
             <Button>
