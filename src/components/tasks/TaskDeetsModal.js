@@ -131,7 +131,7 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
   };
 
   const runStopwatch = () => {
-    setTimer({ ...timer, taskId: _id, projectId: project._id, running: true });
+    setTimer({ ...timer, taskId: _id, projectId: project._id, taskName: task_name, running: true });
   };
 
   const handleCreate = (e) => {

@@ -1,13 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { Modal, Button, Form, Col, InputGroup } from "react-bootstrap";
+import React, { useEffect, useState, useCallback } from "react";
+import { Modal, Button, Form, Col, InputGroup, Alert } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { useForm } from "../../hooks/useForm";
 import { storage } from "../../firebase/index";
+import { FcCheckmark } from "react-icons/fc";
+import { TakeScreenShot } from "../capture/TakeScreenShot";
 
 export const UploadFilesModal = (props) => {
   const [images, setImages] = useState([]);
   const [urls, setUrls] = useState([]);
+  const [names, setNames] = useState([]);
   const [progress, setProgress] = useState(0);
+  const [showProgress, setShowProgress] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const getName = (i) => {
+    const names = [];
+    props.fileNames.map((name) => {
+      names.push(name);
+    });
+    return names[i];
+  };
 
   const handleChange = (e) => {
     for (let i = 0; i < e.target.files.length; i++) {
@@ -30,6 +43,7 @@ export const UploadFilesModal = (props) => {
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           );
           setProgress(progress);
+          setShowProgress(true);
         },
         (error) => {
           console.log(error);
@@ -47,12 +61,23 @@ export const UploadFilesModal = (props) => {
     });
 
     Promise.all(promises)
-      .then(() => alert("All images uploaded"))
+      .then(() => {
+        setSuccess(true);
+        setShowProgress(false);
+      })
       .catch((err) => console.log(err));
   };
 
   console.log("images: ", images);
   console.log("urls", urls);
+  console.log("names", names);
+
+  const handleClean = () => {
+    setImages([]);
+    setUrls([]);
+    setNames([]);
+    setSuccess(false);
+  };
 
   return (
     <Modal
@@ -72,26 +97,36 @@ export const UploadFilesModal = (props) => {
             </Modal.Title>
             <div className="modal-upload">
               <div className="upload-input">
-                <input
-                  type="file"
-                  multiple
-                  onChange={handleChange}
-                />
+                <input type="file" multiple onChange={handleChange} />
+                <TakeScreenShot />
+                <button className="btn-create" onClick={handleClean}>
+                  Limpiar
+                </button>
               </div>
-              {/* <div>
-                <progress value={progress} max="100" />
-              </div> */}
-              <br />
+              <div>
+                {showProgress ? <progress value={progress} max="100" /> : ""}
+              </div>
               <div className="upload-links">
                 {urls.map((url, i) => (
                   <div className="link-files">
-                    <a href={url} target="_blank">
-                      {images[i].name}
-                    </a>
+                    <div className="link-file">
+                      <a href={url} target="_blank">
+                        {images[i].name}
+                      </a>
+                    </div>
+                    <div className="success-icon">
+                      <FcCheckmark size={30} />
+                    </div>
                   </div>
                 ))}
+                {success ? (
+                  <div className="alert alert-primary my-3" role="alert">
+                    Archivos subidos exitosamente
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
-
               <div className="button p-3 mx-5 mb-5">
                 <button className="auth_button" onClick={handleUpload}>
                   Subir
@@ -106,9 +141,9 @@ export const UploadFilesModal = (props) => {
             <div className="modal-download">
               <br />
               {props.files.map((url, i) => (
-                <div className="link-files">
+                <div className="link-file">
                   <a href={url} target="_blank">
-                    File {i + 1}
+                    {getName(i)}
                   </a>
                 </div>
               ))}
