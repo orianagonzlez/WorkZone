@@ -7,7 +7,6 @@ import { ChatContext } from "../../context/ChatContext";
 import { SocketContext } from "../../context/SocketContext";
 import { IncomingMessage } from "./IncomingMessage";
 import { OutgoingMessage } from "./OutgoingMessage";
-import { toast } from "react-toastify";
 import validator from "validator";
 
 export const Messages = () => {
@@ -18,21 +17,6 @@ export const Messages = () => {
   const { user } = useContext(AppContext);
 
   const { chat } = useContext(ChatContext);
-
-  useEffect(() => {
-    if (chat.notification) {
-      console.log("Me EJECUTE dispara ps");
-      toast.info("🦄 Wow so easy!", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
-  }, [chat]);
 
   const onSubmit = (e) => {
     e.preventDefault();

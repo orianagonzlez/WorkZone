@@ -17,8 +17,6 @@ export const SocketProvider = ({ children }) => {
 
   const { user } = useContext(AppContext);
 
-  console.log(chat, "socket context ");
-
   //Escuchar cuando se conecta
   useEffect(() => {
     if (user.isLogged) {
