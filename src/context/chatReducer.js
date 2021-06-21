@@ -18,13 +18,13 @@ export const chatReducer = (state, action) => {
         projects: [...action.payload],
       };
 
-    case types.activarChat:
-      if (state.chatActivo === action.payload) return state;
+    case types.activateChat:
+      if (state.activeChat === action.payload) return state;
 
       return {
         ...state,
-        chatActivo: action.payload,
-        mensajes: [],
+        activeChat: action.payload,
+        messages: [],
       };
 
     case types.newMessage:
@@ -34,7 +34,8 @@ export const chatReducer = (state, action) => {
           messages: [...state.messages, action.payload],
         };
       } else {
-        toast(action.payload, {
+        console.log("ESTAS CERCA");
+        toast(action.payload.mensaje, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -50,10 +51,10 @@ export const chatReducer = (state, action) => {
         // };
       }
 
-    case types.cargarMensajes:
+    case types.loadChat:
       return {
         ...state,
-        mensajes: [...action.payload],
+        messages: [...action.payload],
       };
 
     default:

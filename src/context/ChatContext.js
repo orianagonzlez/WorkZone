@@ -7,7 +7,7 @@ export const ChatContext = createContext();
 
 const initialState = {
   uid: null,
-  activeChat: "60bec63010a26c0015ceb4e5", //aqui va el uid a quien le quiero mandar el mensaje que en este caso es un array
+  activeChat: "", //aqui va el uid a quien le quiero mandar el mensaje que en este caso es un array
   projects: [],
   messages: [],
   notification: "",
