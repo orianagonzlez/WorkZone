@@ -1,4 +1,7 @@
 import { types } from "./types";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+toast.configure();
 
 // const initialState = {
 //     uid: '',
@@ -29,13 +32,22 @@ export const chatReducer = (state, action) => {
         return {
           ...state,
           messages: [...state.messages, action.payload],
-          notification: action.payload,
         };
       } else {
-        return {
-          ...state,
-          notification: action.payload,
-        };
+        toast(action.payload, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        return state;
+        // return {
+        //   ...state,
+        //   notification: action.payload,
+        // };
       }
 
     case types.cargarMensajes:

@@ -8,6 +8,7 @@ import { SocketContext } from "../../context/SocketContext";
 import { IncomingMessage } from "./IncomingMessage";
 import { OutgoingMessage } from "./OutgoingMessage";
 import { toast } from "react-toastify";
+import validator from "validator";
 
 export const Messages = () => {
   const [msg, setMsg] = useState("");
@@ -36,7 +37,7 @@ export const Messages = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (msg.leght === 0) {
+    if (msg.leght === 0 || validator.isEmpty(msg)) {
       return;
     }
     console.log(msg);

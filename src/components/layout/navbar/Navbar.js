@@ -17,13 +17,6 @@ export default function Navbar() {
 
   const { setUser, user } = useContext(AppContext);
   const { chat } = useContext(ChatContext);
-  const [openToasty, setopenToasty] = useState(false);
-
-  useEffect(() => {
-    if (chat.notification) {
-      setopenToasty(true);
-    }
-  }, [chat]);
 
   const history = useHistory();
 
@@ -35,7 +28,6 @@ export default function Navbar() {
           <span>{user.nombre}</span>
         </Button>
       </div>
-      {/* <Toasty open={openToasty} /> */}
     </>
   );
 }
