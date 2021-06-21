@@ -184,7 +184,6 @@ export const Board = ({ project }) => {
         // setColumns(r.data);
         const c = {};
         r.data.forEach((col) => {
-          console.log('col', col);
           col.items.forEach((item) => {
             //Si la tarea sale como running, pero ya pasaron 2 minutos desde la ultima actualizacion
             //se cambia running a false

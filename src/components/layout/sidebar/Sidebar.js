@@ -362,7 +362,7 @@ export default function Sidebar() {
               <span>{seconds}</span>
             </div>
             {taskName !== "" ? (
-              <div className="stopwatch-task">Tarea: {taskName}</div>
+            <div className="stopwatch-task">{taskName}</div>
             ) : (
               <div className="stopwatch-task"></div>
             )}
