@@ -389,12 +389,14 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
               <div className="font-weight-bold my-2">Un colaborador esta cronometrando la tarea</div>
               }
 
-              <div>Tiempo anterior: {cronometro}</div>
+              {cronometro != '0:0:0:0' ? 
+              <div className="my-2">Tiempo anterior: {cronometro}</div>
+              :
               <div className="alert alert-primary my-3" role="alert">
                 Lleva el tiempo de cuanto inviertes en tus tareas asignadas o generales para llevar
                 un mejor control del proyecto! Podras manejar el mismo desde el
                 menu lateral para mayor comodidad.
-              </div>
+              </div>}
             </div>
             {/* <div id="labels">
               <div className="sectionTitle mt-3">
