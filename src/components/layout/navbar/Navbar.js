@@ -1,29 +1,44 @@
-import React, { useContext } from 'react';
-import { Container, Button } from 'react-bootstrap';
-import { FaUserCircle } from 'react-icons/fa';
+import React, { useContext } from "react";
+import { useEffect } from "react";
+import { Container, Button } from "react-bootstrap";
+import { FaUserCircle } from "react-icons/fa";
 import { Link, useHistory } from "react-router-dom";
-import Swal from 'sweetalert2';
-import { AppContext } from '../../../context/AppContext';
-import { postData } from '../../../helpers/postData';
+import Swal from "sweetalert2";
+import { AppContext } from "../../../context/AppContext";
+import { ChatContext } from "../../../context/ChatContext";
+import { postData } from "../../../helpers/postData";
 
-
+import { toast } from "react-toastify";
+import { Toasty } from "../../chat/Toast";
+import { useState } from "react";
 
 export default function Navbar() {
-    const [visible, setVisible] = React.useState(false);
+  const [visible, setVisible] = React.useState(false);
 
-    const {setUser, user} = useContext(AppContext);
+  const { setUser, user } = useContext(AppContext);
+  const { chat } = useContext(ChatContext);
+  const [openToasty, setopenToasty] = useState(false);
 
-    const history = useHistory();
+  useEffect(() => {
+    if (chat.notification) {
+      setopenToasty(true);
+    }
+  }, [chat]);
 
-    return (
-        <div className="navbarContainer d-flex justify-content-end">
-            <Button onClick={() => history.push('/profile')}>
-                <FaUserCircle size={24} /><span>{user.nombre}</span>
-            </Button>
-        </div>
-    )
+  const history = useHistory();
+
+  return (
+    <>
+      <div className="navbarContainer d-flex justify-content-end">
+        <Button onClick={() => history.push("/profile")}>
+          <FaUserCircle size={24} />
+          <span>{user.nombre}</span>
+        </Button>
+      </div>
+      {/* <Toasty open={openToasty} /> */}
+    </>
+  );
 }
-
 
 /*
 

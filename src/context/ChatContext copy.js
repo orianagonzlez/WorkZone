@@ -1,6 +1,4 @@
 import React from "react";
-import { useReducer } from "react";
-import { chatReducer } from "./chatReducer";
 const { createContext, useState, useEffect } = require("react");
 
 export const ChatContext = createContext();
@@ -10,19 +8,16 @@ const initialState = {
   activeChat: "60bec63010a26c0015ceb4e5", //aqui va el uid a quien le quiero mandar el mensaje que en este caso es un array
   projects: [],
   messages: [],
-  notification: "",
 };
 
 export const ChatProvider = ({ children }) => {
-  //const [chat, setChat] = useState(initialState);
-
-  const [chat, dispatch] = useReducer(chatReducer, initialState);
+  const [chat, setChat] = useState(initialState);
 
   return (
     <ChatContext.Provider
       value={{
         chat,
-        dispatch,
+        setChat,
       }}
     >
       {children}

@@ -14,15 +14,15 @@ import { ChatProvider } from "./context/ChatContext";
 function App() {
   return (
     <div className="main-container">
-      <AppProvider>
-        <ChatProvider>
+      <ChatProvider>
+        <AppProvider>
           <SocketProvider>
             <TimerProvider>
               <AppRouter />
             </TimerProvider>
           </SocketProvider>
-        </ChatProvider>
-      </AppProvider>
+        </AppProvider>
+      </ChatProvider>
       <div className="footer"></div>
     </div>
   );
