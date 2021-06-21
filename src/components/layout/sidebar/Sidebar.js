@@ -292,7 +292,7 @@ export default function Sidebar() {
                   <span>Cerrar sesión</span>
                 </Button>
               </ul>
-              <ul>
+              {/* <ul>
                 <div className="stopwatch-nav">
                   <div className="stopwatch-numbers-nav">
                     <span>{days}</span>:<span>{hours}</span>:
@@ -321,8 +321,8 @@ export default function Sidebar() {
                         <FaPlay />
                       </button>
                     )}
-                    {/* para resetear al tiempo con el que inicio a correr */}
-                    {/* <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button> */}
+                    para resetear al tiempo con el que inicio a correr
+                    <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button>
                     <button
                       className="reset-button-nav"
                       onClick={() => {
@@ -334,8 +334,49 @@ export default function Sidebar() {
                     </button>
                   </div>
                 </div>
-              </ul>
+              </ul> */}
             </li>
+          </div>
+          <div className="stopwatch-nav">
+            <div className="stopwatch-numbers-nav">
+              <span>{days}</span>:<span>{hours}</span>:<span>{minutes}</span>:
+              <span>{seconds}</span>
+            </div>
+            {taskName !== "" ? (
+              <div className="stopwatch-task">Tarea: {taskName}</div>
+            ) : (
+              <div className="stopwatch-task"></div>
+            )}
+            <div className="stopwatch-buttons-nav">
+              {running ? (
+                <button
+                  className="stop-button-nav"
+                  onClick={pause}
+                  disabled={!taskId}
+                >
+                  <FaPause />
+                </button>
+              ) : (
+                <button
+                  className="play-button-nav"
+                  onClick={start}
+                  disabled={!taskId}
+                >
+                  <FaPlay />
+                </button>
+              )}
+              {/* para resetear al tiempo con el que inicio a correr */}
+              {/* <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button> */}
+              <button
+                className="reset-button-nav"
+                onClick={() => {
+                  running ? reset() : reset(new Date(), false);
+                }}
+                disabled={!taskId}
+              >
+                <FaRedoAlt />
+              </button>
+            </div>
           </div>
         </div>
       ) : null}
@@ -374,7 +415,7 @@ export default function Sidebar() {
                 <span>Cerrar sesión</span>
               </Button>
             </ul>
-            <ul>
+            {/* <ul>
               <div className="stopwatch">
                 <div className="stopwatch-numbers">
                   <span>{days}</span>:<span>{hours}</span>:
@@ -403,8 +444,8 @@ export default function Sidebar() {
                       <FaPlay />
                     </button>
                   )}
-                  {/* para resetear al tiempo con el que inicio a correr */}
-                  {/* <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button> */}
+                  para resetear al tiempo con el que inicio a correr
+                  <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button>
                   <button
                     className="reset-button"
                     onClick={() => {
@@ -416,8 +457,49 @@ export default function Sidebar() {
                   </button>
                 </div>
               </div>
-            </ul>
+            </ul> */}
           </li>
+        </div>
+        <div className="stopwatch">
+          <div className="stopwatch-numbers">
+            <span>{days}</span>:<span>{hours}</span>:<span>{minutes}</span>:
+            <span>{seconds}</span>
+          </div>
+          {taskName !== "" ? (
+            <div className="stopwatch-task">Tarea: {taskName}</div>
+          ) : (
+            <div className="stopwatch-task"></div>
+          )}
+          <div className="stopwatch-buttons">
+            {running ? (
+              <button
+                className="stop-button"
+                onClick={pause}
+                disabled={!taskId}
+              >
+                <FaPause />
+              </button>
+            ) : (
+              <button
+                className="play-button"
+                onClick={start}
+                disabled={!taskId}
+              >
+                <FaPlay />
+              </button>
+            )}
+            {/* para resetear al tiempo con el que inicio a correr */}
+            {/* <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button> */}
+            <button
+              className="reset-button"
+              onClick={() => {
+                running ? reset() : reset(new Date(), false);
+              }}
+              disabled={!taskId}
+            >
+              <FaRedoAlt />
+            </button>
+          </div>
         </div>
       </div>
     </Container>
