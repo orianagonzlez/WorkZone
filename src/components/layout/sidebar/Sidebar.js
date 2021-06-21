@@ -330,7 +330,7 @@ export default function Sidebar() {
               </NavLink>
             </ul>
             <ul>
-              <NavLink exact={true} activeClassName="is-active" to="/chats">
+              <NavLink exact={true} activeClassName="is-active" to="/chats/chat">
                 <Button>
                   <FaComments />
                   <span>Chats</span>
