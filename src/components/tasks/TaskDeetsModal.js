@@ -131,7 +131,7 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
   };
 
   const runStopwatch = () => {
-    setTimer({ ...timer, taskId: _id, projectId: project._id, taskName: task_name, running: true });
+    setTimer({ ...timer, taskId: _id, projectId: project._id, running: true });
   };
 
   const handleCreate = (e) => {
@@ -152,18 +152,41 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
         text: "Los campos de titulo y descripción no pueden ser vacios",
         confirmButtonColor: "#22B4DE",
       });
+    } else {
+      let body = {
+        id_tarea: _id,
+        nombre: task_name,
+        descripcion: task_content,
+        subtareas: inputList,
+        miembro: assigned ? assigned : null,
+      };
+
+      // si se cambio el miembro encargado de realizar la tarea
+      if (assigned && miembro != assigned && cronometro != '0:0:0:0') {
+        Swal.fire({
+          title: "Estás seguro?",
+          text: "Si reasignas la tarea, el cronómetro se reiniciará en los próximos minutos",
+          icon: "info",
+          showCancelButton: true,
+          confirmButtonColor: "#22B4DE",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Sí, reasignar tarea",
+          cancelButtonText: "No, cancelar",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            body.cronometro = '0:0:0:0';
+            updateTask(body);
+          }
+        }); 
+      } else {
+        updateTask(body);
+      }
     }
+  };
 
-    let body = {
-      id_tarea: _id,
-      nombre: task_name,
-      descripcion: task_content,
-      subtareas: inputList,
-      miembro: assigned ? assigned : null,
-    };
-
+  const updateTask = (body) => {
     console.log(body);
-
+  
     postData(
       "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
       body

@@ -34,9 +34,9 @@ export default function Sidebar() {
 
   const { socket } = useContext(SocketContext);
 
-  const { taskId, projectId, taskName, running } = timer;
+  const { taskId, projectId, running } = timer;
 
-  console.log(timer);
+  const [taskName, setTaskName] = useState("");
 
   //Esto es por si le quieren mandar el tiempo en que debe iniciarse
   // const stopwatchOffset = new Date();
@@ -80,25 +80,42 @@ export default function Sidebar() {
         if (r.ok) {
           // si se encontro la tarea
           if (r.data) {
-            const newTime = new Date();
-            let time = r.data.cronometro;
-            console.log("esto recibo", time);
 
-            // si ya habia un tiempo guardado
-            if (time != "0:0:0:0") {
-              //empiezo el cronometro desde donde quedo
-              time = time.split(":");
+            if (r.data.miembro == user.id || !r.data.miembro) {
+              const newTime = new Date();
+              let time = r.data.cronometro;
+              console.log("esto recibo", time);
 
-              const newTime = getNewTime(time);
+              setTaskName(r.data.nombre);
 
-              console.log("esto envio", newTime);
-              setInitialTime(time);
-              running ? reset(newTime, true) : reset(newTime, false);
+              // si ya habia un tiempo guardado
+              if (time != "0:0:0:0") {
+                //empiezo el cronometro desde donde quedo
+                time = time.split(":");
+
+                const newTime = getNewTime(time);
+
+                console.log("esto envio", newTime);
+                setInitialTime(time);
+                running ? reset(newTime, true) : reset(newTime, false);
+              } else {
+                time = time.split(":");
+                setInitialTime(time);
+                reset();
+              }  
             } else {
-              time = time.split(":");
-              setInitialTime(time);
-              reset();
+              //TODO SE MUESTRA ALERTA DE QUE LA TAREA FUE REASIGNADA Y YA NO SE PUEDE CRONOMETRAR
+              console.log(
+                "LA TAREA FUE REASIGNADA"
+              );
+              reset(new Date(), false);
+              clearInterval(saveTimeInterval);
+              setTimer({ ...timer, taskId: "", projectId: "", running: false });
+              setTaskName('');
+
+              updateTaskWithoutValidations({ id_tarea: taskId, cronometro: '0:0:0:0', running: false });
             }
+            
           } else {
             //TODO PONER UNA ALERTA
             console.log("NO SE ENCONTRO LA TAREA, SEGURO FUE ELIMINADA");
@@ -106,9 +123,9 @@ export default function Sidebar() {
               ...timer,
               taskId: "",
               projectId: "",
-              taskName: "",
               running: false,
             });
+            setTaskName('');
           }
         } else {
           console.log("error", r.data);
@@ -147,8 +164,10 @@ export default function Sidebar() {
   const updateTaskInterval = () => {
     let b = {
       id_tarea: taskId,
-      cronometro: t.current
-    }
+      cronometro: t.current,
+      running: true
+    };
+
     console.log(b, 'acaaaaaaaaaaa');
    
     updateTask(b);
@@ -228,8 +247,27 @@ export default function Sidebar() {
       if (r.ok) {
         // si encontre la tarea y la actualice
         if (r.data) {
-          console.log("guarde nuevo tiempo", r.data);
-          socket.emit("refresh-project", { id_proyecto: projectId });
+          // si la tarea sigue estando asignada al usuario o a ninguno
+          if (r.data.miembro == user.id || !r.data.miembro) {
+            console.log("guarde nuevo tiempo", r.data);
+            socket.emit("refresh-project", { id_proyecto: projectId });
+
+            // si el nombre de la tarea cambio, se actualiza
+            if (r.data.nombre != taskName) {
+              setTaskName(r.data.nombre);
+            }
+          } else {
+            //TODO SE MUESTRA ALERTA MENCIONADA ARRIBA DE QUE LA TAREA FUE REASIGNADA Y YA NO SE PUEDE CRONOMETRAR
+            console.log(
+              "LA TAREA FUE REASIGNADA"
+            );
+            reset(new Date(), false);
+            clearInterval(saveTimeInterval);
+            setTimer({ ...timer, taskId: "", projectId: "", running: false });
+            setTaskName('');
+
+            updateTaskWithoutValidations({ id_tarea: taskId, cronometro: '0:0:0:0', running: false });
+          }
         } else {
           //TODO SE MUESTRA LA MISMA ALERTA QUE SE MENCIONO CUANDO NO SE ENCUENTRA LA TAREA
           console.log(
@@ -238,9 +276,26 @@ export default function Sidebar() {
           reset(new Date(), false);
           clearInterval(saveTimeInterval);
           setTimer({ ...timer, taskId: "", projectId: "", running: false });
+          setTaskName('');
         }
       } else {
         console.log("error guardando tiempo");
+      }
+    });
+  };
+
+  const updateTaskWithoutValidations = (body) => { 
+    postData(
+      "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
+      body
+    ).then((r) => {
+      console.log("como reasignaron deje de correr y reinicie cronom", r.data);
+      socket.emit("refresh-project", { id_proyecto: projectId });
+
+      if (r.ok) {
+        console.log("todo bien", r.data);
+      } else {
+        console.log("error");
       }
     });
   };
@@ -387,7 +442,7 @@ export default function Sidebar() {
             <span>{seconds}</span>
           </div>
           {taskName !== "" ? (
-            <div className="stopwatch-task">Tarea: {taskName}</div>
+            <div className="stopwatch-task">{taskName}</div>
           ) : (
             <div className="stopwatch-task"></div>
           )}

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Container, Button, Row, Col } from "react-bootstrap";
 import {
   FaEdit,
@@ -16,7 +16,7 @@ import { postData } from "../../../helpers/postData";
 import { Members } from "../../common/Member";
 
 export default function ProjectDeets() {
-  const { setUser, user } = useContext(AppContext);
+  const { user } = useContext(AppContext);
   const [projectInfo, setProjectInfo] = useState({});
   const [members, setMembers] = useState([]);
 

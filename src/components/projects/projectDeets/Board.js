@@ -184,6 +184,17 @@ export const Board = ({ project }) => {
         // setColumns(r.data);
         const c = {};
         r.data.forEach((col) => {
+          console.log('col', col);
+          col.items.forEach((item) => {
+            //Si la tarea sale como running, pero ya pasaron 2 minutos desde la ultima actualizacion
+            //se cambia running a false
+            if (item.running && new Date() - new Date(item.updatedAt) > 120000) {
+              console.log('ya paso mucho tiempo');
+              updateTask({ id_tarea: item._id, running: false });
+              socket.emit("refresh-project", { id_proyecto: project._id });
+              return;
+            }
+          });
           c[col._id] = col;
         });
 
