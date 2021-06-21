@@ -33,7 +33,7 @@ import { SocketContext } from "../../context/SocketContext";
 
 export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files }) => {
   
-  const { _id, nombre, descripcion, miembro, lista, subtareas, cronometro } = task;
+  const { _id, nombre, descripcion, miembro, lista, subtareas, cronometro, running } = task;
 
   console.log('mi nombreee ', nombre)
 
@@ -374,7 +374,7 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
               <div className="sectionTitle">
                 <RiTimerFill />
                 <span>Cronómetro</span>
-                {(!miembro || miembro == user?.id) && timer.taskId != _id &&
+                {(!miembro || miembro == user?.id) && timer.taskId != _id && !running &&
                  <Button
                   className="add button-task cursor-pointer float-right"
                   onClick={runStopwatch}
@@ -383,7 +383,12 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
                 </Button>}
               </div>
               {timer.taskId == _id &&
-                <div className="font-weight-bold my-2">Cronometrando tarea</div>}
+              <div className="font-weight-bold my-2">Estas cronometrando la tarea</div>
+              }
+              { running && timer.taskId != _id &&
+              <div className="font-weight-bold my-2">Un colaborador esta cronometrando la tarea</div>
+              }
+
               <div>Tiempo anterior: {cronometro}</div>
               <div className="alert alert-primary my-3" role="alert">
                 Lleva el tiempo de cuanto inviertes en tus tareas asignadas o generales para llevar

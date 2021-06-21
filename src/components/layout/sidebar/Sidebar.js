@@ -36,8 +36,6 @@ export default function Sidebar() {
 
   const { taskId, projectId, running } = timer;
 
-  console.log(timer);
-  
   //Esto es por si le quieren mandar el tiempo en que debe iniciarse
   // const stopwatchOffset = new Date();
   // 300 segundos son 5 min
@@ -126,13 +124,13 @@ export default function Sidebar() {
 
         // como empezo el cronometro, se empieza a guardar el tiempo cada cierto tiempo
         setSaveTimeInterval(setInterval(() => {
-          const b = {
+          let b = {
             id_tarea: taskId,
             cronometro: `${days}:${hours}:${minutes}:${seconds}`
           }
           console.log(b, 'acaaaaaaaaaaa');
           updateTask(b);
-        }, 30000)); 
+        }, 10000)); 
       } else if (initialTime.length > 0) {
         console.log('me pare');
 
@@ -208,7 +206,17 @@ export default function Sidebar() {
     return newTime;
   }
 
+  const getTime = () => {
+    console.log('voy aganin', `${days}:${hours}:${minutes}:${seconds}`)
+    return {
+      id_tarea: taskId,
+      cronometro: `${days}:${hours}:${minutes}:${seconds}`
+    }
+  };
+
   const updateTask = (body) => {
+    console.log('porfa cambia', `${days}:${hours}:${minutes}:${seconds}`)
+   
     console.log('voy a guardar esto', body);
     postData(
       "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
