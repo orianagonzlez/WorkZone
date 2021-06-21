@@ -8,20 +8,21 @@ export const ProjectsRouter = () => {
   return (
     <div className="App">
       <div className="AppPage">
-        <Switch>
-          <Route
-            path="/projects/details/:project"
-            component={ProjectDeetsScreen}
-          />
-          <Route path="/projects/create" component={CreateProjectsScreen} />
-          <Route
-            path="/projects/edit/:project"
-            component={CreateProjectsScreen}
-          />
-          <Route path="/projects" component={ProjectsScreen} />
+          <Switch>
+            <Route
+              path="/projects/details/:project"
+              component={ProjectDeetsScreen}
+            />
+            <Route path="/projects/create" component={CreateProjectsScreen} />
+            <Route
+              path="/projects/edit/:project"
+              component={CreateProjectsScreen}
+            />
+            <Route path="/projects" component={ProjectsScreen} />
 
-          <Redirect to="/projects" />
-        </Switch>
+            <Redirect to="/projects" />
+          </Switch>
+        
       </div>
     </div>
   );

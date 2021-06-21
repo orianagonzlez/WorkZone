@@ -15,14 +15,18 @@ import ProjectCard from "./ProjectCard";
 
 export const ProjectTable = ({ show }) => {
   const { setUser, user } = useContext(AppContext);
-  console.log('USER', user)
+  console.log("USER", user);
   const history = useHistory();
 
   const [projects, setProjects] = useState([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     //Una vez que se tenga el id del usuario, se buscan los proyectos donde participa
+    getProjects();
+  }, [user, show]);
+
+  const getProjects = () => {
     if (user?.id) {
       getData(
         `https://workzone-backend-mdb.herokuapp.com/api/projects/by/${user.id}`
@@ -35,27 +39,25 @@ export const ProjectTable = ({ show }) => {
         }
       });
     }
-  }, [user, show]);
-
+  };
 
   // filtrar proyectos por nombre
   const filteredProjects = projects?.filter((project) => {
-    return (project.nombre.toLowerCase().includes(search.toLowerCase()))
+    return project.nombre.toLowerCase().includes(search.toLowerCase());
   });
-
 
   return (
     <div className="screen-container">
       {/* Los style estan en Table.scss */}
       <div className="search-container">
-          <input
-            type="text"
-            placeholder="Buscar proyecto"
-            className="search-input"
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <FaSearch />
-        </div>
+        <input
+          type="text"
+          placeholder="Buscar proyecto"
+          className="search-input"
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <FaSearch />
+      </div>
       <div className="Preview__container">
         <ul className="Preview__responsive-table">
           <li className="Preview__table-header">
@@ -66,7 +68,7 @@ export const ProjectTable = ({ show }) => {
               <FaThList /> Tareas
             </div>
             <div className="column column-3">
-              <FaChartLine /> Progreso
+              <FaUsers /> Miembros
             </div>
             <div className="column column-3">
               <FaArchive /> {show ? "Devolver" : "Archivar"}{" "}
@@ -80,14 +82,18 @@ export const ProjectTable = ({ show }) => {
             if (!show && !project.archivado) {
               return (
                 <li className="Preview__table-row" key={project._id}>
-                  <ProjectCard project={project} />
+                  <ProjectCard project={project} getProjects={getProjects} />
                 </li>
               );
             }
             if (show && project.archivado) {
               return (
                 <li className="Preview__table-row" key={project._id}>
-                  <ProjectCard project={project} setProjects={setProjects} />
+                  <ProjectCard
+                    project={project}
+                    setProjects={setProjects}
+                    getProjects={getProjects}
+                  />
                 </li>
               );
             }

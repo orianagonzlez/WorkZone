@@ -122,11 +122,9 @@ export default function ProjectDeets() {
 
       <div className="divArrowLeft">
         <div>
-          <Link to="/">
-            <Button className="arrowLeft">
-              <FaArrowCircleLeft />
-            </Button>
-          </Link>
+          <Button className="arrowLeft" onClick={() => history.push('/projects')}>
+            <FaArrowCircleLeft />
+          </Button>
         </div>
         <h1>{projectInfo.nombre}</h1>
       </div>
@@ -153,6 +151,7 @@ export default function ProjectDeets() {
           })}
         </Row>
       </div>
+
       {projectInfo?._id && (
         <Board project={projectInfo} setProject={setProjectInfo} />
       )}

@@ -10,14 +10,14 @@ import { getData } from "../../../helpers/getData";
 import Swal from "sweetalert2";
 import validator from "validator";
 import { useFetch2 } from "../../../hooks/useFetch2";
-import Paypal from './Paypal';
+import Paypal from "./Paypal";
 
 export default function CreateProjects() {
   const [name, setName] = React.useState("");
 
   const [descripcion, setDescripcion] = React.useState("");
 
-  const [inputList, setInputList] = useState([""]);
+  const [inputList, setInputList] = useState([{ email: "", canDelete: true }]);
 
   const [users, setUsers] = useState([]);
 
@@ -28,6 +28,12 @@ export default function CreateProjects() {
   const [projectEdit, setprojectEdit] = useState();
 
   const [selectedPlan, setSelectedPlan] = useState("");
+
+  const [paid, setPaid] = React.useState(false);
+
+  const [freelance, setFreelance] = useState(false);
+
+  const [empresa, setEmpresa] = useState(false);
 
   const { user } = useContext(AppContext);
 
@@ -63,12 +69,21 @@ export default function CreateProjects() {
           //parcheo del formulario
           setprojectEdit(r.data);
           setSelectedPlan(r.data.id_plan);
+          setPaid(true);
           //console.log(selectedPlan, "pls ayuda");
           let emails = [];
           //esto es para filtrar los emails y no puedas eliminar al lider y a los admins
           r.data.miembros.forEach((myUser) => {
             if (myUser._id !== user.id && myUser._id !== r.data.owner) {
-              emails.push(myUser.email);
+              emails.push({
+                email: myUser.email,
+                canDelete: true,
+              });
+            } else {
+              emails.push({
+                email: myUser.email,
+                canDelete: false,
+              });
             }
           });
           setInputList([...emails]);
@@ -156,6 +171,19 @@ export default function CreateProjects() {
     e.preventDefault();
     let invalid = false;
     let msg = "";
+    console.log("plan: ", selectedPlan);
+    //en caso de que no haga falta hacer el pago
+    if (selectedPlan.precio !== 0 && !paid) {
+      msg = `Debes pagar antes de crear tu proyecto`;
+      invalid = true;
+    }
+
+    //validar que haya pagado
+    // if (!paid) {
+    //   msg = `Debes pagar antes de crear tu proyecto`;
+    //   invalid = true;
+    // }
+    // console.log("paid: ", paid);
 
     //validar campos vacios
     if (validator.isEmpty(name) || validator.isEmpty(descripcion)) {
@@ -171,13 +199,14 @@ export default function CreateProjects() {
     //validar que sean correos este tengo que dispare aqui porque sino se dispara el que esa persona no esta registrada
     //obvio no esta registrada porque eso no es un correo
     let invalidEmail = false;
-    inputList.forEach((email) => {
-      if (!validator.isEmail(email) && !validator.isEmpty(email)) {
+    console.log(inputList);
+    inputList.forEach((item) => {
+      if (!validator.isEmail(item.email) && !validator.isEmpty(item.email)) {
         invalidEmail = true;
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: `Necesitamos el email de la persona: ${email}, para agregarlo a tu proyecto`,
+          text: `Necesitamos el email de la persona: ${item.email}, para agregarlo a tu proyecto`,
           confirmButtonColor: "#22B4DE",
         });
       }
@@ -189,16 +218,16 @@ export default function CreateProjects() {
 
     //esto es para saber si los correos ingresados son de gente que esta registrada
     let membersIds = [];
-    inputList.forEach((email) => {
-      if (!validator.isEmpty(email)) {
+    inputList.forEach((item) => {
+      if (!validator.isEmpty(item.email)) {
         let myUser = users.filter((user) => {
-          if (String(user.email) === email) {
+          if (String(user.email) === item.email) {
             return user;
           }
         });
         myUser = myUser[0];
         if (!myUser) {
-          msg = `Invita a ${email} a registrar en Workzone para poder añadirla a tu proyecto`;
+          msg = `Invita a ${item.email} a registrar en Workzone para poder añadirla a tu proyecto`;
           invalid = true;
         } else {
           let uid = myUser.uid;
@@ -259,7 +288,7 @@ export default function CreateProjects() {
   };
 
   const handleAddClick = () => {
-    setInputList([...inputList, ""]);
+    setInputList([...inputList, { email: "", canDelete: true }]);
   };
 
   if (loadingPlans || !planes)
@@ -269,19 +298,17 @@ export default function CreateProjects() {
     return <div className="componentContainer"></div>;
   }
 
-  
-
   return (
     <div className="componentContainer">
       <div className="divArrowLeft">
         <div>
-          <Link to="/">
-            <Button className="arrowLeft">
+            <Button className="arrowLeft" onClick={() => {!editMode ? history.push('/projects') :
+            history.push(`/projects/details/${project._id}`)
+          }}>
               <FaArrowCircleLeft />
             </Button>
-          </Link>
         </div>
-        <h1>Nuevo proyecto</h1>
+        {!editMode ? <h1>Nuevo proyecto</h1> : <h1>Editar proyecto</h1>}
       </div>
       <div className="d-flex justify-content-center">
         <Form className="create-project-form ">
@@ -323,34 +350,76 @@ export default function CreateProjects() {
             <FaUsers />
             <span>Miembros</span>
           </div>
-          {inputList.map((email, i) => {
+          {inputList.map((item, i) => {
             return (
               <div className="box">
                 <Form.Row className="emailInputRow">
                   <Form.Group as={Col} className="formGroup">
-                    <Form.Control
-                      className="inputCorreo"
-                      type="email"
-                      placeholder="Correo del colaborador"
-                      name="email"
-                      autoComplete="off"
-                      value={email}
-                      onChange={(e) => {
-                        e.preventDefault();
-                        const list = [...inputList];
-                        list[i] = e.target.value;
-                        setInputList(list);
-                      }}
-                    />
+                    {!editMode ? (
+                      <Form.Control
+                        className="inputCorreo"
+                        type="email"
+                        placeholder="Correo del colaborador"
+                        name="email"
+                        autoComplete="off"
+                        value={item.email}
+                        onChange={(e) => {
+                          e.preventDefault();
+                          const list = [...inputList];
+                          list[i].email = e.target.value;
+                          setInputList(list);
+                        }}
+                      />
+                    ) : item.canDelete ? (
+                      <Form.Control
+                        className="inputCorreo"
+                        type="email"
+                        placeholder="Correo del colaborador"
+                        name="email"
+                        autoComplete="off"
+                        value={item.email}
+                        onChange={(e) => {
+                          e.preventDefault();
+                          const list = [...inputList];
+                          list[i].email = e.target.value;
+                          setInputList(list);
+                        }}
+                      />
+                    ) : (
+                      <Form.Control
+                        className="inputCorreo"
+                        type="email"
+                        placeholder="Correo del colaborador"
+                        name="email"
+                        autoComplete="off"
+                        value={item.email}
+                        onChange={(e) => {
+                          e.preventDefault();
+                          const list = [...inputList];
+                          list[i].email = e.target.value;
+                          setInputList(list);
+                        }}
+                        disabled
+                      />
+                    )}
                   </Form.Group>
                 </Form.Row>
                 <div className="btn-box">
-                  {inputList.length !== 1 && (
-                    <FaTrash
-                      className="addOrDeleteCollaboratorButtons delete"
-                      onClick={() => handleRemoveClick(i)}
-                    ></FaTrash>
-                  )}
+                  {!editMode
+                    ? inputList.length !== 1 && (
+                        <FaTrash
+                          className="addOrDeleteCollaboratorButtons delete"
+                          onClick={() => handleRemoveClick(i)}
+                        ></FaTrash>
+                      )
+                    : inputList.length !== 1 &&
+                      inputList[i].canDelete && (
+                        <FaTrash
+                          className="addOrDeleteCollaboratorButtons delete"
+                          onClick={() => handleRemoveClick(i)}
+                        ></FaTrash>
+                      )}
+
                   {inputList.length - 1 === i && (
                     <FaPlusCircle
                       className="addOrDeleteCollaboratorButtons "
@@ -367,20 +436,58 @@ export default function CreateProjects() {
             <span>Plan</span>
           </div>
           <div className="plansContainer">
-            {planes.map((plan) => (
+            {planes.map((plan, i) => (
               <PlanCard
+                key={plan.nombre}
                 plan={plan}
                 selectedPlan={selectedPlan}
                 setSelectedPlan={setSelectedPlan}
                 planes={planes}
                 editMode={editMode}
+                paid={paid}
+                setPaid={setPaid}
               />
             ))}
           </div>
 
-          {selectedPlan.precio !== 0 && selectedPlan !== "" ? (
-            <Paypal price={selectedPlan.precio} description={selectedPlan.nombre} />
+          {selectedPlan.precio !== 0 &&
+          selectedPlan.nombre == "Empresa" &&
+          !paid ? (
+            <Paypal
+              price={selectedPlan.precio}
+              description={selectedPlan.nombre}
+              paid={paid}
+              setPaid={setPaid}
+              editMode={editMode}
+              updateProject={updateProyecto}
+              selectedPlan={selectedPlan._id}
+              //QUITAR
+              projectid={projectEdit?._id}
+              key={"Empresa"}
+            />
           ) : null}
+
+          {selectedPlan.precio !== 0 &&
+          selectedPlan.nombre == "Freelance" &&
+          !paid ? (
+            <Paypal
+              price={selectedPlan.precio}
+              description={selectedPlan.nombre}
+              paid={paid}
+              setPaid={setPaid}
+              editMode={editMode}
+              updateProject={updateProyecto}
+              selectedPlan={selectedPlan._id}
+              projectid={projectEdit?._id}
+              key={"Freelance"}
+            />
+          ) : null}
+
+          {paid && !editMode && selectedPlan.precio !== 0 && (
+            <div class="alert alert-success" role="alert">
+              Tu pago ha sido registrado con éxito!
+            </div>
+          )}
 
           <Container className="justify-content-center">
             <div className="button">
@@ -398,7 +505,3 @@ export default function CreateProjects() {
     </div>
   );
 }
-
-// {<Form.Label>Nombre</Form.Label>}
-
-// onSubmit={handleCreateProject}

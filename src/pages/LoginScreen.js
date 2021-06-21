@@ -5,9 +5,11 @@ import { AppContext } from "../context/AppContext";
 import { postData } from "../helpers/postData";
 import { useForm } from "../hooks/useForm";
 import Swal from "sweetalert2";
+import { TimerContext } from "../context/TimerContext";
 
 export const LoginScreen = () => {
   const { setUser, user } = useContext(AppContext);
+  const { setTimer } = useContext(TimerContext);
 
   const [formValues, handleInputChange] = useForm({
     email: "",
@@ -62,6 +64,12 @@ export const LoginScreen = () => {
     const url = "https://workzone-backend-mdb.herokuapp.com/api/auth/login";
     postData(url, body).then((r) => {
       if (r.ok) {
+        setTimer({
+          taskId: "",
+          running: false
+        });
+        
+        localStorage.setItem("token", r.token);
         const { email, uid, nombre, apellido, fechaNacimiento, username } =
           r.data;
         setUser({
@@ -71,7 +79,10 @@ export const LoginScreen = () => {
           username: username,
           fechaNacimiento: fechaNacimiento,
           isLogged: true,
+          checking: false,
         });
+        
+
       } else {
         console.log("error");
         Swal.fire({

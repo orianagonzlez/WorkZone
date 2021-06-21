@@ -58,32 +58,62 @@ export const UploadFilesModal = (props) => {
     <Modal
       show={props.show}
       onHide={props.onHide}
-      size="md"
+      size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
       animation={false}
     >
-      <Modal.Header closeButton onClick={props.onHide}>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Subir Archivos
-        </Modal.Title>
-      </Modal.Header>
+      <Modal.Header closeButton onClick={props.onHide}></Modal.Header>
       <Modal.Body>
-        <progress value={progress} max="100" />
-        <input type="file" multiple onChange={handleChange} id="upload-file" />
-        <br />
-        {urls.map((url, i) => (
-          <img
-            key={i}
-            style={{ height: "200px", margin: "10px"}}
-            src={url || "http://via.placeholder.com/300"}
-            alt="firebase-image"
-          />
-        ))}
-        <div className="button p-3 mx-5 mb-5">
-          <button className="auth_button" onClick={handleUpload}>
-            Subir
-          </button>
+        <div className="modal-file-container">
+          <div className="modal-upload-container">
+            <Modal.Title id="contained-modal-title-vcenter">
+              Subir Archivos
+            </Modal.Title>
+            <div className="modal-upload">
+              <div className="upload-input">
+                <input
+                  type="file"
+                  multiple
+                  onChange={handleChange}
+                />
+              </div>
+              {/* <div>
+                <progress value={progress} max="100" />
+              </div> */}
+              <br />
+              <div className="upload-links">
+                {urls.map((url, i) => (
+                  <div className="link-files">
+                    <a href={url} target="_blank">
+                      {images[i].name}
+                    </a>
+                  </div>
+                ))}
+              </div>
+
+              <div className="button p-3 mx-5 mb-5">
+                <button className="auth_button" onClick={handleUpload}>
+                  Subir
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="modal-download-container">
+            <Modal.Title id="contained-modal-title-vcenter">
+              Historial de Archivos
+            </Modal.Title>
+            <div className="modal-download">
+              <br />
+              {props.files.map((url, i) => (
+                <div className="link-files">
+                  <a href={url} target="_blank">
+                    File {i + 1}
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </Modal.Body>
     </Modal>

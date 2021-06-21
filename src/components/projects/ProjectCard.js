@@ -3,17 +3,16 @@ import { FaArchive, FaArrowCircleRight } from "react-icons/fa";
 import { postData } from "../../helpers/postData";
 import { useHistory } from "react-router";
 
-export default function ProjectCard({ project }) {
+export default function ProjectCard(props) {
+  const { project } = props;
   console.log(project);
+
   const history = useHistory();
 
-  const { _id, nombre, archivado, miembros } = project;
+  const { _id, nombre, archivado, miembros, tareas } = project;
 
   const archive = () => {
     console.log("ejecutandome");
-    {
-      /* Actualizar DB */
-    }
     const p = {
       id_proyecto: _id,
       archivado: !archivado,
@@ -26,6 +25,7 @@ export default function ProjectCard({ project }) {
       console.log("me respondio" + r);
       if (r.ok) {
         console.log("todo bien");
+        props.getProjects();
       } else {
         console.log("error");
       }
@@ -38,12 +38,11 @@ export default function ProjectCard({ project }) {
         {nombre}
       </div>
       <div className="column column-3" data-label="Tareas">
-        {" "}
-        0
+        {tareas}
       </div>
 
-      <div className="column column-3" data-label="Progreso">
-        0
+      <div className="column column-3" data-label="Miembros">
+        {miembros}
       </div>
       <div
         className="column column-3"

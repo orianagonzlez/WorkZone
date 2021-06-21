@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { Route, Redirect } from "react-router-dom";
+import Layout from "../components/layout/Layout";
 
 export const PrivateRoute = ({
   isAuthenticated,
@@ -10,12 +11,15 @@ export const PrivateRoute = ({
 }) => {
   console.log(isAuthenticated, "PROJECTS");
   return (
-    <Route
-      {...rest}
-      component={(props) =>
-        isAuthenticated ? <Component {...props} /> : <Redirect to="/login" />
-      }
-    />
+    <Layout>
+      <Route
+        {...rest}
+        component={(props) =>
+          isAuthenticated ? <Component {...props} /> : <Redirect to="/login" />
+        }
+      /> 
+    </Layout>
+    
   );
 };
 

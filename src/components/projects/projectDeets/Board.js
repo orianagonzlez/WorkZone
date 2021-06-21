@@ -11,6 +11,12 @@ import { BsThreeDots } from "react-icons/bs";
 import { TaskDeetsModal } from "../../tasks/TaskDeetsModal";
 import { Members } from "../../common/Member";
 import { postData } from "../../../helpers/postData";
+import { CgDetailsMore } from "react-icons/cg";
+import { storage } from "../../../firebase/index";
+import { useSocket } from "../../../hooks/useSocket";
+import { SocketContext } from "../../../context/SocketContext";
+import { useContext } from "react";
+import { TimerContext } from "../../../context/TimerContext";
 
 const onDragEnd = (result, columns, setColumns) => {
   console.log("ARRASTRE");
@@ -126,10 +132,22 @@ const updateTask = (body) => {
   });
 };
 
+
 export const Board = ({ project }) => {
   const [columns, setColumns] = useState({});
   const [lists, setLists] = useState([]);
   const [tasksNum, setTasksNum] = useState(0);
+
+  const { socket } = useContext(SocketContext);
+
+  const { timer } = useContext(TimerContext);
+
+  useEffect(() => {
+    socket?.on("refresh", (event) => {
+      console.log(event);
+      refreshList();
+    });
+  }, [socket]);
 
   /*console.log(columns);*/
 
@@ -146,6 +164,14 @@ export const Board = ({ project }) => {
   useEffect(() => {
     refreshList();
   }, [modalShow, columnModalShow, editColumnModalShow]);
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     console.log("me ejecute");
+  //     refreshList();
+  //   }, 80000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const refreshList = () => {
     getData(
@@ -217,19 +243,166 @@ export const Board = ({ project }) => {
     setEditColumnModalShow(true);
   };
 
-  const [taskToShow = {}, setTaskToShow] = useState();
+  const[files, setFiles] = useState([]);
+  const [view, setView] = useState(false);
+
+  const getFiles = (item) => {
+
+    const storageRef = storage.ref(`images/${project._id}/${item._id}`);
+    storageRef.listAll().then(function(result) {
+      result.items.forEach(function(imageRef) {
+        displayImage(imageRef);
+      });
+    }).catch(function(error) {
+      console.log(error)
+    });
+
+    function displayImage(imageRef) {
+      imageRef.getDownloadURL().then(function(url) {
+
+        let newList = files;
+        newList.push(url);
+        setFiles(newList);
+
+        
+      }).catch(function(error) {
+        console.log(error)
+      });
+    }
+
+    console.log('URLs', files)
+    console.log('View', view);
+  }
+
+  const [taskToShow, setTaskToShow] = useState({});
 
   const handleOpenTaskDeets = (item) => {
-    setTaskToShow(item);
-    console.log(taskToShow);
+    getFiles(item)
+    setTaskToShow(item._id);
+    console.log('Task', item);
     setTaskModalShow(true);
     console.log("yes");
     //console.log(taskModalShow);
     //console.log(item);
     //console.log(taskModalShow);
-    console.log(taskToShow.nombre);
+    // console.log(taskToShow.nombre);
 
     //console.log(item.nombre);
+  };
+
+  const onDragEnd = (result, columns, setColumns) => {
+    console.log("ARRASTRE");
+    if (!result.destination) return;
+    const { source, destination } = result;
+
+    if (source.droppableId !== destination.droppableId) {
+      const sourceColumn = columns[source.droppableId];
+      const destColumn = columns[destination.droppableId];
+      const sourceItems = [...sourceColumn.items];
+      const destItems = [...destColumn.items];
+      const [removed] = sourceItems.splice(source.index, 1);
+      destItems.splice(destination.index, 0, removed);
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...sourceColumn,
+          items: sourceItems,
+        },
+        [destination.droppableId]: {
+          ...destColumn,
+          items: destItems,
+        },
+      });
+
+      // se actualiza la lista de origen
+      const sourceBody = {
+        id_lista: source.droppableId,
+        items: sourceItems.map((i) => i._id),
+      };
+
+      console.log("SOURCE BODY", sourceBody);
+      updateList(sourceBody);
+
+      // se actualiza la lista destino
+      const destBody = {
+        id_lista: destination.droppableId,
+        items: destItems.map((i) => i._id),
+      };
+
+      console.log("dest BODY", destBody);
+      updateList(destBody);
+
+      // se actualiza la tarea
+      const newTask = {
+        id_tarea: removed._id,
+        id_lista: destination.droppableId,
+      };
+
+      console.log("tarei", newTask);
+      updateTask(newTask);
+    } else {
+      const column = columns[source.droppableId];
+      const copiedItems = [...column.items];
+      const [removed] = copiedItems.splice(source.index, 1);
+      copiedItems.splice(destination.index, 0, removed);
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...column,
+          items: copiedItems,
+        },
+      });
+
+      // solo hay que actualizar la lista para mantener el orden de los items
+      const body = {
+        id_lista: source.droppableId,
+        items: copiedItems.map((i) => i._id),
+      };
+
+      console.log("BODY", body);
+      updateList(body);
+    }
+  };
+
+  const updateList = (body) => {
+    postData(
+      "https://workzone-backend-mdb.herokuapp.com/api/lists/update",
+      body
+    ).then((res) => {
+      console.log("me respondio" + res);
+      if (res.ok) {
+        console.log("todo bien", res.data);
+        socket.emit("refresh-project", { id_proyecto: project._id });
+      } else {
+        console.log("error");
+        // Swal.fire({
+        //   icon: "error",
+        //   title: "Oops...",
+        //   text: "Algo ha salido mal, intenta de nuevo",
+        //   confirmButtonColor: "#22B4DE",
+        // });
+      }
+    });
+  };
+
+  const updateTask = (body) => {
+    postData(
+      "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
+      body
+    ).then((res) => {
+      console.log("me respondio" + res);
+      if (res.ok) {
+        console.log("todo bien", res.data);
+      } else {
+        console.log("error");
+        // Swal.fire({
+        //   icon: "error",
+        //   title: "Oops...",
+        //   text: "Algo ha salido mal, intenta de nuevo",
+        //   confirmButtonColor: "#22B4DE",
+        // });
+      }
+    });
   };
 
   return (
@@ -319,44 +492,52 @@ export const Board = ({ project }) => {
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
                                     >
-                                      <button
-                                        onClick={() =>
-                                          handleOpenTaskDeets(item)
-                                        }
-                                      >
+                                      <div className={`card-box  px-2 ${item.running && 'text-success'} ${item.running && timer.taskId == item._id && 'text-info'}`}>
                                         {item.nombre}
-                                        {console.log(item.miembro, "ITEM")}
-                                        {item.miembro != undefined
-                                          ? project.miembros.map((miembro) => {
-                                              console.log(miembro._id);
-                                              if (
-                                                item.miembro === miembro._id
-                                              ) {
-                                                return (
-                                                  <div className="d-flex justify-content-center">
-                                                    <Members
-                                                      member={miembro}
-                                                      placement={"task"}
-                                                    />
-                                                  </div>
-                                                );
-                                              }
-                                              return null;
-                                            })
-                                          : null}
-                                      </button>
-                                      {item === taskToShow && (
+                                        <div className="d-flex justify-content-between align-items-center">
+                                          <div
+                                            className="cursor"
+                                            onClick={() =>
+                                              handleOpenTaskDeets(item)
+                                            }
+                                          >
+                                            <BsThreeDots></BsThreeDots>
+                                          </div>
+                                          {item.miembro != undefined
+                                            ? project.miembros.map(
+                                                (miembro) => {
+                                                  if (
+                                                    item.miembro === miembro._id
+                                                  ) {
+                                                    return (
+                                                      <div>
+                                                        <Members
+                                                          member={miembro}
+                                                          placement={"task"}
+                                                        />
+                                                      </div>
+                                                    );
+                                                  }
+                                                  return null;
+                                                }
+                                              )
+                                            : null}
+                                        </div>
+                                      </div>
+                                      {item._id === taskToShow && (
                                         //console.log("yeesyeyeyeyes", index)
-                                        <TaskDeetsModal
+                                          <TaskDeetsModal
                                           project={project}
                                           task={item}
                                           show={taskModalShow}
-                                          onHide={() => setTaskModalShow(false)}
-                                          columns={columns}
+                                          files = {files}
+                                          onHide={() => {
+                                            setTaskModalShow(false) 
+                                            setFiles([])
+                                          }}
                                           lists={lists}
-                                          setcolumns={setColumns}
                                           animation={false}
-                                          key={1}
+                                          key={item._id}
                                           refreshList={refreshList}
                                         />
                                       )}

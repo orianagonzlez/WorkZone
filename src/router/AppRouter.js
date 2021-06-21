@@ -8,28 +8,47 @@ import { PrivateRoute } from "./PrivateRoute";
 import { PublicRoute } from "./PublicRoute";
 import { AppContext } from "../context/AppContext";
 import { ProfileRouter } from "./ProfileRouter";
+import { ChatRouter } from "./ChatRouter";
+import { useEffect } from "react";
+import { fetchToken } from "../helpers/getData";
+import { useCallback } from "react";
+import { TimerProvider } from "../context/TimerContext";
 
 export const AppRouter = () => {
-  const { user } = useContext(AppContext);
+  const { user, verifyToken } = useContext(AppContext);
 
-  console.log('prueba', user);
+  console.log("prueba", user);
 
+  useEffect(() => {
+    verifyToken();
+  }, []);
+
+  if (user.checking) {
+    return <div></div>;
+  }
   return (
     <Router>
+      
       <div>
         <Switch>
-          <PrivateRoute
-            isAuthenticated={user.isLogged}
-            path="/projects"
-            component={ProjectsRouter}
-          />
+              <PrivateRoute
+                isAuthenticated={user.isLogged}
+                path="/projects"
+                component={ProjectsRouter}
+              />  
+            
+              <PrivateRoute
+                isAuthenticated={user.isLogged}
+                path="/profile"
+                component={ProfileRouter}
+              />    
 
-          <PrivateRoute
-            isAuthenticated={user.isLogged}
-            path="/profile"
-            component={ProfileRouter}
-          />
-
+              <PrivateRoute
+                isAuthenticated={user.isLogged}
+                path="/chats"
+                component={ChatRouter}
+              />
+          
           <PublicRoute
             path="/"
             component={AuthRouter}
@@ -37,7 +56,8 @@ export const AppRouter = () => {
           />
 
           <Redirect to="/auth/login" />
-        </Switch>
+        </Switch>  
+        
       </div>
     </Router>
   );
