@@ -107,7 +107,12 @@ export default function Sidebar() {
                 reset();
               }  
             } else {
-              //TODO SE MUESTRA ALERTA DE QUE LA TAREA FUE REASIGNADA Y YA NO SE PUEDE CRONOMETRAR
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Esta tarea fue reasignada y ya no puede ser cronometrada por usted.",
+                confirmButtonColor: "#22B4DE",
+              });
               console.log(
                 "LA TAREA FUE REASIGNADA"
               );
@@ -120,7 +125,12 @@ export default function Sidebar() {
             }
             
           } else {
-            //TODO PONER UNA ALERTA
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Esta tarea ya no existe, probablemente haya sido eliminada.",
+              confirmButtonColor: "#22B4DE",
+            });
             console.log("NO SE ENCONTRO LA TAREA, SEGURO FUE ELIMINADA");
             setTimer({
               ...timer,
@@ -261,7 +271,12 @@ export default function Sidebar() {
               setTaskName(r.data.nombre);
             }
           } else {
-            //TODO SE MUESTRA ALERTA MENCIONADA ARRIBA DE QUE LA TAREA FUE REASIGNADA Y YA NO SE PUEDE CRONOMETRAR
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Esta tarea fue reasignada y ya no puede ser cronometrada por usted.",
+              confirmButtonColor: "#22B4DE",
+            });
             console.log(
               "LA TAREA FUE REASIGNADA"
             );
@@ -273,7 +288,12 @@ export default function Sidebar() {
             updateTaskWithoutValidations({ id_tarea: taskId, cronometro: '0:0:0:0', running: false });
           }
         } else {
-          //TODO SE MUESTRA LA MISMA ALERTA QUE SE MENCIONO CUANDO NO SE ENCUENTRA LA TAREA
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Esta tarea ya no existe, probablemente haya sido eliminada.",
+            confirmButtonColor: "#22B4DE",
+          });
           console.log(
             "NO SE ENCONTRO LA TAREA INTENTANDO EDITAR, SEGURO FUE ELIMINADA"
           );
