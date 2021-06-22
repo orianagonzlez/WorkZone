@@ -360,7 +360,9 @@ export default function Sidebar() {
       {visible ? (
         <div className="sidebarMobile">
           <div>
-            <div className="logo">LOGO HERE</div>
+            <div className="logo">
+              <img src="/logo192.png" alt="logo"/>
+            </div>
             <li>
               <ul>
                 <NavLink
@@ -375,9 +377,11 @@ export default function Sidebar() {
                 </NavLink>
               </ul>
               <ul>
-                <NavLink exact={true} to="/chats">
-                  <FaComments />
-                  <span>Chats</span>
+                <NavLink exact={true} activeClassName="is-active" to="/chats">
+                  <Button>
+                    <FaComments />
+                    <span>Chats</span>
+                  </Button>
                 </NavLink>
               </ul>
               <ul>
@@ -442,7 +446,9 @@ export default function Sidebar() {
 
       <div className="sidebarVisible">
         <div>
-          <div className="logo">LOGO HERE</div>
+          <div className="logo">
+              <img src="/logo192.png" alt="logo"/>
+          </div>
           <li>
             <ul>
               <NavLink exact={true} activeClassName="is-active" to="/projects">

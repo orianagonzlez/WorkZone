@@ -50,9 +50,13 @@ export default function Chat({ project }) {
             <Messages />
           </>
         ) : (
-          <>
-            <h2>Seleccione chat </h2>
-          </>
+          <div className="overview-container">
+            <h2 className="overview-title">¡Mantente conectado con tu equipo!</h2>
+            <img src="/undraw_Work_chat_re_qes4 1.png" alt="" />
+            <h3 className="overview-subtitle">
+              Una mayor comunicación asegura el éxito en un proyecto
+            </h3>
+          </div>
         )}
       </div>
       <div className="chat-selection">
