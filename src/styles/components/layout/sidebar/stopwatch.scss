@@ -1,0 +1,140 @@
+.stopwatch {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+
+  .stopwatch-numbers {
+    font-size: 1.5rem;
+  }
+
+  .stopwatch-buttons {
+    padding: 10px 0px 10px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    font-size: 1rem;
+
+    .play-button {
+      width: 50px;
+      height: 50px;
+      border: 0px;
+      text-align: center;
+      padding-left: 8px;
+      padding-bottom: 2px;
+      border-radius: 100%;
+      margin: 0px 10px 0px 0px;
+      background-color: $primary-mint-500;
+      color: $neutral-50;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: darken($primary-mint-500, 5%);
+        color: $neutral-50;
+      }
+    }
+    .stop-button {
+      width: 50px;
+      height: 50px;
+      border: 0px;
+      text-align: center;
+      border-radius: 100%;
+      margin: 0px 10px 0px 0px;
+      background-color: $primary-mint-500;
+      color: $neutral-50;
+      transition: all 0.3s ease;
+      &:hover {
+        background-color: darken($primary-mint-500, 5%);
+        color: $neutral-50;
+      }
+    }
+    .reset-button {
+      width: 50px;
+      height: 50px;
+      border: 0px;
+      text-align: center;
+      border-radius: 100%;
+      margin: 0px 0px 0px 10px;
+      transition: all 0.3s ease;
+      color: $primary-mint-500;
+      background-color: $neutral-50;
+
+      &:hover {
+        color: darken($primary-mint-500, 5%);
+        background-color: darken($neutral-100, 5%);
+      }
+    }
+  }
+}
+
+.stopwatch-nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  margin-top: 100px;
+
+  .stopwatch-numbers-nav {
+    font-size: 1.5rem;
+  }
+
+  .stopwatch-buttons-nav {
+    padding: 10px 0px 10px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    font-size: 1rem;
+
+    .play-button-nav {
+      width: 50px;
+      height: 50px;
+      border: 0px;
+      text-align: center;
+      padding-left: 8px;
+      padding-bottom: 2px;
+      border-radius: 100%;
+      margin: 0px 10px 0px 0px;
+      background-color: $primary-mint-500;
+      color: $neutral-50;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: darken($primary-mint-500, 10%);
+        color: $neutral-50;
+      }
+    }
+    .stop-button-nav {
+      width: 50px;
+      height: 50px;
+      border: 0px;
+      text-align: center;
+      border-radius: 100%;
+      margin: 0px 10px 0px 0px;
+      background-color: $primary-mint-500;
+      color: $neutral-50;
+      transition: all 0.3s ease;
+      &:hover {
+        background-color: darken($primary-mint-500, 10%);
+        color: $neutral-50;
+      }
+    }
+    .reset-button-nav {
+      width: 50px;
+      height: 50px;
+      border: 0px;
+      text-align: center;
+      border-radius: 100%;
+      margin: 0px 0px 0px 10px;
+      transition: all 0.3s ease;
+      color: $primary-mint-500;
+      background-color: $font;
+
+      &:hover {
+        color: lighten($primary-mint-500, 10%);
+        background-color: lighten($font, 2.5%);
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Container, Button } from "react-bootstrap";
 import {
   FaBoxes,
@@ -26,6 +26,7 @@ import { types } from "../../../context/types";
 
 export default function Sidebar() {
   const [visible, setVisible] = useState(false);
+  const [currentTask, setCurrentTask] = useState("");
 
   const [initialTime, setInitialTime] = useState([]);
   const [saveTimeInterval, setSaveTimeInterval] = useState(null);
@@ -39,6 +40,7 @@ export default function Sidebar() {
   const { taskId, projectId, running } = timer;
 
   const { chat, dispatch } = useContext(ChatContext);
+  const [taskName, setTaskName] = useState("");
 
   //Esto es por si le quieren mandar el tiempo en que debe iniciarse
   // const stopwatchOffset = new Date();
@@ -51,13 +53,19 @@ export default function Sidebar() {
       // offsetTimestamp: initialTime
     });
 
+  const t = useRef(`${days}:${hours}:${minutes}:${seconds}`);
+
+  useEffect(() => {
+    t.current = `${days}:${hours}:${minutes}:${seconds}`;
+  }, [seconds, minutes, hours, days]);
+
   useEffect(() => {
     if (taskId) {
       //Si otra tarea esta corriendo, guardo el valor antes del cambio
       if (isRunning) {
         clearInterval(saveTimeInterval);
         let body = {
-          id_tarea: taskId,
+          id_tarea: currentTask,
           cronometro: `${days}:${hours}:${minutes}:${seconds}`,
           running: false,
         };
@@ -75,30 +83,73 @@ export default function Sidebar() {
         // si obtuve informacion
         if (r.ok) {
           // si se encontro la tarea
-          if (r.data && !r.data.running) {
-            const newTime = new Date();
-            let time = r.data.cronometro;
-            console.log("esto recibo", time);
+          if (r.data) {
+            console.log(r.data.miembro, user.id);
+            if (!r.data.miembro || r.data.miembro._id == user.id) {
+              const newTime = new Date();
+              let time = r.data.cronometro;
+              console.log("esto recibo", time);
 
-            // si ya habia un tiempo guardado
-            if (time != "0:0:0:0") {
-              //empiezo el cronometro desde donde quedo
-              time = time.split(":");
+              setCurrentTask(taskId);
+              setTaskName(r.data.nombre);
 
-              const newTime = getNewTime(time);
+              // si ya habia un tiempo guardado
+              if (time != "0:0:0:0") {
+                //empiezo el cronometro desde donde quedo
+                time = time.split(":");
 
-              console.log("esto envio", newTime);
-              setInitialTime(time);
-              running ? reset(newTime, true) : reset(newTime, false);
+                const newTime = getNewTime(time);
+
+                console.log("esto envio", newTime);
+                setInitialTime(time);
+                running ? reset(newTime, true) : reset(newTime, false);
+              } else {
+                time = time.split(":");
+                setInitialTime(time);
+                reset();
+              }
             } else {
-              time = time.split(":");
-              setInitialTime(time);
-              reset();
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Esta tarea fue reasignada y ya no puede ser cronometrada por usted.",
+                confirmButtonColor: "#22B4DE",
+              });
+              console.log("LA TAREA FUE REASIGNADA");
+              reset(new Date(), false);
+              clearInterval(saveTimeInterval);
+              setTimer({
+                ...timer,
+                taskId: "",
+                projectId: "",
+                taskName: "",
+                running: false,
+              });
+              setTaskName("");
+
+              updateTaskWithoutValidations({
+                id_tarea: taskId,
+                cronometro: "0:0:0:0",
+                taskName: taskName,
+                running: false,
+              });
             }
           } else {
-            //TODO PONER UNA ALERTA
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Esta tarea ya no existe, probablemente haya sido eliminada.",
+              confirmButtonColor: "#22B4DE",
+            });
             console.log("NO SE ENCONTRO LA TAREA, SEGURO FUE ELIMINADA");
-            setTimer({ ...timer, taskId: "", projectId: "", running: false });
+            setTimer({
+              ...timer,
+              taskId: "",
+              projectId: "",
+              running: false,
+              taskName: "",
+            });
+            setTaskName("");
           }
         } else {
           console.log("error", r.data);
@@ -112,26 +163,17 @@ export default function Sidebar() {
       console.log("YA TENGO EL TASK");
       setTimer({ ...timer, running: isRunning });
 
-      let body = {
+      const body = {
         id_tarea: taskId,
         cronometro: `${days}:${hours}:${minutes}:${seconds}`,
       };
 
       if (isRunning) {
-        console.log("empiezo");
+        console.log("empiezo", body);
         updateTask({ id_tarea: taskId, running: true });
 
         // como empezo el cronometro, se empieza a guardar el tiempo cada cierto tiempo
-        setSaveTimeInterval(
-          setInterval(() => {
-            let b = {
-              id_tarea: taskId,
-              cronometro: `${days}:${hours}:${minutes}:${seconds}`,
-            };
-            console.log(b, "acaaaaaaaaaaa");
-            updateTask(b);
-          }, 10000)
-        );
+        setSaveTimeInterval(setInterval(updateTaskInterval, 30000));
       } else if (initialTime.length > 0) {
         console.log("me pare");
 
@@ -143,6 +185,18 @@ export default function Sidebar() {
     }
   }, [isRunning]);
 
+  const updateTaskInterval = () => {
+    let b = {
+      id_tarea: taskId,
+      cronometro: t.current,
+      running: true.valueOf,
+    };
+
+    console.log(b, "acaaaaaaaaaaa");
+
+    updateTask(b);
+  };
+
   const signOut = () => {
     if (running) {
       // si el cronometro esta corriendo, se guarda el tiempo
@@ -153,6 +207,7 @@ export default function Sidebar() {
         running: false,
       };
 
+      console.log("aqui");
       updateTask(body);
     }
 
@@ -162,6 +217,7 @@ export default function Sidebar() {
     setTimer({
       taskId: "",
       projectId: "",
+      taskName: "",
       running: false,
     });
 
@@ -210,17 +266,7 @@ export default function Sidebar() {
     return newTime;
   };
 
-  const getTime = () => {
-    console.log("voy aganin", `${days}:${hours}:${minutes}:${seconds}`);
-    return {
-      id_tarea: taskId,
-      cronometro: `${days}:${hours}:${minutes}:${seconds}`,
-    };
-  };
-
   const updateTask = (body) => {
-    console.log("porfa cambia", `${days}:${hours}:${minutes}:${seconds}`);
-
     console.log("voy a guardar esto", body);
     postData(
       "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
@@ -229,19 +275,67 @@ export default function Sidebar() {
       if (r.ok) {
         // si encontre la tarea y la actualice
         if (r.data) {
-          console.log("guarde nuevo tiempo", r.data);
-          socket.emit("refresh-project", { id_proyecto: projectId });
+          // si la tarea sigue estando asignada al usuario o a ninguno
+          if (r.data.miembro == user.id || !r.data.miembro) {
+            console.log("guarde nuevo tiempo", r.data);
+            socket.emit("refresh-project", { id_proyecto: projectId });
+
+            // si el nombre de la tarea cambio, se actualiza
+            if (r.data.nombre != taskName) {
+              setTaskName(r.data.nombre);
+            }
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Esta tarea fue reasignada y ya no puede ser cronometrada por usted.",
+              confirmButtonColor: "#22B4DE",
+            });
+            console.log("LA TAREA FUE REASIGNADA");
+            reset(new Date(), false);
+            clearInterval(saveTimeInterval);
+            setTimer({ ...timer, taskId: "", projectId: "", running: false });
+            setTaskName("");
+
+            updateTaskWithoutValidations({
+              id_tarea: taskId,
+              cronometro: "0:0:0:0",
+              running: false,
+            });
+          }
         } else {
-          //TODO SE MUESTRA LA MISMA ALERTA QUE SE MENCIONO CUANDO NO SE ENCUENTRA LA TAREA
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Esta tarea ya no existe, probablemente haya sido eliminada.",
+            confirmButtonColor: "#22B4DE",
+          });
           console.log(
             "NO SE ENCONTRO LA TAREA INTENTANDO EDITAR, SEGURO FUE ELIMINADA"
           );
           reset(new Date(), false);
           clearInterval(saveTimeInterval);
           setTimer({ ...timer, taskId: "", projectId: "", running: false });
+          setTaskName("");
         }
       } else {
         console.log("error guardando tiempo");
+      }
+    });
+  };
+
+  const updateTaskWithoutValidations = (body) => {
+    postData(
+      "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
+      body
+    ).then((r) => {
+      console.log("como reasignaron deje de correr y reinicie cronom", r.data);
+      socket.emit("refresh-project", { id_proyecto: projectId });
+
+      if (r.ok) {
+        console.log("todo bien", r.data);
+      } else {
+        console.log("error");
       }
     });
   };
@@ -300,36 +394,48 @@ export default function Sidebar() {
                   <span>Cerrar sesión</span>
                 </Button>
               </ul>
-              <ul>
-                <div style={{ textAlign: "center" }}>
-                  <div>
-                    <span>{days}</span>:<span>{hours}</span>:
-                    <span>{minutes}</span>:<span>{seconds}</span>
-                  </div>
-                  <div className="d-flex justify-content-between">
-                    {running ? (
-                      <Button onClick={pause} disabled={!taskId}>
-                        <FaPause />
-                      </Button>
-                    ) : (
-                      <Button onClick={start} disabled={!taskId}>
-                        <FaPlay />
-                      </Button>
-                    )}
-                    {/* para resetear al tiempo con el que inicio a correr */}
-                    {/* <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button> */}
-                    <Button
-                      onClick={() => {
-                        running ? reset() : reset(initialTime, false);
-                      }}
-                      disabled={!taskId}
-                    >
-                      <FaRedoAlt />
-                    </Button>
-                  </div>
-                </div>
-              </ul>
             </li>
+          </div>
+          <div className="stopwatch-nav">
+            <div className="stopwatch-numbers-nav">
+              <span>{days}</span>:<span>{hours}</span>:<span>{minutes}</span>:
+              <span>{seconds}</span>
+            </div>
+            {taskName !== "" ? (
+              <div className="stopwatch-task">{taskName}</div>
+            ) : (
+              <div className="stopwatch-task"></div>
+            )}
+            <div className="stopwatch-buttons-nav">
+              {running ? (
+                <button
+                  className="stop-button-nav"
+                  onClick={pause}
+                  disabled={!taskId}
+                >
+                  <FaPause />
+                </button>
+              ) : (
+                <button
+                  className="play-button-nav"
+                  onClick={start}
+                  disabled={!taskId}
+                >
+                  <FaPlay />
+                </button>
+              )}
+              {/* para resetear al tiempo con el que inicio a correr */}
+              {/* <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button> */}
+              <button
+                className="reset-button-nav"
+                onClick={() => {
+                  running ? reset() : reset(new Date(), false);
+                }}
+                disabled={!taskId}
+              >
+                <FaRedoAlt />
+              </button>
+            </div>
           </div>
         </div>
       ) : null}
@@ -372,36 +478,50 @@ export default function Sidebar() {
                 <span>Cerrar sesión</span>
               </Button>
             </ul>
-            <ul>
-              <div style={{ textAlign: "center" }}>
-                <div>
-                  <span>{days}</span>:<span>{hours}</span>:
-                  <span>{minutes}</span>:<span>{seconds}</span>
-                </div>
-                <div className="d-flex justify-content-between">
-                  {running ? (
-                    <Button onClick={pause} disabled={!taskId}>
-                      <FaPause />
-                    </Button>
-                  ) : (
-                    <Button onClick={start} disabled={!taskId}>
-                      <FaPlay />
-                    </Button>
-                  )}
-                  {/* para resetear al tiempo con el que inicio a correr */}
-                  {/* <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button> */}
-                  <Button
-                    onClick={() => {
-                      running ? reset() : reset(new Date(), false);
-                    }}
-                    disabled={!taskId}
-                  >
-                    <FaRedoAlt />
-                  </Button>
-                </div>
-              </div>
-            </ul>
           </li>
+        </div>
+        <div className="stopwatch">
+          <div className="stopwatch-numbers">
+            <span>{days}</span>:<span>{hours}</span>:<span>{minutes}</span>:
+            <span>{seconds}</span>
+          </div>
+          {taskName !== "" ? (
+            <div className="stopwatch-task">{taskName}</div>
+          ) : (
+            <div className="stopwatch-task"></div>
+          )}
+          <div className="stopwatch-buttons">
+            {running ? (
+              <button
+                className="stop-button"
+                onClick={pause}
+                disabled={!taskId}
+              >
+                <FaPause />
+              </button>
+            ) : (
+              <button
+                className="play-button"
+                onClick={start}
+                disabled={!taskId}
+              >
+                <FaPlay />
+              </button>
+            )}
+            {/* para resetear al tiempo con el que inicio a correr */}
+            {/* <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button> */}
+
+            {/* TODO el onClick es la funcion que lo resetea, puedes convertirlo en funcion y se pide confirmacion antes de hacer lo que esta ahi  */}
+            <button
+              className="reset-button"
+              onClick={() => {
+                running ? reset() : reset(new Date(), false);
+              }}
+              disabled={!taskId}
+            >
+              <FaRedoAlt />
+            </button>
+          </div>
         </div>
       </div>
     </Container>

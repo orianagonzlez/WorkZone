@@ -184,6 +184,16 @@ export const Board = ({ project }) => {
         // setColumns(r.data);
         const c = {};
         r.data.forEach((col) => {
+          col.items.forEach((item) => {
+            //Si la tarea sale como running, pero ya pasaron 2 minutos desde la ultima actualizacion
+            //se cambia running a false
+            if (item.running && new Date() - new Date(item.updatedAt) > 120000) {
+              console.log('ya paso mucho tiempo');
+              updateTask({ id_tarea: item._id, running: false });
+              socket.emit("refresh-project", { id_proyecto: project._id });
+              return;
+            }
+          });
           c[col._id] = col;
         });
 
@@ -244,6 +254,7 @@ export const Board = ({ project }) => {
   };
 
   const[files, setFiles] = useState([]);
+  const[fileNames, setFileNames] = useState([]);
   const [view, setView] = useState(false);
 
   const getFiles = (item) => {
@@ -268,9 +279,20 @@ export const Board = ({ project }) => {
       }).catch(function(error) {
         console.log(error)
       });
+      imageRef.getMetadata().then(function(metadata) {
+
+        let newListNames = fileNames;
+        newListNames.push(metadata.name);
+        setFileNames(newListNames);
+
+        
+      }).catch(function(error) {
+        console.log(error)
+      });
     }
 
     console.log('URLs', files)
+    console.log('Names', fileNames)
     console.log('View', view);
   }
 
@@ -531,6 +553,7 @@ export const Board = ({ project }) => {
                                           task={item}
                                           show={taskModalShow}
                                           files = {files}
+                                          fileNames = {fileNames}
                                           onHide={() => {
                                             setTaskModalShow(false) 
                                             setFiles([])

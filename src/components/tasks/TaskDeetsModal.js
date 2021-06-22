@@ -31,11 +31,9 @@ import { TimerContext } from "../../context/TimerContext";
 import { AppContext } from "../../context/AppContext";
 import { SocketContext } from "../../context/SocketContext";
 
-export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files }) => {
+export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files, fileNames }) => {
   
   const { _id, nombre, descripcion, miembro, lista, subtareas, cronometro, running } = task;
-
-  console.log('mi nombreee ', nombre)
 
   const [formValues, handleInputChange, reset] = useForm({
     task_name: nombre,
@@ -43,6 +41,8 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
     task_member: miembro,
     task_status: lista
   });
+
+  console.log("FILESNAMES EN TASKDEETS", fileNames)
 
   console.log('task', task)
 
@@ -131,6 +131,9 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
   };
 
   const runStopwatch = () => {
+    //TODO aqui se puede poner la confirmacion, si timer.taskId && timer.running es true,
+    // hay una tarea elegida corriendo y se confirma si se quiere cambiar, si acepta se hace el setTimer
+    // ya en el sidebar esta el codigo que maneja eso y hace que se guarde el tiempo y empiece a correr la otra
     setTimer({ ...timer, taskId: _id, projectId: project._id, running: true });
   };
 
@@ -152,18 +155,41 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
         text: "Los campos de titulo y descripción no pueden ser vacios",
         confirmButtonColor: "#22B4DE",
       });
+    } else {
+      let body = {
+        id_tarea: _id,
+        nombre: task_name,
+        descripcion: task_content,
+        subtareas: inputList,
+        miembro: assigned ? assigned : null,
+      };
+
+      // si se cambio el miembro encargado de realizar la tarea
+      if (assigned && miembro != assigned && cronometro != '0:0:0:0') {
+        Swal.fire({
+          title: "Estás seguro?",
+          text: "Si reasignas la tarea, el cronómetro se reiniciará en los próximos minutos",
+          icon: "info",
+          showCancelButton: true,
+          confirmButtonColor: "#22B4DE",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Sí, reasignar tarea",
+          cancelButtonText: "No, cancelar",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            body.cronometro = '0:0:0:0';
+            updateTask(body);
+          }
+        }); 
+      } else {
+        updateTask(body);
+      }
     }
+  };
 
-    let body = {
-      id_tarea: _id,
-      nombre: task_name,
-      descripcion: task_content,
-      subtareas: inputList,
-      miembro: assigned ? assigned : null,
-    };
-
+  const updateTask = (body) => {
     console.log(body);
-
+  
     postData(
       "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
       body
@@ -357,6 +383,7 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
                       onHide={() => setFileModalShow(false)}
                       task={task}
                       files = {files}
+                      fileNames = {fileNames}
                     />
                   </label>
                 </div>
@@ -389,12 +416,14 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
               <div className="font-weight-bold my-2">Un colaborador esta cronometrando la tarea</div>
               }
 
-              <div>Tiempo anterior: {cronometro}</div>
+              {cronometro != '0:0:0:0' ? 
+              <div className="my-2">Tiempo anterior: {cronometro}</div>
+              :
               <div className="alert alert-primary my-3" role="alert">
                 Lleva el tiempo de cuanto inviertes en tus tareas asignadas o generales para llevar
                 un mejor control del proyecto! Podras manejar el mismo desde el
                 menu lateral para mayor comodidad.
-              </div>
+              </div>}
             </div>
             {/* <div id="labels">
               <div className="sectionTitle mt-3">

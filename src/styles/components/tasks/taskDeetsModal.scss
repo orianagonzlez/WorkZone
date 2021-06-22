@@ -183,40 +183,52 @@
     }
   }
 }
-.modal-file-container{
+progress {
+  width: 20rem;
+}
+
+.modal-file-container {
   display: flex;
   flex-direction: column;
-  .modal-upload-container{
+  .modal-upload-container {
     display: flex;
     flex-direction: column;
-    .modal-upload{
+    justify-content: center;
+    .modal-upload {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      progress{
-        justify-self: center;
-        width: 80%;
-      }
-      .upload-input{
+      align-items: center;
+
+      .upload-input {
+        display: flex;
+        flex-direction: row;
         margin: 20px;
-        justify-content: center;
+        align-items: center;
       }
     }
   }
-  .modal-download-container{
-    .modal-download{
+  .modal-download-container {
+    .modal-download {
       height: 300px;
       overflow-y: scroll;
-      
     }
   }
 }
 
-.link-files{
-  margin: 10px;
-  background-color: $neutral-100;
-  border-radius: 5px;
-  font-style: italic;
-  padding: 10px;
-  
+.link-files {
+  display: flex;
+  flex-direction: row;
 }
+.link-file {
+    margin: 10px;
+    background-color: $neutral-100;
+    border-radius: 5px;
+    font-style: italic;
+    padding: 10px;
+  }
+
+  .success-icon{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
