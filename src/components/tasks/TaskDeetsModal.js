@@ -35,8 +35,6 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
   
   const { _id, nombre, descripcion, miembro, lista, subtareas, cronometro, running } = task;
 
-  console.log('mi nombreee ', nombre)
-
   const [formValues, handleInputChange, reset] = useForm({
     task_name: nombre,
     task_content: descripcion,
@@ -133,6 +131,9 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
   };
 
   const runStopwatch = () => {
+    //TODO aqui se puede poner la confirmacion, si timer.taskId && timer.running es true,
+    // hay una tarea elegida corriendo y se confirma si se quiere cambiar, si acepta se hace el setTimer
+    // ya en el sidebar esta el codigo que maneja eso y hace que se guarde el tiempo y empiece a correr la otra
     setTimer({ ...timer, taskId: _id, projectId: project._id, running: true });
   };
 

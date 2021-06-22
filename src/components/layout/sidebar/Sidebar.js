@@ -24,6 +24,7 @@ import { SocketContext } from "../../../context/SocketContext";
 
 export default function Sidebar() {
   const [visible, setVisible] = useState(false);
+  const [currentTask, setCurrentTask] = useState("");
 
   const [initialTime, setInitialTime] = useState([]);
   const [saveTimeInterval, setSaveTimeInterval] = useState(null);
@@ -61,7 +62,7 @@ export default function Sidebar() {
       if (isRunning) {
         clearInterval(saveTimeInterval);
         let body = {
-          id_tarea: taskId,
+          id_tarea: currentTask,
           cronometro: `${days}:${hours}:${minutes}:${seconds}`,
           running: false,
         };
@@ -81,13 +82,15 @@ export default function Sidebar() {
           // si se encontro la tarea
           if (r.data) {
 
-            if (r.data.miembro == user.id || !r.data.miembro) {
+            console.log(r.data.miembro, user.id)
+            if (!r.data.miembro || r.data.miembro._id == user.id) {
               const newTime = new Date();
               let time = r.data.cronometro;
               console.log("esto recibo", time);
 
+              setCurrentTask(taskId);
               setTaskName(r.data.nombre);
-
+              
               // si ya habia un tiempo guardado
               if (time != "0:0:0:0") {
                 //empiezo el cronometro desde donde quedo
@@ -467,6 +470,8 @@ export default function Sidebar() {
             )}
             {/* para resetear al tiempo con el que inicio a correr */}
             {/* <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button> */}
+           
+            {/* TODO el onClick es la funcion que lo resetea, puedes convertirlo en funcion y se pide confirmacion antes de hacer lo que esta ahi  */}
             <button
               className="reset-button"
               onClick={() => {
