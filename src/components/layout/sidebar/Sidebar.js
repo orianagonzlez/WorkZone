@@ -110,10 +110,10 @@ export default function Sidebar() {
               );
               reset(new Date(), false);
               clearInterval(saveTimeInterval);
-              setTimer({ ...timer, taskId: "", projectId: "", running: false });
+              setTimer({ ...timer, taskId: "", projectId: "", taskName: "", running: false });
               setTaskName('');
 
-              updateTaskWithoutValidations({ id_tarea: taskId, cronometro: '0:0:0:0', running: false });
+              updateTaskWithoutValidations({ id_tarea: taskId, cronometro: '0:0:0:0', taskName: taskName, running: false });
             }
             
           } else {
@@ -124,6 +124,7 @@ export default function Sidebar() {
               taskId: "",
               projectId: "",
               running: false,
+              taskName: "",
             });
             setTaskName('');
           }
@@ -165,7 +166,7 @@ export default function Sidebar() {
     let b = {
       id_tarea: taskId,
       cronometro: t.current,
-      running: true
+      running: true.valueOf
     };
 
     console.log(b, 'acaaaaaaaaaaa');
