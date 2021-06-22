@@ -50,8 +50,9 @@ export default function Chat({ project }) {
             <Messages />
           </>
         ) : (
-          // <h2>Seleccione chat </h2>
-          <></>
+          <>
+            <h2>Seleccione chat </h2>
+          </>
         )}
       </div>
       <div className="chat-selection">
