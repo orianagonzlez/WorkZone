@@ -14,6 +14,8 @@ export const UploadFilesModal = (props) => {
   const [showProgress, setShowProgress] = useState(false);
   const [success, setSuccess] = useState(false);
 
+  console.log(props.fileNames)
+
   const getName = (i) => {
     const names = [];
     props.fileNames.map((name) => {

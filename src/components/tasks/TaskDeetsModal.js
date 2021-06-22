@@ -31,7 +31,7 @@ import { TimerContext } from "../../context/TimerContext";
 import { AppContext } from "../../context/AppContext";
 import { SocketContext } from "../../context/SocketContext";
 
-export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files }) => {
+export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files, fileNames }) => {
   
   const { _id, nombre, descripcion, miembro, lista, subtareas, cronometro, running } = task;
 
@@ -43,6 +43,8 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
     task_member: miembro,
     task_status: lista
   });
+
+  console.log("FILESNAMES EN TASKDEETS", fileNames)
 
   console.log('task', task)
 
@@ -380,6 +382,7 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
                       onHide={() => setFileModalShow(false)}
                       task={task}
                       files = {files}
+                      fileNames = {fileNames}
                     />
                   </label>
                 </div>

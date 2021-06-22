@@ -137,6 +137,10 @@
     background-color: $primary-blue-500;
     border: none;
     font-weight: 500;
+
+    &:hover{
+      background-color: darken($primary-blue-500, 5);
+    }
   }
 
   .auth_button:hover {
