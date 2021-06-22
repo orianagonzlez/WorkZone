@@ -132,7 +132,6 @@ const updateTask = (body) => {
   });
 };
 
-
 export const Board = ({ project }) => {
   const [columns, setColumns] = useState({});
   const [lists, setLists] = useState([]);
@@ -144,8 +143,11 @@ export const Board = ({ project }) => {
 
   useEffect(() => {
     socket?.on("refresh", (event) => {
-      console.log(event);
-      refreshList();
+      if (event.id_proyecto == project._id) {
+        refreshList();
+      } else {
+        console.log("no refrescas porque no es proyecto que se modifico");
+      }
     });
   }, [socket]);
 
@@ -179,7 +181,6 @@ export const Board = ({ project }) => {
     ).then((r) => {
       console.log("me respondio" + r);
       if (r.ok) {
-        console.log(r.data);
         setLists(r.data);
         // setColumns(r.data);
         const c = {};
@@ -187,8 +188,11 @@ export const Board = ({ project }) => {
           col.items.forEach((item) => {
             //Si la tarea sale como running, pero ya pasaron 2 minutos desde la ultima actualizacion
             //se cambia running a false
-            if (item.running && new Date() - new Date(item.updatedAt) > 120000) {
-              console.log('ya paso mucho tiempo');
+            if (
+              item.running &&
+              new Date() - new Date(item.updatedAt) > 120000
+            ) {
+              console.log("ya paso mucho tiempo");
               updateTask({ id_tarea: item._id, running: false });
               socket.emit("refresh-project", { id_proyecto: project._id });
               return;
@@ -253,55 +257,57 @@ export const Board = ({ project }) => {
     setEditColumnModalShow(true);
   };
 
-  const[files, setFiles] = useState([]);
-  const[fileNames, setFileNames] = useState([]);
+  const [files, setFiles] = useState([]);
+  const [fileNames, setFileNames] = useState([]);
   const [view, setView] = useState(false);
 
   const getFiles = (item) => {
-
     const storageRef = storage.ref(`images/${project._id}/${item._id}`);
-    storageRef.listAll().then(function(result) {
-      result.items.forEach(function(imageRef) {
-        displayImage(imageRef);
+    storageRef
+      .listAll()
+      .then(function (result) {
+        result.items.forEach(function (imageRef) {
+          displayImage(imageRef);
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
       });
-    }).catch(function(error) {
-      console.log(error)
-    });
 
     function displayImage(imageRef) {
-      imageRef.getDownloadURL().then(function(url) {
-
-        let newList = files;
-        newList.push(url);
-        setFiles(newList);
-
-        
-      }).catch(function(error) {
-        console.log(error)
-      });
-      imageRef.getMetadata().then(function(metadata) {
-
-        let newListNames = fileNames;
-        newListNames.push(metadata.name);
-        setFileNames(newListNames);
-
-        
-      }).catch(function(error) {
-        console.log(error)
-      });
+      imageRef
+        .getDownloadURL()
+        .then(function (url) {
+          let newList = files;
+          newList.push(url);
+          setFiles(newList);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      imageRef
+        .getMetadata()
+        .then(function (metadata) {
+          let newListNames = fileNames;
+          newListNames.push(metadata.name);
+          setFileNames(newListNames);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
 
-    console.log('URLs', files)
-    console.log('Names', fileNames)
-    console.log('View', view);
-  }
+    console.log("URLs", files);
+    console.log("Names", fileNames);
+    console.log("View", view);
+  };
 
   const [taskToShow, setTaskToShow] = useState({});
 
   const handleOpenTaskDeets = (item) => {
-    getFiles(item)
+    getFiles(item);
     setTaskToShow(item._id);
-    console.log('Task', item);
+    console.log("Task", item);
     setTaskModalShow(true);
     console.log("yes");
     //console.log(taskModalShow);
@@ -514,7 +520,15 @@ export const Board = ({ project }) => {
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
                                     >
-                                      <div className={`card-box  px-2 ${item.running && 'text-success'} ${item.running && timer.taskId == item._id && 'text-info'}`}>
+                                      <div
+                                        className={`card-box  px-2 ${
+                                          item.running && "text-success"
+                                        } ${
+                                          item.running &&
+                                          timer.taskId == item._id &&
+                                          "text-info"
+                                        }`}
+                                      >
                                         {item.nombre}
                                         <div className="d-flex justify-content-between align-items-center">
                                           <div
@@ -548,15 +562,15 @@ export const Board = ({ project }) => {
                                       </div>
                                       {item._id === taskToShow && (
                                         //console.log("yeesyeyeyeyes", index)
-                                          <TaskDeetsModal
+                                        <TaskDeetsModal
                                           project={project}
                                           task={item}
                                           show={taskModalShow}
-                                          files = {files}
-                                          fileNames = {fileNames}
+                                          files={files}
+                                          fileNames={fileNames}
                                           onHide={() => {
-                                            setTaskModalShow(false) 
-                                            setFiles([])
+                                            setTaskModalShow(false);
+                                            setFiles([]);
                                           }}
                                           lists={lists}
                                           animation={false}
