@@ -114,7 +114,7 @@ export default function Sidebar() {
                 confirmButtonColor: "#22B4DE",
               });
               console.log(
-                "LA TAREA FUE REASIGNADA"
+                "1 LA TAREA FUE REASIGNADA"
               );
               reset(new Date(), false);
               clearInterval(saveTimeInterval);
@@ -131,7 +131,7 @@ export default function Sidebar() {
               text: "Esta tarea ya no existe, probablemente haya sido eliminada.",
               confirmButtonColor: "#22B4DE",
             });
-            console.log("NO SE ENCONTRO LA TAREA, SEGURO FUE ELIMINADA");
+            console.log("2 NO SE ENCONTRO LA TAREA, SEGURO FUE ELIMINADA");
             setTimer({
               ...timer,
               taskId: "",
@@ -278,7 +278,7 @@ export default function Sidebar() {
               confirmButtonColor: "#22B4DE",
             });
             console.log(
-              "LA TAREA FUE REASIGNADA"
+              "3 LA TAREA FUE REASIGNADA"
             );
             reset(new Date(), false);
             clearInterval(saveTimeInterval);
@@ -295,7 +295,7 @@ export default function Sidebar() {
             confirmButtonColor: "#22B4DE",
           });
           console.log(
-            "NO SE ENCONTRO LA TAREA INTENTANDO EDITAR, SEGURO FUE ELIMINADA"
+            "4 NO SE ENCONTRO LA TAREA INTENTANDO EDITAR, SEGURO FUE ELIMINADA"
           );
           reset(new Date(), false);
           clearInterval(saveTimeInterval);
