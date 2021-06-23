@@ -3,19 +3,20 @@ import { createContext } from "react";
 import { useSocket } from "../hooks/useSocket";
 import { AppContext } from "./AppContext";
 import { ChatContext } from "./ChatContext";
-import { types } from "./types";
 
 export const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
   const { socket, online, connectSocket, disconnectSocket } = useSocket(
-    "https://workzone-backend-mdb.herokuapp.com/"
-    // "http://localhost:8080/"
+    //"https://workzone-backend-mdb.herokuapp.com/"
+    "http://localhost:8080/"
   );
 
-  const { chat, dispatch } = useContext(ChatContext);
+  const { chat, setChat } = useContext(ChatContext);
 
   const { user } = useContext(AppContext);
+
+  console.log(chat, "socket context ");
 
   //Escuchar cuando se conecta
   useEffect(() => {
@@ -35,18 +36,26 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     socket?.on("lista-usuarios", (usuarios) => {
-      dispatch({ type: types.setProjects, payload: usuarios });
+      setChat({ ...chat, projects: usuarios });
     });
-  }, [socket, dispatch]);
+  }, [socket, setChat, chat]);
 
   useEffect(() => {
     socket?.on("mensaje", (msg) => {
-      dispatch({
-        type: types.newMessage,
-        payload: msg,
-      });
+      console.log(chat, "A VER");
+
+      // if (chat.activeChat === msg.para) {
+      //   console.log(chat, "aqui debo tener al menos 1 ");
+      //   setChat({
+      //     ...chat,
+      //     messages: [...chat.messages, msg],
+      //   });
+      // } else {
+      //   //MANDAR NOTIFICACION
+      //   console.log("esta entrando mal el msj --------------");
+      // }
     });
-  }, [socket, dispatch]);
+  }, [socket, chat]);
 
   return (
     <SocketContext.Provider value={{ socket, online }}>

@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import validator from "validator";
 import { useFetch2 } from "../../../hooks/useFetch2";
 import Paypal from "./Paypal";
+import { SocketContext } from "../../../context/SocketContext";
 
 export default function CreateProjects() {
   const [name, setName] = React.useState("");
@@ -42,6 +43,8 @@ export default function CreateProjects() {
   const history = useHistory();
 
   const [checkout, setCheckout] = useState(false);
+
+  const { socket } = useContext(SocketContext);
 
   // aqui vienen los planes
   const {
@@ -113,6 +116,8 @@ export default function CreateProjects() {
       console.log("me respondio" + r);
       if (r.ok) {
         console.log("todo bien", r.data);
+        socket.emit("refresh-chat", { refresh: "refresh" });
+
         history.push("/projects");
         // despues que se crea se le crea una lista inicial
         const bodyList = [
@@ -302,11 +307,16 @@ export default function CreateProjects() {
     <div className="componentContainer">
       <div className="divArrowLeft">
         <div>
-            <Button className="arrowLeft" onClick={() => {!editMode ? history.push('/projects') :
-            history.push(`/projects/details/${project._id}`)
-          }}>
-              <FaArrowCircleLeft />
-            </Button>
+          <Button
+            className="arrowLeft"
+            onClick={() => {
+              !editMode
+                ? history.push("/projects")
+                : history.push(`/projects/details/${project._id}`);
+            }}
+          >
+            <FaArrowCircleLeft />
+          </Button>
         </div>
         {!editMode ? <h1>Nuevo proyecto</h1> : <h1>Editar proyecto</h1>}
       </div>

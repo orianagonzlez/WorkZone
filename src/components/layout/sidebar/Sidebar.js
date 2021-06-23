@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 import { GoSignOut } from "react-icons/go";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AppContext } from "../../../context/AppContext";
 import { postData } from "../../../helpers/postData";
@@ -21,6 +21,8 @@ import { useEffect } from "react";
 import { TimerContext } from "../../../context/TimerContext";
 import { getData } from "../../../helpers/getData";
 import { SocketContext } from "../../../context/SocketContext";
+import { ChatContext } from "../../../context/ChatContext";
+import { types } from "../../../context/types";
 
 export default function Sidebar() {
   const [visible, setVisible] = useState(false);
@@ -37,6 +39,7 @@ export default function Sidebar() {
 
   const { taskId, projectId, running } = timer;
 
+  const { chat, dispatch } = useContext(ChatContext);
   const [taskName, setTaskName] = useState("");
 
   //Esto es por si le quieren mandar el tiempo en que debe iniciarse
@@ -81,8 +84,7 @@ export default function Sidebar() {
         if (r.ok) {
           // si se encontro la tarea
           if (r.data) {
-
-            console.log(r.data.miembro, user.id)
+            console.log(r.data.miembro, user.id);
             if (!r.data.miembro || r.data.miembro._id == user.id) {
               const newTime = new Date();
               let time = r.data.cronometro;
@@ -90,7 +92,7 @@ export default function Sidebar() {
 
               setCurrentTask(taskId);
               setTaskName(r.data.nombre);
-              
+
               // si ya habia un tiempo guardado
               if (time != "0:0:0:0") {
                 //empiezo el cronometro desde donde quedo
@@ -105,7 +107,7 @@ export default function Sidebar() {
                 time = time.split(":");
                 setInitialTime(time);
                 reset();
-              }  
+              }
             } else {
               Swal.fire({
                 icon: "error",
@@ -113,17 +115,25 @@ export default function Sidebar() {
                 text: "Esta tarea fue reasignada y ya no puede ser cronometrada por usted.",
                 confirmButtonColor: "#22B4DE",
               });
-              console.log(
-                "1 LA TAREA FUE REASIGNADA"
-              );
+              console.log("LA TAREA FUE REASIGNADA");
               reset(new Date(), false);
               clearInterval(saveTimeInterval);
-              setTimer({ ...timer, taskId: "", projectId: "", taskName: "", running: false });
-              setTaskName('');
+              setTimer({
+                ...timer,
+                taskId: "",
+                projectId: "",
+                taskName: "",
+                running: false,
+              });
+              setTaskName("");
 
-              updateTaskWithoutValidations({ id_tarea: taskId, cronometro: '0:0:0:0', taskName: taskName, running: false });
+              updateTaskWithoutValidations({
+                id_tarea: taskId,
+                cronometro: "0:0:0:0",
+                taskName: taskName,
+                running: false,
+              });
             }
-            
           } else {
             Swal.fire({
               icon: "error",
@@ -139,7 +149,7 @@ export default function Sidebar() {
               running: false,
               taskName: "",
             });
-            setTaskName('');
+            setTaskName("");
           }
         } else {
           console.log("error", r.data);
@@ -155,15 +165,15 @@ export default function Sidebar() {
 
       const body = {
         id_tarea: taskId,
-        cronometro: `${days}:${hours}:${minutes}:${seconds}`
+        cronometro: `${days}:${hours}:${minutes}:${seconds}`,
       };
 
       if (isRunning) {
-        console.log('empiezo', body);
-        updateTask({id_tarea: taskId, running: true});
+        console.log("empiezo", body);
+        updateTask({ id_tarea: taskId, running: true });
 
         // como empezo el cronometro, se empieza a guardar el tiempo cada cierto tiempo
-        setSaveTimeInterval(setInterval(updateTaskInterval, 30000)); 
+        setSaveTimeInterval(setInterval(updateTaskInterval, 30000));
       } else if (initialTime.length > 0) {
         console.log("me pare");
 
@@ -179,13 +189,13 @@ export default function Sidebar() {
     let b = {
       id_tarea: taskId,
       cronometro: t.current,
-      running: true.valueOf
+      running: true.valueOf,
     };
 
-    console.log(b, 'acaaaaaaaaaaa');
-   
+    console.log(b, "acaaaaaaaaaaa");
+
     updateTask(b);
-  }
+  };
 
   const signOut = () => {
     if (running) {
@@ -238,6 +248,10 @@ export default function Sidebar() {
         });
       }
     });
+    // se quita el chat activo y se quiotan del conext los mensajes cargados
+    dispatch({
+      type: types.logout,
+    });
   };
 
   // formatea el tiempo desde el que iniciara el cronometro
@@ -253,7 +267,7 @@ export default function Sidebar() {
   };
 
   const updateTask = (body) => {
-    console.log('voy a guardar esto', body);
+    console.log("voy a guardar esto", body);
     postData(
       "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
       body
@@ -277,15 +291,17 @@ export default function Sidebar() {
               text: "Esta tarea fue reasignada y ya no puede ser cronometrada por usted.",
               confirmButtonColor: "#22B4DE",
             });
-            console.log(
-              "3 LA TAREA FUE REASIGNADA"
-            );
+            console.log("LA TAREA FUE REASIGNADA");
             reset(new Date(), false);
             clearInterval(saveTimeInterval);
             setTimer({ ...timer, taskId: "", projectId: "", running: false });
-            setTaskName('');
+            setTaskName("");
 
-            updateTaskWithoutValidations({ id_tarea: taskId, cronometro: '0:0:0:0', running: false });
+            updateTaskWithoutValidations({
+              id_tarea: taskId,
+              cronometro: "0:0:0:0",
+              running: false,
+            });
           }
         } else {
           Swal.fire({
@@ -300,7 +316,7 @@ export default function Sidebar() {
           reset(new Date(), false);
           clearInterval(saveTimeInterval);
           setTimer({ ...timer, taskId: "", projectId: "", running: false });
-          setTaskName('');
+          setTaskName("");
         }
       } else {
         console.log("error guardando tiempo");
@@ -308,7 +324,7 @@ export default function Sidebar() {
     });
   };
 
-  const updateTaskWithoutValidations = (body) => { 
+  const updateTaskWithoutValidations = (body) => {
     postData(
       "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
       body
@@ -344,7 +360,9 @@ export default function Sidebar() {
       {visible ? (
         <div className="sidebarMobile">
           <div>
-            <div className="logo">LOGO HERE</div>
+            <div className="logo">
+              <img src="/logo192.png" alt="logo"/>
+            </div>
             <li>
               <ul>
                 <NavLink
@@ -359,10 +377,12 @@ export default function Sidebar() {
                 </NavLink>
               </ul>
               <ul>
-                <Button>
-                  <FaComments />
-                  <span>Chats</span>
-                </Button>
+                <NavLink exact={true} activeClassName="is-active" to="/chats">
+                  <Button>
+                    <FaComments />
+                    <span>Chats</span>
+                  </Button>
+                </NavLink>
               </ul>
               <ul>
                 <NavLink exact={true} activeClassName="is-active" to="/profile">
@@ -386,7 +406,7 @@ export default function Sidebar() {
               <span>{seconds}</span>
             </div>
             {taskName !== "" ? (
-            <div className="stopwatch-task">{taskName}</div>
+              <div className="stopwatch-task">{taskName}</div>
             ) : (
               <div className="stopwatch-task"></div>
             )}
@@ -426,7 +446,9 @@ export default function Sidebar() {
 
       <div className="sidebarVisible">
         <div>
-          <div className="logo">LOGO HERE</div>
+          <div className="logo">
+              <img src="/logo192.png" alt="logo"/>
+          </div>
           <li>
             <ul>
               <NavLink exact={true} activeClassName="is-active" to="/projects">
@@ -437,7 +459,11 @@ export default function Sidebar() {
               </NavLink>
             </ul>
             <ul>
-              <NavLink exact={true} activeClassName="is-active" to="/chats">
+              <NavLink
+                exact={true}
+                activeClassName="is-active"
+                to="/chats/chat"
+              >
                 <Button>
                   <FaComments />
                   <span>Chats</span>
@@ -490,7 +516,7 @@ export default function Sidebar() {
             )}
             {/* para resetear al tiempo con el que inicio a correr */}
             {/* <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button> */}
-           
+
             {/* TODO el onClick es la funcion que lo resetea, puedes convertirlo en funcion y se pide confirmacion antes de hacer lo que esta ahi  */}
             <button
               className="reset-button"

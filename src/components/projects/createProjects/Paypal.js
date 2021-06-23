@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
+import { FaMoneyBillWave } from 'react-icons/fa';
 import { PayPalButtons } from "@paypal/react-paypal-js";
-import { FaMoneyBillWave } from "react-icons/fa";
 import Swal from "sweetalert2";
 
 export default function Paypal({
