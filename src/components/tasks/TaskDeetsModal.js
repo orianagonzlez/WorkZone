@@ -42,8 +42,6 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
     task_status: lista
   });
 
-  console.log("FILESNAMES EN TASKDEETS", fileNames)
-
   console.log('task', task)
 
   const {user} = useContext(AppContext);
@@ -54,6 +52,8 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
   const { timer, setTimer } = useContext(TimerContext);
 
   const { socket } = useContext(SocketContext);
+
+  console.log("ATENCION","timer.taskId", timer.taskId.length, "timer.running", timer.running)
 
   // const {
   //   data: thisTask,
@@ -131,10 +131,29 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
   };
 
   const runStopwatch = () => {
-    //TODO aqui se puede poner la confirmacion, si timer.taskId && timer.running es true,
     // hay una tarea elegida corriendo y se confirma si se quiere cambiar, si acepta se hace el setTimer
     // ya en el sidebar esta el codigo que maneja eso y hace que se guarde el tiempo y empiece a correr la otra
-    setTimer({ ...timer, taskId: _id, projectId: project._id, running: true });
+      
+    if(timer.taskId.length !== 0 && timer.running === true){
+      Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Estas intentando cronometrar una nueva tarea mientras otra tarea ya estaba siendo cronometrada.\n Si continuas, se detendrá el cronómetro de la otra tarea y se iniciará el cronometro para esta nueva tarea. ",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonColor: "#22B4DE",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "¡Sí, cronometrar nueva tarea!",
+        cancelButtonText: "No, cancelar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setTimer({ ...timer, taskId: _id, projectId: project._id, running: true });
+        }
+      }); 
+    }else{
+
+      setTimer({ ...timer, taskId: _id, projectId: project._id, running: true });
+
+    }
   };
 
   const handleCreate = (e) => {
@@ -167,8 +186,8 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
       // si se cambio el miembro encargado de realizar la tarea
       if (assigned && miembro != assigned && cronometro != '0:0:0:0') {
         Swal.fire({
-          title: "Estás seguro?",
-          text: "Si reasignas la tarea, el cronómetro se reiniciará en los próximos minutos",
+          title: "¿Estás seguro?",
+          text: "Si reasignas la tarea, el cronómetro se reiniciará en los próximos minutos. ",
           icon: "info",
           showCancelButton: true,
           confirmButtonColor: "#22B4DE",
@@ -209,13 +228,13 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
 
   const handleDelete = () => {
     Swal.fire({
-      title: "Estas seguro de que quieres borrar esta tarea?",
+      title: "¿Estas seguro de que quieres borrar esta tarea?",
       text: "No podras deshacerlo!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Sí, eliminala!",
+      confirmButtonText: "¡Sí, eliminala!",
     }).then((result) => {
       if (result.isConfirmed) {
         let body = {
