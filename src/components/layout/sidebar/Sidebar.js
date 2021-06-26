@@ -141,7 +141,7 @@ export default function Sidebar() {
               text: "Esta tarea ya no existe, probablemente haya sido eliminada.",
               confirmButtonColor: "#22B4DE",
             });
-            console.log("NO SE ENCONTRO LA TAREA, SEGURO FUE ELIMINADA");
+            console.log("2 NO SE ENCONTRO LA TAREA, SEGURO FUE ELIMINADA");
             setTimer({
               ...timer,
               taskId: "",
@@ -311,7 +311,7 @@ export default function Sidebar() {
             confirmButtonColor: "#22B4DE",
           });
           console.log(
-            "NO SE ENCONTRO LA TAREA INTENTANDO EDITAR, SEGURO FUE ELIMINADA"
+            "4 NO SE ENCONTRO LA TAREA INTENTANDO EDITAR, SEGURO FUE ELIMINADA"
           );
           reset(new Date(), false);
           clearInterval(saveTimeInterval);
@@ -340,6 +340,40 @@ export default function Sidebar() {
     });
   };
 
+  const handleReset = () => {
+    if (running) {
+      Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Estas intentando reiniciar el cronómetro, esto eliminará el tiempo que tengas contado para esta tarea y lo volverá a empezar desde cero.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#22B4DE",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "¡Sí, reiniciar cronómetro!",
+        cancelButtonText: "No, cancelar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          reset();
+        }
+      });
+    } else {
+      Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Estas intentando reiniciar el cronómetro, esto eliminará el tiempo que tengas contado para esta tarea y lo volverá a empezar desde cero.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#22B4DE",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "¡Sí, reiniciar cronómetro!",
+        cancelButtonText: "No, cancelar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          reset(new Date(), false);
+        }
+      });
+    }
+  };
+
   return (
     <Container fluid className="sidebarContainer">
       <button
@@ -361,7 +395,7 @@ export default function Sidebar() {
         <div className="sidebarMobile">
           <div>
             <div className="logo">
-              <img src="/logo192.png" alt="logo"/>
+              <img src="/logo192.png" alt="logo" />
             </div>
             <li>
               <ul>
@@ -432,8 +466,10 @@ export default function Sidebar() {
               {/* <Button onClick={() => {running ? reset(getNewTime(initialTime)) : reset(getNewTime(initialTime), false)}} disabled={!taskId}><FaRedoAlt/></Button> */}
               <button
                 className="reset-button-nav"
-                onClick={() => {
-                  running ? reset() : reset(new Date(), false);
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleReset();
+                  // running ? reset() : reset(new Date(), false);
                 }}
                 disabled={!taskId}
               >
@@ -447,7 +483,7 @@ export default function Sidebar() {
       <div className="sidebarVisible">
         <div>
           <div className="logo">
-              <img src="/logo192.png" alt="logo"/>
+            <img src="/logo192.png" alt="logo" />
           </div>
           <li>
             <ul>
@@ -520,8 +556,10 @@ export default function Sidebar() {
             {/* TODO el onClick es la funcion que lo resetea, puedes convertirlo en funcion y se pide confirmacion antes de hacer lo que esta ahi  */}
             <button
               className="reset-button"
-              onClick={() => {
-                running ? reset() : reset(new Date(), false);
+              onClick={(e) => {
+                e.preventDefault();
+                handleReset();
+                // running ? reset() : reset(new Date(), false);
               }}
               disabled={!taskId}
             >
