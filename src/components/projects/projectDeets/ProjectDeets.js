@@ -6,6 +6,7 @@ import {
   FaArrowCircleLeft,
   FaUsers,
   FaInfo,
+  FaChartPie,
   FaSignOutAlt,
 } from "react-icons/fa";
 import { Board } from "./Board";
@@ -97,6 +98,15 @@ export default function ProjectDeets() {
   return (
     <Container fluid className="componentContainer">
       <div className="upperButtons">
+        <Button
+          className="upperButton"
+          id="openStats"
+          onClick={() => {
+            history.push(`/projects/stats/${project}`);
+          }}
+        >
+          <FaChartPie /> Ver Estadísticas
+        </Button>
         <Button
           className="upperButton"
           id="editProject"
