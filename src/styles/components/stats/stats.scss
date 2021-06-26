@@ -2,7 +2,6 @@
     background-color: $neutral-50;
     padding: 2rem;
     min-height: 100vh;
-    width: 85%;
 
     .divArrowLeft {
         display: flex;
@@ -36,6 +35,52 @@
             color: $primary-gray-500;
             font-weight: bold;
             font-size: 2.25rem;
+            padding-left: 2rem;
         }
       }
+}
+
+
+
+
+// owner stats
+.owner-stats-container {
+    .stats-shown {
+        h2 {
+            color: $primary-gray-400;
+        }
+        .stats-cards {
+            padding: 0 3rem;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+    }
+}
+
+
+
+// collab stats
+.collab-stats-container {
+    .stats-shown {
+        h2 {
+            color: $primary-gray-400;
+        }
+        .stats-cards {
+            padding: 0 3rem;
+            .boxes {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                margin-top: 2rem;
+            }
+            .charts {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                margin-top: 2rem;
+            }
+        }
+    }
 }

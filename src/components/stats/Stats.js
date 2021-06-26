@@ -4,6 +4,8 @@ import { getData } from "../../helpers/getData";
 import { AppContext } from "../../context/AppContext";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { Button } from "react-bootstrap";
+import OwnerStats from './OwnerStats';
+import CollabStats from './CollabStats';
 
 export default function Stats() {
     const { user } = React.useContext(AppContext);
@@ -44,7 +46,12 @@ export default function Stats() {
                 </div>
                 <h1>{projectInfo.nombre}: Estadísticas</h1>
             </div>
-            {/* hacer un if para mostrar OwnerStats o CollabStats según sea owner o no */ }
+
+            {projectInfo.owner != user.id ? (
+                <CollabStats />
+            ) : (
+                <OwnerStats />
+            )}
         </div>
     )
 }
