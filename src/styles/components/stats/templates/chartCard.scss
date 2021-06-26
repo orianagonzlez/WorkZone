@@ -19,16 +19,33 @@
     box-shadow: 0px 2px 5px 2.5px rgba(60, 60, 60, 0.1);
     padding: 1.5rem;
     border-radius: 15px;
-    width: 30%;
-    height: 30vh;
+    width: 300px;
+    height: 200px;
     margin: 0.5rem;
     h4 {
         font-size: large;
-        padding-bottom: 1rem;
     }
     p {
         font-size: 3rem;
         text-align: center;
         font-weight: bold;
+    }
+}
+
+
+// responsive
+@media (max-width: 970px) {
+    .chart-card-container {
+        width: 70vw;
+        height: 40vh;
+        align-self: center;
+    }
+}
+
+@media (max-width: 710px) {
+    .box-container {
+        width: 200px;
+        height: 200px;
+        align-self: center;
     }
 }

@@ -84,3 +84,44 @@
         }
     }
 }
+
+
+
+// responsive
+@media (max-width: 970px) {
+    .stats-container {
+        padding-top: 4rem;
+    }
+
+    .owner-stats-container {
+        .stats-shown {
+            .stats-cards {
+                flex-direction: column;
+                justify-content: center;
+            }
+        }
+    }
+
+    .collab-stats-container {
+        .stats-shown {
+            .stats-cards {
+                .charts {
+                    flex-direction: column;
+                }
+            }
+        }
+    }
+}
+
+
+@media (max-width: 710px) {
+    .collab-stats-container {
+        .stats-shown {
+            .stats-cards {
+                .boxes {
+                    flex-direction: column;
+                }
+            }
+        }
+    }
+}
