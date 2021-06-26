@@ -380,6 +380,7 @@ export default function Sidebar() {
 
 
   const handleOpenContactInfo = () => {
+    setVisible(false);
     setContactModalShow(true);
   };
 
@@ -414,7 +415,7 @@ export default function Sidebar() {
                   activeClassName="is-active"
                   to="/projects"
                 >
-                  <Button>
+                  <Button onClick={() => setVisible(false)}>
                     <FaBoxes />
                     <span>Proyectos</span>
                   </Button>
@@ -422,7 +423,7 @@ export default function Sidebar() {
               </ul>
               <ul>
                 <NavLink exact={true} activeClassName="is-active" to="/chats">
-                  <Button>
+                  <Button onClick={() => setVisible(false)}>
                     <FaComments />
                     <span>Chats</span>
                   </Button>
@@ -430,7 +431,7 @@ export default function Sidebar() {
               </ul>
               <ul>
                 <NavLink exact={true} activeClassName="is-active" to="/profile">
-                  <Button>
+                  <Button onClick={() => setVisible(false)}>
                     <FaUserCog />
                     <span>Perfil</span>
                   </Button>
@@ -488,7 +489,7 @@ export default function Sidebar() {
             </div>
           </div>
           <div className="contact-button">
-            <Button>
+            <Button onClick={() => handleOpenContactInfo()}>
               <FaInfoCircle />
               <span>¡Contáctanos!</span>
             </Button>
