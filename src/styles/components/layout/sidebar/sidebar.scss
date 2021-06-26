@@ -1,6 +1,7 @@
 
 .sidebarContainer {
-
+    display: flex;
+    flex-direction: column;
     width: 15%;
     max-width: 15%;
     .sidebarVisible {
@@ -8,6 +9,7 @@
         width: 15%;
         padding: 2rem;
         padding-top: 1rem;
+        padding-bottom: 0;
         background-color: $neutral-50;
         box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 5px 0px,
           rgba(0, 0, 0, 0.2) 0px 0px 1px 0px;
@@ -45,7 +47,6 @@
                 text-align: left;
                 &:hover {
                     background: $neutral-100;
-                    color: $font;
                 }
 
                 span {
@@ -74,6 +75,30 @@
                 }
                 span {
                     padding-left: 0.5rem;
+                }
+            }
+        }
+
+        .contact-button {
+            justify-self: end;
+            margin-bottom: 1rem;
+            Button {
+                padding: 0.75rem;
+                border-radius: 0.75rem;
+                width: 100%;
+                border: 0;
+                color: $primary-gray-400;
+                font-weight: bold;
+                background-color: transparent;
+                outline: none;
+                text-align: left;
+                &:hover {
+                    background: $neutral-100;
+                }
+
+                span {
+                    padding-left: 0.5rem;
+                    font-size: 0.75rem;
                 }
             }
         }

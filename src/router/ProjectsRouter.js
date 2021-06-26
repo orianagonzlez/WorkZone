@@ -5,6 +5,7 @@ import ProjectsScreen from "../pages/projects";
 import CreateProjectsScreen from "../pages/projects/CreateProjectsScreen";
 import { GraficasLuisProvisional } from "../pages/projects/graficasLuisProvisional";
 import ProjectDeetsScreen from "../pages/projects/ProjectDeetsScreen";
+import ProjectStatsScreen from "../pages/projects/ProjectStatsScreen";
 
 export const ProjectsRouter = () => {
   return (
@@ -29,6 +30,8 @@ export const ProjectsRouter = () => {
             path="/projects/statistics/:project"
             component={GraficasLuisProvisional}
           />
+
+          <Route path="/projects/stats/:project" component={ProjectStatsScreen} />
 
           <Route path="/projects" component={ProjectsScreen} />
 
