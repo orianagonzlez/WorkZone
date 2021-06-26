@@ -10,6 +10,17 @@
 
   .stopwatch-task {
     font-size: 0.75rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    @supports (-webkit-line-clamp: 2) {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: initial;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
   }
 
   .stopwatch-buttons {
@@ -140,5 +151,14 @@
         background-color: lighten($font, 2.5%);
       }
     }
+  }
+}
+
+
+
+
+@media (max-width: 970px) {
+  .stopwatch-nav {
+    margin-top: 3rem;
   }
 }

@@ -57,28 +57,6 @@
         }
 
 
-        .userContainer {
-            Button {
-                padding: 1rem;
-                border-radius: 1rem;
-                width: 100%;
-                border: 0;
-                // color: $neutral-100;
-                color: $font;
-                font-weight: bold;
-                background-color: transparent;
-                outline: none;
-                text-align: center;
-                &:hover {
-                    background: $neutral-100;
-                    color: $font;
-                }
-                span {
-                    padding-left: 0.5rem;
-                }
-            }
-        }
-
         .contact-button {
             justify-self: end;
             margin-bottom: 1rem;
@@ -142,15 +120,15 @@
             height: 100vh;
             width: 100vw;
             padding: 2rem;
-            padding-top: 6rem;
+            padding-top: 3rem;
             background-color: $font;
             color: $neutral-100;
             font-weight: bold;
             position: fixed;
             left: 0;
+            overflow-y: scroll;
     
             .logo {
-                padding: 2rem 1rem;
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
@@ -159,12 +137,13 @@
     
             li {
                 list-style: none;
+                margin-top: -1.5rem;
             }
     
             ul {
                 padding: 0;
                 Button {
-                    padding: 1rem;
+                    padding: 0.75rem 1rem;
                     border-radius: 1rem;
                     width: 100%;
                     border: 0;
@@ -180,6 +159,57 @@
     
                     span {
                         padding-left: 0.5rem;
+                    }
+                }
+            }
+            .contact-button {
+                padding: 0;
+                margin-top: 2rem;
+                Button {
+                    padding: 0.75rem 1rem;
+                    border-radius: 1rem;
+                    width: 100%;
+                    border: 0;
+                    color: $neutral-100;
+                    font-weight: bold;
+                    background-color: transparent;
+                    outline: none;
+                    text-align: center;
+                    &:hover {
+                        background: $neutral-100;
+                        color: $font;
+                    }
+    
+                    span {
+                        padding-left: 0.5rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+@media (max-width: 1350px) {
+    .sidebarContainer {
+        .sidebarVisible {
+            padding-left: 1rem;
+            padding-right: 1rem;
+            ul {
+                Button {
+                    padding: 0.75rem 0.5rem;
+                    span {
+                        font-size: small;
+                    }
+                }
+            
+            }
+            .contact-button {
+                Button {    
+                    font-size: 0.75rem;
+                    span {
+                        font-size: 0.6rem;
                     }
                 }
             }

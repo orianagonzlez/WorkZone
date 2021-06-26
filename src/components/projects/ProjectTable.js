@@ -59,7 +59,21 @@ export const ProjectTable = ({ show }) => {
         <FaSearch />
       </div>
       <div className="Preview__container">
-        <ul className="Preview__responsive-table">
+
+        {filteredProjects.length === 0 ? (
+
+            <div className="no-projects-container">
+              <h1>
+                  Todavía no tienes ningún proyecto...
+              </h1>
+              <img src="/project-board-post-its.png" alt="project-board" />
+              <h2>
+                  ¡Haz click en el botón 'Nuevo Proyecto' y ponte manos a la obra!
+              </h2>
+            </div>
+
+          ) : 
+        (<ul className="Preview__responsive-table">
           <li className="Preview__table-header">
             <div className="column column-4 ">
               <FaTag /> Nombre
@@ -77,7 +91,7 @@ export const ProjectTable = ({ show }) => {
               <FaArrowCircleRight /> Detalles
             </div>
           </li>
-
+          
           {filteredProjects.map((project) => {
             if (!show && !project.archivado) {
               return (
@@ -99,6 +113,7 @@ export const ProjectTable = ({ show }) => {
             }
           })}
         </ul>
+        )}
       </div>
     </div>
   );
