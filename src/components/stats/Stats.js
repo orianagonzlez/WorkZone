@@ -49,15 +49,14 @@ export default function Stats() {
         <h1>{projectInfo.nombre}: Estadísticas</h1>
       </div>
 
-      
-      {projectInfo.owner == user.id  && 
-      <>
-        <OwnerStats/>
-        {/* aqui iria el select donde seleccionas el colaborador del cual quieres ver las estadisticas
+      {projectInfo.owner == user.id && (
+        <>
+          <OwnerStats />
+          {/* aqui iria el select donde seleccionas el colaborador del cual quieres ver las estadisticas
         que cambiaria el uid que se le pasa por parametro a al componente  */}
-      </>}
+        </>
+      )}
       <CollabStats userId={uid} />
-      
     </div>
   );
 }

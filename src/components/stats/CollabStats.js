@@ -55,58 +55,58 @@ export default function CollabStats({ userId }) {
   };
   // de aqui sale la info de el tiemmpo de un usuario por cada tarea y el subtreas completadas vs no completadas
   const getUserTasks = () => {
-    getData(`http://localhost:8080/api/tasks/from/${project}/${userId}`).then(
-      (r) => {
-        console.log("me respondio" + r);
-        if (r.ok) {
-          const data = r.data;
-          let completed = 0;
-          let unCompleted = 0;
-          //Procesar para obtener la tarea con su tiempo en minutos y las tareas completas vs no comletdas
-          data.forEach((task) => {
-            //formatear el timepo, concertir los dias en horas
-            let tiempo = task.cronometro.split(":");
-            tiempo[1] = (
-              parseInt(tiempo[0]) * 24 +
-              parseInt(tiempo[1])
-            ).toString();
-            tiempo.shift();
-            tiempo = tiempo.join(":");
-            //pasar el string a moment
-            tiempo = moment(tiempo, '"hh:mm:ss"');
-            //expresar el tiempo total en minutos
-            tiempo = Math.round(
-              moment.duration(tiempo).asMinutes() - 27078000,
-              2
+    getData(
+      `https://workzone-backend-mdb.herokuapp.com/api/tasks/from/${project}/${userId}`
+    ).then((r) => {
+      console.log("me respondio" + r);
+      if (r.ok) {
+        const data = r.data;
+        let completed = 0;
+        let unCompleted = 0;
+        //Procesar para obtener la tarea con su tiempo en minutos y las tareas completas vs no comletdas
+        data.forEach((task) => {
+          //formatear el timepo, concertir los dias en horas
+          let tiempo = task.cronometro.split(":");
+          tiempo[1] = (
+            parseInt(tiempo[0]) * 24 +
+            parseInt(tiempo[1])
+          ).toString();
+          tiempo.shift();
+          tiempo = tiempo.join(":");
+          //pasar el string a moment
+          tiempo = moment(tiempo, '"hh:mm:ss"');
+          //expresar el tiempo total en minutos
+          tiempo = Math.round(
+            moment.duration(tiempo).asMinutes() - 27078000,
+            2
+          );
+          setTimePerTask((old) => [
+            ...old,
+            {
+              name: task.nombre,
+              time: tiempo,
+            },
+          ]);
+          //ir contando las tareas completadas y las no completadas
+          if (task.subtareas.length > 1) {
+            const unCompletedTasks = task.subtareas.filter(
+              (sub) => sub.status == 0
             );
-            setTimePerTask((old) => [
-              ...old,
-              {
-                name: task.nombre,
-                time: tiempo,
-              },
-            ]);
-            //ir contando las tareas completadas y las no completadas
-            if (task.subtareas.length > 1) {
-              const unCompletedTasks = task.subtareas.filter(
-                (sub) => sub.status == 0
-              );
-              const completedTasks = task.subtareas.filter(
-                (sub) => sub.status == 1
-              );
-              completed += completedTasks.length;
-              unCompleted += unCompletedTasks.length;
-            }
-          });
-          setSubTasksChart({
-            completed: completed,
-            unCompleted: unCompleted,
-          });
-        } else {
-          console.log("error");
-        }
+            const completedTasks = task.subtareas.filter(
+              (sub) => sub.status == 1
+            );
+            completed += completedTasks.length;
+            unCompleted += unCompletedTasks.length;
+          }
+        });
+        setSubTasksChart({
+          completed: completed,
+          unCompleted: unCompleted,
+        });
+      } else {
+        console.log("error");
       }
-    );
+    });
   };
 
   if (!subTasksChart || !timePerTask) return <>esperando</>;
