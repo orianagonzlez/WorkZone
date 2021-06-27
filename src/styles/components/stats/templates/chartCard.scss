@@ -6,6 +6,7 @@
   width: 47.5%;
   height: 45vh;
   margin: 0.5rem;
+  color: $font;
   h4 {
     font-size: large;
   }
@@ -23,11 +24,15 @@
   width: 300px;
   height: 200px;
   margin: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  color: $font;
   h4 {
     font-size: large;
   }
   p {
-    font-size: 3rem;
+    font-size: 1.8rem;
     text-align: center;
     font-weight: bold;
   }

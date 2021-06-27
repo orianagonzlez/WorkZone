@@ -15,14 +15,12 @@ export default function CollabStats({ userId }) {
   const { project } = useParams();
 
   const [subTasksChart, setSubTasksChart] = useState(null);
-
   const [timePerTask, setTimePerTask] = useState([]);
-
   const [tasksPerList, setTasksPerList] = useState([]);
-
   const [tasksPerListProject, setTasksPerListProject] = useState([]);
-
   const [thisUser, setThisUser] = useState();
+  const [totalTime, setTotalTime] = useState(0);
+  const [totalTask, setTotalTask] = useState(0);
 
   useEffect(() => {
     getListInfo();
@@ -94,7 +92,7 @@ export default function CollabStats({ userId }) {
           tiempo = moment(tiempo, '"hh:mm:ss"');
           //expresar el tiempo total en minutos
           tiempo = Math.round(
-            moment.duration(tiempo).asMinutes() - 27078000,
+            moment.duration(tiempo).asMinutes() - 27079440,
             2
           );
           setTimePerTask((old) => [
@@ -104,6 +102,7 @@ export default function CollabStats({ userId }) {
               time: tiempo,
             },
           ]);
+
           //ir contando las tareas completadas y las no completadas
           if (task.subtareas.length > 1) {
             const unCompletedTasks = task.subtareas.filter(
@@ -126,7 +125,32 @@ export default function CollabStats({ userId }) {
     });
   };
 
-  if (!subTasksChart || !timePerTask || !thisUser) return <>esperando</>;
+  useEffect(() => {
+    getTotalTime();
+    getTotalTasks();
+
+  }, [timePerTask])
+
+  const getTotalTime = () => {
+    let cont = 0;
+    timePerTask.map((task) => (cont = cont + task.time));
+    setTotalTime(cont);
+  };
+
+  const getTotalTasks = () => {
+    setTotalTask(timePerTask.length);
+  };
+
+  const formatTime = (n) => {
+    const num = n;
+    const hours = num / 60;
+    const rhours = Math.floor(hours);
+    const minutes = (hours - rhours) * 60;
+    const rminutes = Math.round(minutes);
+    return rhours + " hr(s) " + rminutes + " min(s)";
+  };
+
+  if (!subTasksChart || !timePerTask || !thisUser) return <>Cargando...</>;
   return (
     <div className="collab-stats-container mt-2">
       <div className="stats-shown">
@@ -135,12 +159,30 @@ export default function CollabStats({ userId }) {
         </h2>
         <div className="stats-cards">
           <div className="boxes">
-            <Box
-              boxName={"Tiempo total invertido en el proyecto"}
-              data={"32"}
-            />
-            <Box boxName={"Promedio de tiempo por tarea"} data={"5"} />
-            <Box boxName={"Número de tareas asignadas"} data={"5"} />
+            {totalTime < 60 ? (
+              <Box
+                boxName={"Tiempo total invertido en el proyecto"}
+                data={`${totalTime} min(s)`}
+              />
+            ) : (
+              <Box
+                boxName={"Tiempo total invertido en el proyecto"}
+                data={formatTime(totalTime)}
+              />
+            )}
+            <Box boxName={"Número de tareas asignadas"} data={totalTask} />
+
+            {totalTime < 60 ? (
+              <Box
+                boxName={"Promedio de tiempo por tarea"}
+                data={`${totalTime / totalTask} min(s)`}
+              />
+            ) : (
+              <Box
+                boxName={"Promedio de tiempo por tarea"}
+                data={`${formatTime(totalTime / totalTask)}`}
+              />
+            )}
           </div>
           <div className="charts">
             <ChartCard

@@ -56,6 +56,7 @@ export default function Stats() {
         que cambiaria el uid que se le pasa por parametro a al componente  */}
         </>
       )}
+      <br/>
       <CollabStats userId={uid} />
     </div>
   );

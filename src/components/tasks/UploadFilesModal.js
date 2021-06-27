@@ -4,7 +4,6 @@ import Swal from "sweetalert2";
 import { useForm } from "../../hooks/useForm";
 import { storage } from "../../firebase/index";
 import { FcCheckmark } from "react-icons/fc";
-import { TakeScreenShot } from "../capture/TakeScreenShot";
 
 export const UploadFilesModal = (props) => {
   const [images, setImages] = useState([]);
@@ -100,7 +99,6 @@ export const UploadFilesModal = (props) => {
             <div className="modal-upload">
               <div className="upload-input">
                 <input type="file" multiple onChange={handleChange} />
-                <TakeScreenShot />
                 <button className="btn-create" onClick={handleClean}>
                   Limpiar
                 </button>
