@@ -62,7 +62,7 @@ export default function CollabStats({ userId }) {
           const data = r.data;
           let completed = 0;
           let unCompleted = 0;
-          //Procesar para obtener la tarea con su timepo en minutos y las tareas completas vs no comletdas
+          //Procesar para obtener la tarea con su tiempo en minutos y las tareas completas vs no comletdas
           data.forEach((task) => {
             //formatear el timepo, concertir los dias en horas
             let tiempo = task.cronometro.split(":");
@@ -74,7 +74,7 @@ export default function CollabStats({ userId }) {
             tiempo = tiempo.join(":");
             //pasar el string a moment
             tiempo = moment(tiempo, '"hh:mm:ss"');
-            //expresar el timepo total en minutos
+            //expresar el tiempo total en minutos
             tiempo = Math.round(
               moment.duration(tiempo).asMinutes() - 27078000,
               2
