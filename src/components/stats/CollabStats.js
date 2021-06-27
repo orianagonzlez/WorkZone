@@ -22,9 +22,13 @@ export default function CollabStats({ userId }) {
 
   const [tasksPerListProject, setTasksPerListProject] = useState([]);
 
+  const [thisUser, setThisUser] = useState();
+
   useEffect(() => {
     getListInfo();
     getUserTasks();
+    getUser();
+    // Quizas en este useEffect tengas que poner como dependencia el userId
   }, []);
 
   //de aqui sale la info de grafico de tareas por lista o por estatus
@@ -48,6 +52,19 @@ export default function CollabStats({ userId }) {
             },
           ]);
         });
+      } else {
+        console.log("error");
+      }
+    });
+  };
+
+  const getUser = () => {
+    getData(
+      `https://workzone-backend-mdb.herokuapp.com/api/auth/${userId}`
+    ).then((r) => {
+      console.log("me respondio" + r);
+      if (r.ok) {
+        setThisUser(r.data);
       } else {
         console.log("error");
       }
@@ -109,11 +126,13 @@ export default function CollabStats({ userId }) {
     });
   };
 
-  if (!subTasksChart || !timePerTask) return <>esperando</>;
+  if (!subTasksChart || !timePerTask || !thisUser) return <>esperando</>;
   return (
-    <div className="collab-stats-container">
+    <div className="collab-stats-container mt-2">
       <div className="stats-shown">
-        <h2>member name</h2>
+        <h2>
+          {thisUser.nombre} {thisUser.apellido}
+        </h2>
         <div className="stats-cards">
           <div className="boxes">
             <Box
