@@ -11,6 +11,8 @@ import { useState } from "react";
 import { TasksPerUserChart } from "../charts/TasksPerUserChart";
 import moment from "moment";
 import { TimePerUserChart } from "../charts/TimePerUserChart";
+import { UserTasksPerListChart } from "../charts/UserTasksPerListChart";
+
 
 export default function OwnerStats() {
   const { project } = useParams();
@@ -20,6 +22,7 @@ export default function OwnerStats() {
   const [membersTasks, setMembersTasks] = useState([]);
   const [totalTime, setTotalTime] = useState(0);
   const [totalTask, setTotalTask] = useState(0);
+  const [tasksPerListGlobal, setTasksPerListGlobal] = useState([]);
 
   useEffect(() => {
     getLists();
@@ -30,12 +33,23 @@ export default function OwnerStats() {
     getData(
       `https://workzone-backend-mdb.herokuapp.com/api/lists/from/${project}`
     ).then((r) => {
-      console.log("me respondio" + r);
+      console.log("me respondio a" + r);
       if (r.ok) {
         console.log(r.data);
 
-        // esta info se va a usar para el grafico de numero de tareas por lista
-        setLists(r.data);
+        let lists = r.data;
+        console.log('eskere',lists);
+        //let myList;
+        lists.forEach((list) => {
+          //myList = list.items
+          setLists((old) => [
+            ...old,
+            {
+              name: list.nombre,
+              numTasks: list.items.length,
+            },
+          ]);
+        });
 
         let tareas = [];
 
@@ -145,6 +159,12 @@ export default function OwnerStats() {
             chartName={"Tiempo total de cada miembro"}
             chartComponent={TimePerUserChart}
             data={membersTasks}
+          />
+
+          <ChartCard
+            chartName={"Tareas por lista"}
+            chartComponent={UserTasksPerListChart}
+            data={lists}
           />
         </div>
         <div className="stats-cards">
