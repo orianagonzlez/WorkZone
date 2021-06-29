@@ -13,10 +13,9 @@ import moment from "moment";
 import { TimePerUserChart } from "../charts/TimePerUserChart";
 import { UserTasksPerListChart } from "../charts/UserTasksPerListChart";
 
-
 export default function OwnerStats() {
   const { project } = useParams();
-  
+
   const [lists, setLists] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [membersTasks, setMembersTasks] = useState([]);
@@ -38,7 +37,7 @@ export default function OwnerStats() {
         console.log(r.data);
 
         let lists = r.data;
-        console.log('eskere',lists);
+        console.log("eskere", lists);
         //let myList;
         lists.forEach((list) => {
           //myList = list.items
@@ -91,8 +90,10 @@ export default function OwnerStats() {
             //pasar el string a moment
             tiempo = moment(tiempo, '"hh:mm:ss"');
             //expresar el tiempo total en minutos
+            let tiempoZero = moment("0:0:0", '"hh:mm:ss"');
             tiempo = Math.round(
-              moment.duration(tiempo).asMinutes() - 27079440,
+              moment.duration(tiempo).asMinutes() -
+                moment.duration(tiempoZero).asMinutes(),
               2
             );
 
