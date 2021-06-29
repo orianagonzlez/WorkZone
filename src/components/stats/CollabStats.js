@@ -91,10 +91,13 @@ export default function CollabStats({ userId }) {
           //pasar el string a moment
           tiempo = moment(tiempo, '"hh:mm:ss"');
           //expresar el tiempo total en minutos
+          let tiempoZero = moment("0:0:0", '"hh:mm:ss"');
           tiempo = Math.round(
-            moment.duration(tiempo).asMinutes() - 27079440,
+            moment.duration(tiempo).asMinutes() -
+              moment.duration(tiempoZero).asMinutes(),
             2
           );
+
           setTimePerTask((old) => [
             ...old,
             {
@@ -128,8 +131,7 @@ export default function CollabStats({ userId }) {
   useEffect(() => {
     getTotalTime();
     getTotalTasks();
-
-  }, [timePerTask])
+  }, [timePerTask]);
 
   const getTotalTime = () => {
     let cont = 0;
