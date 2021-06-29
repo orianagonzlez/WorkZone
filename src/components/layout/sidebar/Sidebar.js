@@ -63,6 +63,9 @@ export default function Sidebar() {
     t.current = `${days}:${hours}:${minutes}:${seconds}`;
   }, [seconds, minutes, hours, days]);
 
+  console.log(`${days}:${hours}:${minutes}:${seconds}`, new Date())
+  console.log(t.current, new Date())
+  
   useEffect(() => {
     if (taskId) {
       //Si otra tarea esta corriendo, guardo el valor antes del cambio
