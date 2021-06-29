@@ -150,15 +150,40 @@ export default function OwnerStats() {
       <div className="stats-shown">
         <h2>Overview</h2>
         <div className="stats-cards">
+          <div className="boxes">
+            {totalTime < 60 ? (
+              <Box
+                boxName={"Tiempo total trabajado en el proyecto"}
+                data={`${totalTime} min(s)`}
+              />
+            ) : (
+              <Box
+                boxName={"Tiempo total trabajado en el proyecto"}
+                data={formatTime(totalTime)}
+              />
+            )}
+            <Box
+              boxName={"Total de tareas en el proyecto"}
+              data={`${totalTask} tarea(s)`}
+            />
+            {totalTime < 60 ? (
+              <Box
+                boxName={"Promedio de tiempo por tarea"}
+                data={`${totalTime / totalTask} min(s)`}
+              />
+            ) : (
+              <Box
+                boxName={"Promedio de tiempo por tarea"}
+                data={`${formatTime(totalTime / totalTask)}`}
+              />
+            )}  
+          </div>
+          
+        </div>
+        <div className="stats-cards">
           <ChartCard
             chartName={"Tareas por miembro"}
             chartComponent={TasksPerUserChart}
-            data={membersTasks}
-          />
-
-          <ChartCard
-            chartName={"Tiempo total de cada miembro"}
-            chartComponent={TimePerUserChart}
             data={membersTasks}
           />
 
@@ -167,35 +192,16 @@ export default function OwnerStats() {
             chartComponent={UserTasksPerListChart}
             data={lists}
           />
+
         </div>
         <div className="stats-cards">
-          {totalTime < 60 ? (
-            <Box
-              boxName={"Tiempo total trabajado en el proyecto"}
-              data={`${totalTime} min(s)`}
-            />
-          ) : (
-            <Box
-              boxName={"Tiempo total trabajado en el proyecto"}
-              data={formatTime(totalTime)}
-            />
-          )}
-          <Box
-            boxName={"Total de tareas en el proyecto"}
-            data={`${totalTask} tarea(s)`}
+        <ChartCard
+            chartName={"Tiempo total de cada miembro"}
+            chartComponent={TimePerUserChart}
+            data={membersTasks}
+            large={true}
           />
-          {totalTime < 60 ? (
-            <Box
-              boxName={"Promedio de tiempo por tarea"}
-              data={`${totalTime / totalTask} min(s)`}
-            />
-          ) : (
-            <Box
-              boxName={"Promedio de tiempo por tarea"}
-              data={`${formatTime(totalTime / totalTask)}`}
-            />
-          )}
-        </div>
+          </div>
       </div>
     </div>
   );
