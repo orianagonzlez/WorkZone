@@ -13,7 +13,7 @@ export default function Stats() {
   const { user } = React.useContext(AppContext);
   const [projectInfo, setProjectInfo] = React.useState({});
   const [members, setMembers] = React.useState([]);
-  const [uid, setUid] = useState();
+  const [uid, setUid] = useState(user.id);
   const { project } = useParams();
   const [selectedOption, setSelectedOption] = React.useState(null);
   const history = useHistory();
@@ -30,13 +30,9 @@ export default function Stats() {
       console.log("me respondio" + r);
       if (r.ok) {
         setProjectInfo(r.data);
-        let memberList = [...r.data.miembros];
-        memberList[0] = r.data.miembros;
-
-
         setMembers(r.data.miembros);
         
-        console.log("miembros", memberList)
+        console.log("miembros", members)
       } else {
         console.log("error");
       }
@@ -62,7 +58,7 @@ export default function Stats() {
       {projectInfo.owner == user.id && (
         <>
           <OwnerStats />
-          <h2 className="select-label">Seleccione un miembro del proyecto para ver sus estadisticas</h2> 
+          <h2 className="select-label">Seleccione un miembro del proyecto para ver sus estadísticas individuales</h2> 
           <Form.Control
           className="select-dropdown"
           as="select"
@@ -83,7 +79,7 @@ export default function Stats() {
         </>
       )}
       <br />
-
+      
       <CollabStats userId={uid} />
     </div>
   );
