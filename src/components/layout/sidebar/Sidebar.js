@@ -67,7 +67,7 @@ export default function Sidebar() {
   console.log(t.current, new Date())
   
   useEffect(() => {
-    if (taskId) {
+    if (user && taskId) {
       //Si otra tarea esta corriendo, guardo el valor antes del cambio
       if (isRunning) {
         clearInterval(saveTimeInterval);
@@ -163,10 +163,10 @@ export default function Sidebar() {
         }
       });
     }
-  }, [taskId]);
+  }, [user, taskId]);
 
   useEffect(() => {
-    if (taskId) {
+    if (user && taskId) {
       console.log("YA TENGO EL TASK");
       setTimer({ ...timer, running: isRunning });
 

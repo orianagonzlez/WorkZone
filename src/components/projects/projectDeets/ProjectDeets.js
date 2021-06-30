@@ -15,11 +15,14 @@ import { AppContext } from "../../../context/AppContext";
 import Swal from "sweetalert2";
 import { postData } from "../../../helpers/postData";
 import { Members } from "../../common/Member";
+import { SocketContext } from "../../../context/SocketContext";
 
 export default function ProjectDeets() {
   const { user } = useContext(AppContext);
   const [projectInfo, setProjectInfo] = useState({});
   const [members, setMembers] = useState([]);
+
+  const { socket } = useContext(SocketContext);
 
   const { project } = useParams();
 
@@ -44,6 +47,21 @@ export default function ProjectDeets() {
     });
   }, []);
 
+  const freeTaskMember = (body) => {
+    //TODO cambiar link
+    postData(
+      "https://workzone-backend-mdb.herokuapp.com/api/tasks/remove-member",
+      body
+    ).then((r) => {
+      console.log("me respondio" + r);
+      if (r.ok) {
+        console.log("todo bien", r.data);
+      } else {
+        console.log("error");
+      }
+    });
+  };
+
   const handleLeaveProject = () => {
     console.log("me quiero salir");
 
@@ -66,6 +84,14 @@ export default function ProjectDeets() {
       cancelButtonText: "No, cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
+        const b = {
+          id_proyecto: projectInfo._id,
+          miembros: [user.id]
+        };
+  
+        // las tareas que estaban asignadas a esos miembros quedan sin un miembro asignado
+        freeTaskMember(b);
+
         postData(
           "https://workzone-backend-mdb.herokuapp.com/api/projects/update",
           body
@@ -79,6 +105,7 @@ export default function ProjectDeets() {
               text: "Proyecto abandonado exitosamente",
               confirmButtonColor: "#22B4DE",
             }).then((res) => {
+              socket.emit("refresh-project", { id_proyecto: projectInfo._id });
               history.push("/projects");
             });
           } else {

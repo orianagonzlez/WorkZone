@@ -20,6 +20,8 @@ export default function CreateProjects() {
 
   const [inputList, setInputList] = useState([{ email: "", canDelete: true }]);
 
+  const [originalInputList, setOriginalInputList] = useState([{ email: "", canDelete: true }]);
+
   const [users, setUsers] = useState([]);
 
   const [planes, setPlanes] = useState([]);
@@ -45,6 +47,8 @@ export default function CreateProjects() {
   const [checkout, setCheckout] = useState(false);
 
   const { socket } = useContext(SocketContext);
+
+  console.log(originalInputList);
 
   // aqui vienen los planes
   const {
@@ -72,6 +76,7 @@ export default function CreateProjects() {
           //parcheo del formulario
           setprojectEdit(r.data);
           setSelectedPlan(r.data.id_plan);
+          setOriginalInputList(r.data.miembros.map((u) => u._id));
           setPaid(true);
           //console.log(selectedPlan, "pls ayuda");
           let emails = [];
@@ -90,6 +95,7 @@ export default function CreateProjects() {
             }
           });
           setInputList([...emails]);
+          
           setName(r.data.nombre);
           setDescripcion(r.data.descripcion);
         } else {
@@ -166,6 +172,21 @@ export default function CreateProjects() {
       if (r.ok) {
         console.log("todo bien", r.data);
         history.push(`/projects/details/${project}`);
+      } else {
+        console.log("error");
+      }
+    });
+  };
+
+  const freeTaskMember = (body) => {
+    //TODO cambiar link
+    postData(
+      "https://workzone-backend-mdb.herokuapp.com/api/tasks/remove-member",
+      body
+    ).then((r) => {
+      console.log("me respondio" + r);
+      if (r.ok) {
+        console.log("todo bien", r.data);
       } else {
         console.log("error");
       }
@@ -264,6 +285,20 @@ export default function CreateProjects() {
     }
 
     if (editMode) {
+
+      // se buscan los miembros eliminados del proyecto
+      const deletedMembers = originalInputList.filter((uid) => !membersIds.includes(uid));
+
+      if (deletedMembers.length > 0) {
+        const b = {
+          id_proyecto: project,
+          miembros: deletedMembers
+        };
+  
+        // las tareas que estaban asignadas a esos miembros quedan sin un miembro asignado
+        freeTaskMember(b);
+      }
+      
       let body = {
         id_proyecto: projectEdit._id,
         nombre: name,
@@ -273,6 +308,8 @@ export default function CreateProjects() {
         //lideres: [user.id],
       };
       updateProyecto(body);
+
+      
     } else {
       let body = {
         nombre: name,
@@ -312,7 +349,7 @@ export default function CreateProjects() {
             onClick={() => {
               !editMode
                 ? history.push("/projects")
-                : history.push(`/projects/details/${project._id}`);
+                : history.push(`/projects/details/${project}`);
             }}
           >
             <FaArrowCircleLeft />
