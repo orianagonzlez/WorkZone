@@ -20,7 +20,9 @@ export default function CreateProjects() {
 
   const [inputList, setInputList] = useState([{ email: "", canDelete: true }]);
 
-  const [originalInputList, setOriginalInputList] = useState([{ email: "", canDelete: true }]);
+  const [originalInputList, setOriginalInputList] = useState([
+    { email: "", canDelete: true },
+  ]);
 
   const [users, setUsers] = useState([]);
 
@@ -73,6 +75,10 @@ export default function CreateProjects() {
         if (r.ok) {
           //indico que estoy en modo editor de un proyecto
           setEditMode(true);
+          if (r.data.owner !== user.id) {
+            history.push(`/projects/details/${r.data._id}`);
+          }
+
           //parcheo del formulario
           setprojectEdit(r.data);
           setSelectedPlan(r.data.id_plan);
@@ -95,7 +101,7 @@ export default function CreateProjects() {
             }
           });
           setInputList([...emails]);
-          
+
           setName(r.data.nombre);
           setDescripcion(r.data.descripcion);
         } else {
@@ -285,20 +291,21 @@ export default function CreateProjects() {
     }
 
     if (editMode) {
-
       // se buscan los miembros eliminados del proyecto
-      const deletedMembers = originalInputList.filter((uid) => !membersIds.includes(uid));
+      const deletedMembers = originalInputList.filter(
+        (uid) => !membersIds.includes(uid)
+      );
 
       if (deletedMembers.length > 0) {
         const b = {
           id_proyecto: project,
-          miembros: deletedMembers
+          miembros: deletedMembers,
         };
-  
+
         // las tareas que estaban asignadas a esos miembros quedan sin un miembro asignado
         freeTaskMember(b);
       }
-      
+
       let body = {
         id_proyecto: projectEdit._id,
         nombre: name,
@@ -308,8 +315,6 @@ export default function CreateProjects() {
         //lideres: [user.id],
       };
       updateProyecto(body);
-
-      
     } else {
       let body = {
         nombre: name,
@@ -349,7 +354,7 @@ export default function CreateProjects() {
             onClick={() => {
               !editMode
                 ? history.push("/projects")
-                : history.push(`/projects/details/${project}`);
+                : history.push(`/projects/details/${projectEdit._id}`);
             }}
           >
             <FaArrowCircleLeft />

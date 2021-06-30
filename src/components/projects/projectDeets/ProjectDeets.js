@@ -75,7 +75,8 @@ export default function ProjectDeets() {
 
     Swal.fire({
       title: "Estás seguro?",
-      text: "Si abandonas el proyecto no podrás acceder sin una nueva invitación",
+      text:
+        "Si abandonas el proyecto no podrás acceder sin una nueva invitación",
       icon: "info",
       showCancelButton: true,
       confirmButtonColor: "#22B4DE",
@@ -86,9 +87,9 @@ export default function ProjectDeets() {
       if (result.isConfirmed) {
         const b = {
           id_proyecto: projectInfo._id,
-          miembros: [user.id]
+          miembros: [user.id],
         };
-  
+
         // las tareas que estaban asignadas a esos miembros quedan sin un miembro asignado
         freeTaskMember(b);
 
@@ -134,15 +135,17 @@ export default function ProjectDeets() {
         >
           <FaChartPie /> Ver Estadísticas
         </Button>
-        <Button
-          className="upperButton"
-          id="editProject"
-          onClick={() => {
-            history.push(`/projects/edit/${project}`);
-          }}
-        >
-          <FaEdit /> Editar Proyecto
-        </Button>
+        {user?.id == projectInfo?.owner && (
+          <Button
+            className="upperButton"
+            id="editProject"
+            onClick={() => {
+              history.push(`/projects/edit/${project}`);
+            }}
+          >
+            <FaEdit /> Editar Proyecto
+          </Button>
+        )}
         {user?.id && projectInfo?.owner && projectInfo.owner != user.id && (
           <Button
             variant="light"
@@ -159,7 +162,10 @@ export default function ProjectDeets() {
 
       <div className="divArrowLeft">
         <div>
-          <Button className="arrowLeft" onClick={() => history.push('/projects')}>
+          <Button
+            className="arrowLeft"
+            onClick={() => history.push("/projects")}
+          >
             <FaArrowCircleLeft />
           </Button>
         </div>
