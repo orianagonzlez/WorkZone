@@ -549,7 +549,7 @@ export const Board = ({ project }) => {
                                                       <div>
                                                         <Members
                                                           member={miembro}
-                                                          placement={"task"}
+                                                          placement={"small"}
                                                         />
                                                       </div>
                                                     );

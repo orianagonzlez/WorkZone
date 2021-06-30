@@ -41,8 +41,8 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
     
     const newData = {
       uid: usuario.uid,
-      nombre: name,
-      apellido: lastname,
+      nombre: name[0].toUpperCase() + name.slice(1),
+      apellido: lastname[0].toUpperCase() + lastname.slice(1),
       fechaNacimiento: new Date(birthday),
       email: email,
       username: username
@@ -96,15 +96,12 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
     ).then((r) => {
       console.log("me respondio" + r);
       if (r.ok) {
-        console.log("todo bien. CREE TAREAAAAAA");
         console.log(r.data);
 
         setUser({
           ...user,
-          email: email,
-          nombre: `${name} ${lastname}`,
-          username: username,
-          fechaNacimiento: body.fechaNacimiento,
+          email: body.email,
+          nombre: `${body.nombre} ${body.apellido}`,
         });
         
         Swal.fire({
