@@ -31,15 +31,13 @@ export default function Stats() {
       if (r.ok) {
         setProjectInfo(r.data);
         setMembers(r.data.miembros);
-        
-        console.log("miembros", members)
+
+        console.log("miembros", members);
       } else {
         console.log("error");
       }
     });
   }, []);
-
-  
 
   return (
     <div className="stats-container">
@@ -58,35 +56,42 @@ export default function Stats() {
       {projectInfo.owner == user.id && (
         <>
           <OwnerStats />
-          <h2 className="select-label">Seleccione un miembro del proyecto para ver sus estadísticas individuales</h2> 
+          <h2 className="select-label">
+            Seleccione un miembro del proyecto para ver sus estadísticas
+            individuales
+          </h2>
           <Form.Control
-          className="select-dropdown"
-          as="select"
-          custom
-          defaultValue={user.id}
-          onChange={(e) => {
-            //e.preventDefault();
-            setUid(e.target.value);
-          }}
+            className="select-dropdown"
+            as="select"
+            custom
+            defaultValue={user.id}
+            onChange={(e) => {
+              //e.preventDefault();
+              setUid(e.target.value);
+            }}
           >
             {members.map((member) => (
-              <option className='memberValues' key={member._id} value={member._id}>
+              <option
+                className="memberValues"
+                key={member._id}
+                value={member._id}
+              >
                 {member.nombre + "  " + member.apellido}
               </option>
             ))}
-        </Form.Control>
+          </Form.Control>
         </>
       )}
       <br />
-      
+
       <CollabStats userId={uid} />
     </div>
   );
 }
 
-//<select 
-//class=".form-select" 
-//aria-label="Default select example"  
+//<select
+//class=".form-select"
+//aria-label="Default select example"
 //onChange={(e) => {
 //  e.preventDefault();
 //  setUid(e.target.value);
