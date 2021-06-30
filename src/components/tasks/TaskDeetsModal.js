@@ -184,7 +184,7 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
       };
 
       // si se cambio el miembro encargado de realizar la tarea
-      if (assigned && miembro != assigned && cronometro != '0:0:0:0') {
+      if (assigned && miembro && miembro != assigned && cronometro != '0:0:0:0') {
         Swal.fire({
           title: "¿Estás seguro?",
           text: "Si reasignas la tarea, el cronómetro se reiniciará en los próximos minutos. ",

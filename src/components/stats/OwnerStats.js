@@ -150,7 +150,6 @@ export default function OwnerStats() {
       <div className="stats-shown">
         <h2>Overview</h2>
         <div className="stats-cards">
-          <div className="boxes">
             {totalTime < 60 ? (
               <Box
                 boxName={"Tiempo total trabajado en el proyecto"}
@@ -177,7 +176,6 @@ export default function OwnerStats() {
                 data={`${formatTime(totalTime / totalTask)}`}
               />
             )}  
-          </div>
           
         </div>
         <div className="stats-cards">
