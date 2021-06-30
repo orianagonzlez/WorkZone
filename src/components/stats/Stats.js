@@ -65,11 +65,10 @@ export default function Stats() {
           custom
           defaultValue={user.id}
           onChange={(e) => {
-            e.preventDefault();
+            //e.preventDefault();
             setUid(e.target.value);
           }}
           >
-            <option className='default' value="">Miembros</option>
             {members.map((member) => (
               <option className='memberValues' key={member._id} value={member._id}>
                 {member.nombre + "  " + member.apellido}
