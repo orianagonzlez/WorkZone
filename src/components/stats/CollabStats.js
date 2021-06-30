@@ -27,7 +27,7 @@ export default function CollabStats({ userId }) {
     getUserTasks();
     getUser();
     // Quizas en este useEffect tengas que poner como dependencia el userId
-  }, []);
+  }, [userId]);
 
   //de aqui sale la info de grafico de tareas por lista o por estatus
   const getListInfo = () => {

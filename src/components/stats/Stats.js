@@ -7,13 +7,14 @@ import { Button } from "react-bootstrap";
 import OwnerStats from "./OwnerStats";
 import CollabStats from "./CollabStats";
 
+
 export default function Stats() {
   const { user } = React.useContext(AppContext);
   const [projectInfo, setProjectInfo] = React.useState({});
   const [members, setMembers] = React.useState([]);
   const [uid, setUid] = useState(user.id);
   const { project } = useParams();
-
+  const [selectedOption, setSelectedOption] = React.useState(null);
   const history = useHistory();
 
   console.log(projectInfo);
@@ -29,11 +30,21 @@ export default function Stats() {
       if (r.ok) {
         setProjectInfo(r.data);
         setMembers(r.data.miembros);
+        
+        console.log("miembros", members)
       } else {
         console.log("error");
       }
     });
   }, []);
+
+  const handleChange = selectedOption => {
+    setSelectedOption({ selectedOption });
+    setUid(selectedOption._id);
+    console.log(`Option selected:`, selectedOption);
+  };
+
+  
 
   return (
     <div className="stats-container">
@@ -52,8 +63,22 @@ export default function Stats() {
       {projectInfo.owner == user.id && (
         <>
           <OwnerStats />
-          {/* aqui iria el select donde seleccionas el colaborador del cual quieres ver las estadisticas
-        que cambiaria el uid que se le pasa por parametro a al componente  */}
+          <select 
+            class="form-select" 
+            aria-label=".form-select-Default select example"  
+            onChange={(e) => {
+              e.preventDefault();
+              setUid(e.target.value);
+            }}
+            
+          >
+            {members.map((member) => (
+                <option key={member._id} value={member._id}>
+                  {member.nombre}
+                </option>
+              ))}
+
+          </select>
         </>
       )}
       <br />
