@@ -385,9 +385,9 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
                   <span>Archivos</span>
                 </div>
                 <div className="file-buttons">
-                  <button type="button" id="see-files">
+                  {/* <button type="button" id="see-files">
                     <FaEye onClick={() => setView(!view)} />
-                  </button>
+                  </button> */}
                   {/* <Form.Group>
                       {view ? <Form.Control as="textarea">
 

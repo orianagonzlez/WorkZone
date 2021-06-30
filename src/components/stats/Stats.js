@@ -53,7 +53,7 @@ export default function Stats() {
         <h1>{projectInfo.nombre}: Estadísticas</h1>
       </div>
 
-      {projectInfo.owner == user.id && (
+      {projectInfo?.owner == user.id && (
         <>
           <OwnerStats />
           <h2 className="select-label">
