@@ -3,16 +3,17 @@ import { useHistory, useParams } from "react-router-dom";
 import { getData } from "../../helpers/getData";
 import { AppContext } from "../../context/AppContext";
 import { FaArrowCircleLeft } from "react-icons/fa";
-import { Button } from "react-bootstrap";
+import { Button, Dropdown } from "react-bootstrap";
 import OwnerStats from "./OwnerStats";
 import CollabStats from "./CollabStats";
-
+import { DropdownButton } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 
 export default function Stats() {
   const { user } = React.useContext(AppContext);
   const [projectInfo, setProjectInfo] = React.useState({});
   const [members, setMembers] = React.useState([]);
-  const [uid, setUid] = useState(user.id);
+  const [uid, setUid] = useState();
   const { project } = useParams();
   const [selectedOption, setSelectedOption] = React.useState(null);
   const history = useHistory();
@@ -29,20 +30,18 @@ export default function Stats() {
       console.log("me respondio" + r);
       if (r.ok) {
         setProjectInfo(r.data);
+        let memberList = [...r.data.miembros];
+        memberList[0] = r.data.miembros;
+
+
         setMembers(r.data.miembros);
         
-        console.log("miembros", members)
+        console.log("miembros", memberList)
       } else {
         console.log("error");
       }
     });
   }, []);
-
-  const handleChange = selectedOption => {
-    setSelectedOption({ selectedOption });
-    setUid(selectedOption._id);
-    console.log(`Option selected:`, selectedOption);
-  };
 
   
 
@@ -63,26 +62,43 @@ export default function Stats() {
       {projectInfo.owner == user.id && (
         <>
           <OwnerStats />
-          <select 
-            class="form-select" 
-            aria-label=".form-select-Default select example"  
-            onChange={(e) => {
-              e.preventDefault();
-              setUid(e.target.value);
-            }}
-            
+          <h2 className="select-label">Seleccione un miembro del proyecto para ver sus estadisticas</h2> 
+          <Form.Control
+          className="select-dropdown"
+          as="select"
+          custom
+          defaultValue={user.id}
+          onChange={(e) => {
+            e.preventDefault();
+            setUid(e.target.value);
+          }}
           >
+            <option className='default' value="">Miembros</option>
             {members.map((member) => (
-                <option key={member._id} value={member._id}>
-                  {member.nombre}
-                </option>
-              ))}
-
-          </select>
+              <option className='memberValues' key={member._id} value={member._id}>
+                {member.nombre + "  " + member.apellido}
+              </option>
+            ))}
+        </Form.Control>
         </>
       )}
       <br />
+
       <CollabStats userId={uid} />
     </div>
   );
 }
+
+//<select 
+//class=".form-select" 
+//aria-label="Default select example"  
+//onChange={(e) => {
+//  e.preventDefault();
+//  setUid(e.target.value);
+//}}>
+//{members.map((member) => (
+//    <option key={member._id} value={member._id}>
+//      {member.nombre}
+//    </option>
+//  ))}
+//</select>

@@ -152,13 +152,11 @@ export default function CollabStats({ userId }) {
     return rhours + " hr(s) " + rminutes + " min(s)";
   };
 
-  if (!subTasksChart || !timePerTask || !thisUser) return <>Cargando...</>;
+  if (!subTasksChart || !timePerTask || !thisUser) return <></>;
   return (
     <div className="collab-stats-container mt-2">
       <div className="stats-shown">
-        <h2>
-          {thisUser.nombre} {thisUser.apellido}
-        </h2>
+
         <div className="stats-cards">
           <div className="boxes">
             {totalTime < 60 ? (
