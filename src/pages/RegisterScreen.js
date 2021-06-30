@@ -30,8 +30,8 @@ export const RegisterScreen = () => {
       console.log("Formulario Valido");
 
       let body = {
-        nombre: name,
-        apellido: lastname,
+        nombre: name[0].toUpperCase() + name.slice(1),
+        apellido: lastname[0].toUpperCase() + lastname.slice(1),
         contrasena: password,
         fechaNacimiento: new Date(birthday),
         email: email,
