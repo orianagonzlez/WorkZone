@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { ChatContext } from "../../context/ChatContext";
 import { types } from "../../context/types";
 import { getData } from "../../helpers/getData";
+import { ProjectAvatar } from "./ProjectAvatar";
 
 export default function Chat({ project }) {
   // supongo que en vez de project podría recibir chat o algo así pero bueno
@@ -69,7 +70,7 @@ export default function Chat({ project }) {
             }}
           >
             <Button>
-              <FaCircle className="chat-icon-left" size="25px" />
+              <ProjectAvatar name={project.nombre} placement={'small'}/>
               <h2>{project.nombre}</h2>
               <FaComments className="chat-icon-right" size="25px" />
             </Button>

@@ -1,19 +1,19 @@
 import React from "react";
-import { MemberAvatar } from "./MemberAvatar";
+import { Avatar } from "./Avatar";
 
 export const Members = ({ member, placement }) => {
   return (
     <div
       className={`d-flex flex-column justify-content-center ${
-        placement !== "task" ? "align-items-center" : ""
+        placement !== "small" ? "align-items-center" : ""
       }`}
     >
-      <MemberAvatar
-        name={member.nombre[0]}
-        lastname={member.apellido[0]}
-        placement={placement}
+      <Avatar
+        size={placement === 'small' ? '30x30' : '50x50'}
+        fontSize={placement === 'small' ? '10' : '16'}
+        text={member.nombre[0].toUpperCase() + member.apellido[0].toUpperCase()}
       />
-      {placement !== "task" ? (
+      {placement !== "small" ? (
         <span className="text-center miembro">
           {member.nombre} {member.apellido}
         </span>
