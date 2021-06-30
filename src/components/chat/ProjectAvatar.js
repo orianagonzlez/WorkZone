@@ -6,9 +6,9 @@ export const ProjectAvatar = ({ name, placement }) => {
     let text = '';
     let initials = name.split(" ");
 
-    if (initials.length > 0) {
+    if (initials.length > 0 && initials[0]) {
         text += initials[0][0].toUpperCase();
-        if (initials.length > 1) {
+        if (initials.length > 1 && initials[1]) {
             text += initials[1][0].toUpperCase();
         }
     }
