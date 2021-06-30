@@ -177,7 +177,11 @@ export default function CreateProjects() {
       console.log("me respondio" + r);
       if (r.ok) {
         console.log("todo bien", r.data);
-        history.push(`/projects/details/${project}`);
+        if (body.newPlan) {
+          //yolo
+        } else {
+          history.push(`/projects/details/${project}`);
+        }
       } else {
         console.log("error");
       }

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { FaMoneyBillWave } from 'react-icons/fa';
+import { FaMoneyBillWave } from "react-icons/fa";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import Swal from "sweetalert2";
 
@@ -49,6 +49,7 @@ export default function Paypal({
             updateProject({
               id_plan: selectedPlan,
               id_proyecto: projectid,
+              newPlan: true,
             });
           }
         },
