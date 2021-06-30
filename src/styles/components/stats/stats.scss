@@ -38,6 +38,34 @@
             padding-left: 2rem;
         }
       }
+
+    .select-label{
+      color: $primary-gray-400;
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-top: 1rem;
+    }
+    
+    .select-dropdown{
+      display: flex;
+      padding: 0 3rem;
+      margin-left: 3.5rem;
+      margin-top: 1.5rem;
+      background-color: transparent;
+      font-size: 1.25rem;
+      font-weight: bold;
+      width: 91%;
+      
+      .default{
+          font-weight: bold;
+          background-color: transparent;
+      }
+
+      .memberValues{
+        background-color: transparent;
+      }
+    }
+
 }
 
 
