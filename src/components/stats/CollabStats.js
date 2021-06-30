@@ -26,8 +26,12 @@ export default function CollabStats({ userId }) {
     getListInfo();
     getUserTasks();
     getUser();
-    // Quizas en este useEffect tengas que poner como dependencia el userId
-  }, []);
+    setTimePerTask([])
+    setTasksPerList([])
+    setThisUser()
+    setTotalTime(0)
+    setTotalTask(0)
+  }, [userId]);
 
   //de aqui sale la info de grafico de tareas por lista o por estatus
   const getListInfo = () => {
@@ -156,9 +160,6 @@ export default function CollabStats({ userId }) {
   return (
     <div className="collab-stats-container mt-2">
       <div className="stats-shown">
-        <h2>
-          {thisUser.nombre} {thisUser.apellido}
-        </h2>
         <div className="stats-cards">
           <div className="boxes">
             {totalTime < 60 ? (
