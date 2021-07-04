@@ -8,6 +8,7 @@ import { useFetch2 } from "../../hooks/useFetch2";
 import { useForm } from "../../hooks/useForm";
 
 export const EditProfileModal = ({ usuario, onHide, show }) => {
+  const [disabled, setDisabled] = useState(false);
   const { setUser, user } = useContext(AppContext);
 
   const [formValues, handleInputChange, reset] = useForm({
@@ -36,6 +37,7 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
   }, [show]);
 
   const handleEdit = (e) => {
+    setDisabled(true);
     console.log(formValues);
     e.preventDefault();
     
@@ -85,6 +87,8 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
       } else {
         updateUser(newData);
       }
+    } else {
+      setDisabled(false);
     }
   };
 
@@ -122,6 +126,7 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
           confirmButtonColor: "#22B4DE",
         });
       }
+      setDisabled(false);
     });  
   };
 
@@ -132,6 +137,7 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
       text: `Ya hay un usuario registrado con ese ${field}`,
       confirmButtonColor: "#22B4DE",
     });
+    setDisabled(false);
   }
 
   return (
@@ -222,7 +228,7 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
           </Form.Row>
           
           <div className="button p-3 mx-5 mb-5">
-            <Button className="auth_button" type="submit">
+            <Button className="auth_button" type="submit" disabled={disabled}>
               Guardar
             </Button>
           </div>

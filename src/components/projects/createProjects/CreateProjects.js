@@ -15,7 +15,8 @@ import { SocketContext } from "../../../context/SocketContext";
 import { Loader } from "../../common/Loader";
 
 export default function CreateProjects() {
-  const [loading, setLoading] = useState(true);;
+  const [loading, setLoading] = useState(true);
+  const [disabled, setDisabled] = useState(false);
   const [name, setName] = React.useState("");
 
   const [descripcion, setDescripcion] = React.useState("");
@@ -153,6 +154,7 @@ export default function CreateProjects() {
         createList(bodyList);
       } else {
         console.log("error");
+        setDisabled(false);
       }
     });
   };
@@ -169,6 +171,7 @@ export default function CreateProjects() {
         } else {
           console.log("error");
         }
+        setDisabled(false);
       });
     });
   };
@@ -189,6 +192,7 @@ export default function CreateProjects() {
       } else {
         console.log("error");
       }
+      setDisabled(false);
     });
   };
 
@@ -208,6 +212,7 @@ export default function CreateProjects() {
   };
 
   const handleCreateProject = (e) => {
+    setDisabled(true);
     e.preventDefault();
     let invalid = false;
     let msg = "";
@@ -295,6 +300,7 @@ export default function CreateProjects() {
         text: msg,
         confirmButtonColor: "#22B4DE",
       });
+      setDisabled(false);
       return;
     }
 

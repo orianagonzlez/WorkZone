@@ -32,7 +32,8 @@ import { AppContext } from "../../context/AppContext";
 import { SocketContext } from "../../context/SocketContext";
 
 export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files, fileNames }) => {
-  
+  const [disabled, setDisabled] = useState(false);
+  const [deleteDisabled, setDeleteDisabled] = useState(false);
   const { _id, nombre, descripcion, miembro, lista, subtareas, cronometro, running } = task;
 
   const [formValues, handleInputChange, reset] = useForm({
@@ -157,6 +158,7 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
   };
 
   const handleCreate = (e) => {
+    setDisabled(true);
     e.preventDefault();
     console.log(formValues, assigned);
     console.log(inputList);
@@ -174,6 +176,7 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
         text: "Los campos de titulo y descripción no pueden ser vacios",
         confirmButtonColor: "#22B4DE",
       });
+      setDisabled(false);
     } else {
       let body = {
         id_tarea: _id,
@@ -224,9 +227,11 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
       }
     });
     onHide();
+    setDisabled(false);
   };
 
   const handleDelete = () => {
+    setDeleteDisabled(true);
     Swal.fire({
       title: "¿Estas seguro de que quieres borrar esta tarea?",
       text: "No podras deshacerlo!",
@@ -261,6 +266,9 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
           "La tarea fue elimiada exitosamente.",
           "success"
         );
+        setDeleteDisabled(false);
+      } else {
+        setDeleteDisabled(false);
       }
     });
   };
@@ -555,6 +563,7 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
             <Button
               variant="danger"
               className="button-task"
+              disabled={deleteDisabled}
               onClick={() => {
                 handleDelete();
               }}
@@ -565,6 +574,7 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
               type="submit"
               variant="primary"
               className="button-task ml-auto"
+              disabled={disabled}
             >
               Guardar <FaEdit />
             </Button>
