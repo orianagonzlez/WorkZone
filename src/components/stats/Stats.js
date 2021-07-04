@@ -8,8 +8,10 @@ import OwnerStats from "./OwnerStats";
 import CollabStats from "./CollabStats";
 import { DropdownButton } from "react-bootstrap";
 import { Form } from "react-bootstrap";
+import { Loader } from "../common/Loader";
 
 export default function Stats() {
+  const [loading, setLoading] = useState(true);
   const { user } = React.useContext(AppContext);
   const [projectInfo, setProjectInfo] = React.useState({});
   const [members, setMembers] = React.useState([]);
@@ -31,6 +33,7 @@ export default function Stats() {
       if (r.ok) {
         setProjectInfo(r.data);
         setMembers(r.data.miembros);
+        setLoading(false);
 
         console.log("miembros", members);
       } else {
@@ -41,6 +44,9 @@ export default function Stats() {
 
   return (
     <div className="stats-container">
+      {loading ? <Loader/> 
+      :
+      <>
       <div className="divArrowLeft">
         <div>
           <Button
@@ -85,6 +91,8 @@ export default function Stats() {
       <br />
 
       <CollabStats userId={uid} />
+      </>
+      }
     </div>
   );
 }

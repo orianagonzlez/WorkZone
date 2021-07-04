@@ -6,8 +6,10 @@ import { getData } from "../../helpers/getData";
 import { EditProfileModal } from "./EditProfileModal";
 import Swal from "sweetalert2";
 import { UpdatePasswordModal } from "./UpdatePasswordModal";
+import { Loader } from "../common/Loader";
 
 export default function ProfileDeets() {
+  const [loading, setLoading] = useState(true);
   const { setUser, user } = useContext(AppContext);
   const [usuario, setUsuario] = useState({});
   const [modalShow, setModalShow] = useState(false);
@@ -21,6 +23,7 @@ export default function ProfileDeets() {
         console.log("me respondio" + r);
         if (r.ok) {
           setUsuario(r.data);
+          setLoading(false);
         } else {
           console.log("error");
         }
@@ -38,6 +41,9 @@ export default function ProfileDeets() {
 
   return (
     <Container fluid className="profileDeetsContainer">
+      {loading ? <Loader/>
+      :
+      <>
       <div className="upperButtonsProfile">
         <Button
           onClick={() => handleUpdatePassword()}
@@ -107,6 +113,8 @@ export default function ProfileDeets() {
           <img src="user-icon.png" alt="user-pfp" />
         </div>
       </div>
+      </>
+      }
     </Container>
   );
 }

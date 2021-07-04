@@ -11,10 +11,13 @@ import {
 import { useHistory } from "react-router";
 import { AppContext } from "../../context/AppContext";
 import { getData } from "../../helpers/getData";
+import { Loader } from "../common/Loader";
 import ProjectCard from "./ProjectCard";
 
 export const ProjectTable = ({ show }) => {
   const { setUser, user } = useContext(AppContext);
+  const [loading, setLoading] = useState(true);
+
   console.log("USER", user);
   const history = useHistory();
 
@@ -34,6 +37,7 @@ export const ProjectTable = ({ show }) => {
         console.log("me respondio" + r);
         if (r.ok) {
           setProjects(r.data);
+          setLoading(false);
         } else {
           console.log("error");
         }
@@ -45,6 +49,8 @@ export const ProjectTable = ({ show }) => {
   const filteredProjects = projects?.filter((project) => {
     return project.nombre.toLowerCase().includes(search.toLowerCase());
   });
+
+  if (loading) return <Loader/>;
 
   return (
     <div className="screen-container">

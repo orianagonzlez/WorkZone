@@ -16,8 +16,10 @@ import Swal from "sweetalert2";
 import { postData } from "../../../helpers/postData";
 import { Members } from "../../common/Member";
 import { SocketContext } from "../../../context/SocketContext";
+import { Loader } from "../../common/Loader";
 
 export default function ProjectDeets() {
+  const [loading, setLoading] = useState(true);
   const { user } = useContext(AppContext);
   const [projectInfo, setProjectInfo] = useState({});
   const [members, setMembers] = useState([]);
@@ -41,6 +43,7 @@ export default function ProjectDeets() {
       if (r.ok) {
         setProjectInfo(r.data);
         setMembers(r.data.miembros);
+        setLoading(false);
       } else {
         console.log("error");
       }
@@ -125,6 +128,10 @@ export default function ProjectDeets() {
 
   return (
     <Container fluid className="componentContainer">
+      {loading && <Loader/>}
+
+      {!loading && 
+      <>
       <div className="upperButtons">
         <Button
           className="upperButton"
@@ -198,6 +205,7 @@ export default function ProjectDeets() {
       {projectInfo?._id && (
         <Board project={projectInfo} setProject={setProjectInfo} />
       )}
+      </>}
     </Container>
   );
 }
