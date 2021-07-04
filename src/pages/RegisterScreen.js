@@ -19,11 +19,19 @@ export const RegisterScreen = () => {
     birthday: "",
   });
 
-  const { name, lastname, email, username, password, password2, birthday } =
-    formValues;
+  const {
+    name,
+    lastname,
+    email,
+    username,
+    password,
+    password2,
+    birthday,
+  } = formValues;
 
   const handleRegister = (e) => {
     e.preventDefault();
+
     console.log(name, lastname, email, username, password, password2, birthday);
 
     if (isFormValid()) {
@@ -42,8 +50,14 @@ export const RegisterScreen = () => {
         console.log("me respondio" + r);
         if (r.ok) {
           localStorage.setItem("token", r.token);
-          const { email, uid, nombre, apellido, fechaNacimiento, username } =
-            r.data;
+          const {
+            email,
+            uid,
+            nombre,
+            apellido,
+            fechaNacimiento,
+            username,
+          } = r.data;
           setUser({
             ...user,
             email: email,

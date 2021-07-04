@@ -4,15 +4,11 @@ import { BrowserRouter as Router, Switch, Redirect } from "react-router-dom";
 import { AuthRouter } from "./AuthRouter";
 import { ProjectsRouter } from "./ProjectsRouter";
 import { PrivateRoute } from "./PrivateRoute";
-
 import { PublicRoute } from "./PublicRoute";
 import { AppContext } from "../context/AppContext";
 import { ProfileRouter } from "./ProfileRouter";
 import { ChatRouter } from "./ChatRouter";
 import { useEffect } from "react";
-import { fetchToken } from "../helpers/getData";
-import { useCallback } from "react";
-import { TimerProvider } from "../context/TimerContext";
 
 export const AppRouter = () => {
   const { user, verifyToken } = useContext(AppContext);
