@@ -1,19 +1,23 @@
-import React from "react";
-import { Modal, Button, Form, Col, InputGroup } from "react-bootstrap";
+import React, { useState } from "react";
+import { Modal, Button, Form, Col } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { postData } from "../../helpers/postData";
 import { useForm } from "../../hooks/useForm";
 
 export const EditColumnModal = (props) => {
+  console.log(props);
+  const [disabled, setDisabled] = useState(false);
   const [formValues, handleInputChange, reset] = useForm({
     column_name: "",
-    task_status: props.columns[0]?._id,
+    task_status: props.lists[0]?._id,
   });
 
   const { column_name, task_status } = formValues;
 
   const handleEdit = (e) => {
+    setDisabled(true);
     e.preventDefault();
+    console.log(task_status, column_name)
     if (task_status && column_name) {
       console.log(column_name, task_status);
 
@@ -42,9 +46,11 @@ export const EditColumnModal = (props) => {
             confirmButtonColor: "#22B4DE",
           });
         }
+        setDisabled(false);
       });
     } else {
       console.log("ERROR");
+      setDisabled(false);
     }
   };
 
@@ -99,7 +105,7 @@ export const EditColumnModal = (props) => {
           </Form.Row>
 
           <div className="button p-3 mx-5 mb-5">
-            <Button className="auth_button" type="submit">
+            <Button className="auth_button" type="submit" disabled={disabled}>
               Modificar
             </Button>
           </div>

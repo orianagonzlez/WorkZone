@@ -1,8 +1,6 @@
 import React from "react";
 import { useCallback } from "react";
-import Swal from "sweetalert2";
 import { fetchToken } from "../helpers/getData";
-import { postData } from "../helpers/postData";
 
 const { createContext, useState, useEffect } = require("react");
 

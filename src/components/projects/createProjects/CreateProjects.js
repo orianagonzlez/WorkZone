@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { Container, Form, Button, Col } from "react-bootstrap";
 import { FaUsers, FaMapSigns, FaPlusCircle, FaTrash } from "react-icons/fa";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import PlanCard from "../../common/PlanCard";
 import { AppContext } from "../../../context/AppContext";
 import { postData } from "../../../helpers/postData";
@@ -12,8 +12,11 @@ import validator from "validator";
 import { useFetch2 } from "../../../hooks/useFetch2";
 import Paypal from "./Paypal";
 import { SocketContext } from "../../../context/SocketContext";
+import { Loader } from "../../common/Loader";
 
 export default function CreateProjects() {
+  const [loading, setLoading] = useState(true);
+  const [disabled, setDisabled] = useState(false);
   const [name, setName] = React.useState("");
 
   const [descripcion, setDescripcion] = React.useState("");
@@ -28,17 +31,11 @@ export default function CreateProjects() {
 
   const [planes, setPlanes] = useState([]);
 
-  const [editMode, setEditMode] = useState(false);
-
   const [projectEdit, setprojectEdit] = useState();
 
   const [selectedPlan, setSelectedPlan] = useState("");
 
   const [paid, setPaid] = React.useState(false);
-
-  const [freelance, setFreelance] = useState(false);
-
-  const [empresa, setEmpresa] = useState(false);
 
   const { user } = useContext(AppContext);
 
@@ -46,9 +43,9 @@ export default function CreateProjects() {
 
   const history = useHistory();
 
-  const [checkout, setCheckout] = useState(false);
-
   const { socket } = useContext(SocketContext);
+  
+  const [editMode] = useState(project ? true : false);
 
   console.log(originalInputList);
 
@@ -74,7 +71,6 @@ export default function CreateProjects() {
       ).then((r) => {
         if (r.ok) {
           //indico que estoy en modo editor de un proyecto
-          setEditMode(true);
           if (r.data.owner !== user.id) {
             history.push(`/projects/details/${r.data._id}`);
           }
@@ -104,11 +100,14 @@ export default function CreateProjects() {
 
           setName(r.data.nombre);
           setDescripcion(r.data.descripcion);
+          setLoading(false);
         } else {
           console.log("error");
         }
       });
     }
+    setLoading(false);
+
     // se piden todos los usuarios para validar que los correo que el ingrese estan registrados
     if (!loadingUsers && users.length === 0) {
       setUsers(dataUsers);
@@ -149,6 +148,7 @@ export default function CreateProjects() {
         createList(bodyList);
       } else {
         console.log("error");
+        setDisabled(false);
       }
     });
   };
@@ -165,6 +165,7 @@ export default function CreateProjects() {
         } else {
           console.log("error");
         }
+        setDisabled(false);
       });
     });
   };
@@ -185,6 +186,7 @@ export default function CreateProjects() {
       } else {
         console.log("error");
       }
+      setDisabled(false);
     });
   };
 
@@ -204,6 +206,7 @@ export default function CreateProjects() {
   };
 
   const handleCreateProject = (e) => {
+    setDisabled(true);
     e.preventDefault();
     let invalid = false;
     let msg = "";
@@ -291,6 +294,7 @@ export default function CreateProjects() {
         text: msg,
         confirmButtonColor: "#22B4DE",
       });
+      setDisabled(false);
       return;
     }
 
@@ -342,15 +346,19 @@ export default function CreateProjects() {
     setInputList([...inputList, { email: "", canDelete: true }]);
   };
 
-  if (loadingPlans || !planes)
-    return <div className="componentContainer"></div>;
+  // if (loadingPlans || !planes)
+  //   return <div className="componentContainer"></div>;
 
-  if (editMode && !selectedPlan) {
-    return <div className="componentContainer"></div>;
-  }
+  // if (editMode && !selectedPlan) {
+  //   return <div className="componentContainer"></div>;
+  // }
+
 
   return (
     <div className="componentContainer">
+      {(loading || loadingPlans || !planes || (editMode && !selectedPlan)) ? <Loader/>
+      : 
+      <>
       <div className="divArrowLeft">
         <div>
           <Button
@@ -551,6 +559,7 @@ export default function CreateProjects() {
                 className="create-button"
                 variant="primary"
                 onClick={(e) => handleCreateProject(e)}
+                disabled={disabled}
               >
                 {editMode ? "GUARDAR" : "CREAR"}
               </Button>
@@ -558,6 +567,7 @@ export default function CreateProjects() {
           </Container>
         </Form>
       </div>
+      </>}
     </div>
   );
 }

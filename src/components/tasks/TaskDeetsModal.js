@@ -8,23 +8,17 @@ import {
   FaEdit,
   FaChartLine,
   FaUsers,
-  FaTag,
   FaThList,
   FaFile,
-  FaEye,
   FaPlus,
   FaTrash,
-  FaPlusCircle,
 } from "react-icons/fa";
 
 import { ImCheckboxChecked, ImCheckboxUnchecked } from "react-icons/im";
 import { BiTask } from "react-icons/bi";
 import { RiTimerFill } from "react-icons/ri";
 
-import { Members } from "../common/Member";
 import validator from "validator";
-import { useFetch2 } from "../../hooks/useFetch2";
-import { getData } from "../../helpers/getData";
 import { UploadFilesModal } from "../tasks/UploadFilesModal";
 import { useContext } from "react";
 import { TimerContext } from "../../context/TimerContext";
@@ -32,7 +26,8 @@ import { AppContext } from "../../context/AppContext";
 import { SocketContext } from "../../context/SocketContext";
 
 export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files, fileNames }) => {
-  
+  const [disabled, setDisabled] = useState(false);
+  const [deleteDisabled, setDeleteDisabled] = useState(false);
   const { _id, nombre, descripcion, miembro, lista, subtareas, cronometro, running } = task;
 
   const [formValues, handleInputChange, reset] = useForm({
@@ -157,6 +152,7 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
   };
 
   const handleCreate = (e) => {
+    setDisabled(true);
     e.preventDefault();
     console.log(formValues, assigned);
     console.log(inputList);
@@ -174,6 +170,7 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
         text: "Los campos de titulo y descripción no pueden ser vacios",
         confirmButtonColor: "#22B4DE",
       });
+      setDisabled(false);
     } else {
       let body = {
         id_tarea: _id,
@@ -224,9 +221,11 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
       }
     });
     onHide();
+    setDisabled(false);
   };
 
   const handleDelete = () => {
+    setDeleteDisabled(true);
     Swal.fire({
       title: "¿Estas seguro de que quieres borrar esta tarea?",
       text: "No podras deshacerlo!",
@@ -261,6 +260,9 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
           "La tarea fue elimiada exitosamente.",
           "success"
         );
+        setDeleteDisabled(false);
+      } else {
+        setDeleteDisabled(false);
       }
     });
   };
@@ -385,9 +387,9 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
                   <span>Archivos</span>
                 </div>
                 <div className="file-buttons">
-                  <button type="button" id="see-files">
+                  {/* <button type="button" id="see-files">
                     <FaEye onClick={() => setView(!view)} />
-                  </button>
+                  </button> */}
                   {/* <Form.Group>
                       {view ? <Form.Control as="textarea">
 
@@ -555,6 +557,7 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
             <Button
               variant="danger"
               className="button-task"
+              disabled={deleteDisabled}
               onClick={() => {
                 handleDelete();
               }}
@@ -565,6 +568,7 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
               type="submit"
               variant="primary"
               className="button-task ml-auto"
+              disabled={disabled}
             >
               Guardar <FaEdit />
             </Button>

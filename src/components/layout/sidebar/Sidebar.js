@@ -10,14 +10,11 @@ import {
   FaComments,
 } from "react-icons/fa";
 import { GoSignOut } from "react-icons/go";
-
-import { NavLink, Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AppContext } from "../../../context/AppContext";
 import { postData } from "../../../helpers/postData";
-
 import ContactModal from "../../contact/ContactModal";
-
 import { useStopwatch } from "react-timer-hook";
 import { useEffect } from "react";
 import { TimerContext } from "../../../context/TimerContext";

@@ -1,7 +1,6 @@
 import React from "react";
 import { Messages } from "./Messages";
-import { ButtonGroup } from "react-bootstrap";
-import { FaPaperPlane, FaComments, FaCircle } from "react-icons/fa";
+import { FaComments } from "react-icons/fa";
 import { Button } from "react-bootstrap";
 import { useContext } from "react";
 import { ChatContext } from "../../context/ChatContext";

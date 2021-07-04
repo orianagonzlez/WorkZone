@@ -1,8 +1,5 @@
 import React from "react";
-import CollabStats from "./CollabStats";
 import ChartCard from "./templates/ChartCard";
-import PieChart from "./templates/PieChart";
-import BarChart from "./templates/BarChart";
 import Box from "./templates/Box";
 import { useEffect } from "react";
 import { getData } from "../../helpers/getData";
@@ -21,7 +18,6 @@ export default function OwnerStats() {
   const [membersTasks, setMembersTasks] = useState([]);
   const [totalTime, setTotalTime] = useState(0);
   const [totalTask, setTotalTask] = useState(0);
-  const [tasksPerListGlobal, setTasksPerListGlobal] = useState([]);
 
   useEffect(() => {
     getLists();

@@ -3,19 +3,19 @@ import { useHistory, useParams } from "react-router-dom";
 import { getData } from "../../helpers/getData";
 import { AppContext } from "../../context/AppContext";
 import { FaArrowCircleLeft } from "react-icons/fa";
-import { Button, Dropdown } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import OwnerStats from "./OwnerStats";
 import CollabStats from "./CollabStats";
-import { DropdownButton } from "react-bootstrap";
 import { Form } from "react-bootstrap";
+import { Loader } from "../common/Loader";
 
 export default function Stats() {
+  const [loading, setLoading] = useState(true);
   const { user } = React.useContext(AppContext);
   const [projectInfo, setProjectInfo] = React.useState({});
   const [members, setMembers] = React.useState([]);
   const [uid, setUid] = useState(user.id);
   const { project } = useParams();
-  const [selectedOption, setSelectedOption] = React.useState(null);
   const history = useHistory();
 
   console.log(projectInfo);
@@ -31,6 +31,7 @@ export default function Stats() {
       if (r.ok) {
         setProjectInfo(r.data);
         setMembers(r.data.miembros);
+        setLoading(false);
 
         console.log("miembros", members);
       } else {
@@ -41,6 +42,9 @@ export default function Stats() {
 
   return (
     <div className="stats-container">
+      {loading ? <Loader/> 
+      :
+      <>
       <div className="divArrowLeft">
         <div>
           <Button
@@ -53,7 +57,7 @@ export default function Stats() {
         <h1>{projectInfo.nombre}: Estadísticas</h1>
       </div>
 
-      {true && (
+      {projectInfo?.owner == user.id && (
         <>
           <OwnerStats />
           <h2 className="select-label">
@@ -85,6 +89,8 @@ export default function Stats() {
       <br />
 
       <CollabStats userId={uid} />
+      </>
+      }
     </div>
   );
 }

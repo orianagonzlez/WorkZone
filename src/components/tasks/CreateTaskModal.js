@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { useContext } from "react";
-import { useEffect } from "react";
 import { Modal, Button, Form, Col } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { SocketContext } from "../../context/SocketContext";
@@ -8,6 +7,7 @@ import { postData } from "../../helpers/postData";
 import { useForm } from "../../hooks/useForm";
 
 export const CreateTaskModal = (props) => {
+  const [disabled, setDisabled] = useState(false);
   const [formValues, handleInputChange, reset] = useForm({
     task_name: "",
     task_content: "",
@@ -20,6 +20,7 @@ export const CreateTaskModal = (props) => {
   const { socket } = useContext(SocketContext);
 
   const handleCreate = (e) => {
+    setDisabled(true);
     console.log(task_name, task_content, task_status);
     e.preventDefault();
     const newColumns = props.columns;
@@ -83,6 +84,7 @@ export const CreateTaskModal = (props) => {
             }
             reset();
             props.onHide();
+            setDisabled(false);
           });
 
           // props.setcolumns(newColumns);
@@ -102,8 +104,11 @@ export const CreateTaskModal = (props) => {
             confirmButtonColor: "#22B4DE",
           });
           props.onHide();
+          setDisabled(false);
         }
       });
+    } else {
+      setDisabled(false);
     }
   };
 
@@ -197,7 +202,7 @@ export const CreateTaskModal = (props) => {
             </Form.Group>
           </Form.Row>
           <div className="button p-3 mx-5 mb-5">
-            <Button className="auth_button" type="submit">
+            <Button className="auth_button" type="submit" disabled={disabled}>
               Crear Tarea
             </Button>
           </div>
