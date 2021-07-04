@@ -1,7 +1,7 @@
 import React from "react";
 import { useContext } from "react";
 import { useState } from "react";
-import { Modal, Form, Col, Alert } from "react-bootstrap";
+import { Modal, Form, Col } from "react-bootstrap";
 import { AppContext } from "../../context/AppContext";
 import { postData } from "../../helpers/postData";
 import { useForm } from "../../hooks/useForm";
@@ -18,7 +18,7 @@ export const UpdatePasswordModal = ({ show, onHide }) => {
 
   const { password1, password2 } = formValues;
 
-  const { setUser, user } = useContext(AppContext);
+  const { user } = useContext(AppContext);
 
   const handleUpdatePassword = (e) => {
     setDisabled(true);

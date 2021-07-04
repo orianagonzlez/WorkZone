@@ -1,21 +1,16 @@
 import React, { useContext } from "react";
-import { useEffect } from "react";
-import { Container, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { FaUserCircle } from "react-icons/fa";
-import { Link, useHistory } from "react-router-dom";
-import Swal from "sweetalert2";
+import { useHistory } from "react-router-dom";
 import { AppContext } from "../../../context/AppContext";
 import { ChatContext } from "../../../context/ChatContext";
-import { postData } from "../../../helpers/postData";
 
 import { toast } from "react-toastify";
 import { Toasty } from "../../chat/Toast";
-import { useState } from "react";
 
 export default function Navbar() {
-  const [visible, setVisible] = React.useState(false);
 
-  const { setUser, user } = useContext(AppContext);
+  const { user } = useContext(AppContext);
   const { chat } = useContext(ChatContext);
 
   const history = useHistory();

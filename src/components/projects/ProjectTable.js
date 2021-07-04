@@ -3,7 +3,6 @@ import {
   FaTag,
   FaThList,
   FaUsers,
-  FaChartLine,
   FaArchive,
   FaArrowCircleRight,
   FaSearch,
@@ -15,11 +14,10 @@ import { Loader } from "../common/Loader";
 import ProjectCard from "./ProjectCard";
 
 export const ProjectTable = ({ show }) => {
-  const { setUser, user } = useContext(AppContext);
+  const { user } = useContext(AppContext);
   const [loading, setLoading] = useState(true);
 
   console.log("USER", user);
-  const history = useHistory();
 
   const [projects, setProjects] = useState([]);
   const [search, setSearch] = useState("");

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useContext } from "react";
-import { useEffect } from "react";
 import { Modal, Button, Form, Col } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { SocketContext } from "../../context/SocketContext";

@@ -1,16 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Container, Button } from "react-bootstrap";
-import { FaEdit, FaLockOpen, FaUserCircle } from "react-icons/fa";
+import { FaEdit, FaLockOpen } from "react-icons/fa";
 import { AppContext } from "../../context/AppContext";
 import { getData } from "../../helpers/getData";
 import { EditProfileModal } from "./EditProfileModal";
-import Swal from "sweetalert2";
 import { UpdatePasswordModal } from "./UpdatePasswordModal";
 import { Loader } from "../common/Loader";
 
 export default function ProfileDeets() {
   const [loading, setLoading] = useState(true);
-  const { setUser, user } = useContext(AppContext);
+  const { user } = useContext(AppContext);
   const [usuario, setUsuario] = useState({});
   const [modalShow, setModalShow] = useState(false);
   const [passwordModal, setPasswordModal] = useState(false);

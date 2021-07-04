@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { Container, Row, Button } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import { useHistory } from "react-router";
 import Swal from "sweetalert2";
 import { getData } from "../../../helpers/getData";
@@ -11,126 +11,10 @@ import { BsThreeDots } from "react-icons/bs";
 import { TaskDeetsModal } from "../../tasks/TaskDeetsModal";
 import { Members } from "../../common/Member";
 import { postData } from "../../../helpers/postData";
-import { CgDetailsMore } from "react-icons/cg";
 import { storage } from "../../../firebase/index";
-import { useSocket } from "../../../hooks/useSocket";
 import { SocketContext } from "../../../context/SocketContext";
 import { useContext } from "react";
 import { TimerContext } from "../../../context/TimerContext";
-
-const onDragEnd = (result, columns, setColumns) => {
-  console.log("ARRASTRE");
-  if (!result.destination) return;
-  const { source, destination } = result;
-
-  if (source.droppableId !== destination.droppableId) {
-    const sourceColumn = columns[source.droppableId];
-    const destColumn = columns[destination.droppableId];
-    const sourceItems = [...sourceColumn.items];
-    const destItems = [...destColumn.items];
-    const [removed] = sourceItems.splice(source.index, 1);
-    destItems.splice(destination.index, 0, removed);
-    setColumns({
-      ...columns,
-      [source.droppableId]: {
-        ...sourceColumn,
-        items: sourceItems,
-      },
-      [destination.droppableId]: {
-        ...destColumn,
-        items: destItems,
-      },
-    });
-
-    // se actualiza la lista de origen
-    const sourceBody = {
-      id_lista: source.droppableId,
-      items: sourceItems.map((i) => i._id),
-    };
-
-    console.log("SOURCE BODY", sourceBody);
-    updateList(sourceBody);
-
-    // se actualiza la lista destino
-    const destBody = {
-      id_lista: destination.droppableId,
-      items: destItems.map((i) => i._id),
-    };
-
-    console.log("dest BODY", destBody);
-    updateList(destBody);
-
-    // se actualiza la tarea
-    const newTask = {
-      id_tarea: removed._id,
-      id_lista: destination.droppableId,
-    };
-
-    console.log("tarei", newTask);
-    updateTask(newTask);
-  } else {
-    const column = columns[source.droppableId];
-    const copiedItems = [...column.items];
-    const [removed] = copiedItems.splice(source.index, 1);
-    copiedItems.splice(destination.index, 0, removed);
-    setColumns({
-      ...columns,
-      [source.droppableId]: {
-        ...column,
-        items: copiedItems,
-      },
-    });
-
-    // solo hay que actualizar la lista para mantener el orden de los items
-    const body = {
-      id_lista: source.droppableId,
-      items: copiedItems.map((i) => i._id),
-    };
-
-    console.log("BODY", body);
-    updateList(body);
-  }
-};
-
-const updateList = (body) => {
-  postData(
-    "https://workzone-backend-mdb.herokuapp.com/api/lists/update",
-    body
-  ).then((res) => {
-    console.log("me respondio" + res);
-    if (res.ok) {
-      console.log("todo bien", res.data);
-    } else {
-      console.log("error");
-      // Swal.fire({
-      //   icon: "error",
-      //   title: "Oops...",
-      //   text: "Algo ha salido mal, intenta de nuevo",
-      //   confirmButtonColor: "#22B4DE",
-      // });
-    }
-  });
-};
-
-const updateTask = (body) => {
-  postData(
-    "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
-    body
-  ).then((res) => {
-    console.log("me respondio" + res);
-    if (res.ok) {
-      console.log("todo bien", res.data);
-    } else {
-      console.log("error");
-      // Swal.fire({
-      //   icon: "error",
-      //   title: "Oops...",
-      //   text: "Algo ha salido mal, intenta de nuevo",
-      //   confirmButtonColor: "#22B4DE",
-      // });
-    }
-  });
-};
 
 export const Board = ({ project }) => {
   const [columns, setColumns] = useState({});
@@ -230,8 +114,6 @@ export const Board = ({ project }) => {
         confirmButtonColor: "#22B4DE",
       });
 
-      //PONER AQUI LA RUTA A EDITAR PROYECTOOOOOOOOO
-      // history.push(`projects/update/${project._id}`)
     } else if (project.id_plan.max_tareas - tasksNum <= 10) {
       Swal.fire({
         icon: "warning",
@@ -259,7 +141,6 @@ export const Board = ({ project }) => {
 
   const [files, setFiles] = useState([]);
   const [fileNames, setFileNames] = useState([]);
-  const [view, setView] = useState(false);
 
   const getFiles = (item) => {
     const storageRef = storage.ref(`images/${project._id}/${item._id}`);
@@ -299,7 +180,6 @@ export const Board = ({ project }) => {
 
     console.log("URLs", files);
     console.log("Names", fileNames);
-    console.log("View", view);
   };
 
   const [taskToShow, setTaskToShow] = useState({});

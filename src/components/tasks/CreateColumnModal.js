@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 import { SocketContext } from "../../context/SocketContext";
 import { postData } from "../../helpers/postData";
 import { useForm } from "../../hooks/useForm";
-import { useSocket } from "../../hooks/useSocket";
 
 export const CreateColumnModal = (props) => {
   const [disabled, setDisabled] = useState(false);
@@ -20,7 +19,6 @@ export const CreateColumnModal = (props) => {
   const handleCreate = (e) => {
     setDisabled(true);
     e.preventDefault();
-    const currentColumns = props.columns;
     const newColumn = {
       id_proyecto: props.project._id,
       nombre: column_name,

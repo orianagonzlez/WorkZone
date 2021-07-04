@@ -4,14 +4,13 @@ import Swal from "sweetalert2";
 import { AppContext } from "../../context/AppContext";
 import { getData } from "../../helpers/getData";
 import { postData } from "../../helpers/postData";
-import { useFetch2 } from "../../hooks/useFetch2";
 import { useForm } from "../../hooks/useForm";
 
 export const EditProfileModal = ({ usuario, onHide, show }) => {
   const [disabled, setDisabled] = useState(false);
   const { setUser, user } = useContext(AppContext);
 
-  const [formValues, handleInputChange, reset] = useForm({
+  const [formValues, handleInputChange] = useForm({
     name: usuario.nombre,
     lastname: usuario.apellido,
     email: usuario.email,

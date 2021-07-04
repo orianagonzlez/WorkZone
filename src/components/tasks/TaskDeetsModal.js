@@ -8,23 +8,17 @@ import {
   FaEdit,
   FaChartLine,
   FaUsers,
-  FaTag,
   FaThList,
   FaFile,
-  FaEye,
   FaPlus,
   FaTrash,
-  FaPlusCircle,
 } from "react-icons/fa";
 
 import { ImCheckboxChecked, ImCheckboxUnchecked } from "react-icons/im";
 import { BiTask } from "react-icons/bi";
 import { RiTimerFill } from "react-icons/ri";
 
-import { Members } from "../common/Member";
 import validator from "validator";
-import { useFetch2 } from "../../hooks/useFetch2";
-import { getData } from "../../helpers/getData";
 import { UploadFilesModal } from "../tasks/UploadFilesModal";
 import { useContext } from "react";
 import { TimerContext } from "../../context/TimerContext";

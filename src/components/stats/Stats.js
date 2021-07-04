@@ -3,10 +3,9 @@ import { useHistory, useParams } from "react-router-dom";
 import { getData } from "../../helpers/getData";
 import { AppContext } from "../../context/AppContext";
 import { FaArrowCircleLeft } from "react-icons/fa";
-import { Button, Dropdown } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import OwnerStats from "./OwnerStats";
 import CollabStats from "./CollabStats";
-import { DropdownButton } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { Loader } from "../common/Loader";
 
@@ -17,7 +16,6 @@ export default function Stats() {
   const [members, setMembers] = React.useState([]);
   const [uid, setUid] = useState(user.id);
   const { project } = useParams();
-  const [selectedOption, setSelectedOption] = React.useState(null);
   const history = useHistory();
 
   console.log(projectInfo);

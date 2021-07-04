@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { Container, Form, Button, Col } from "react-bootstrap";
 import { FaUsers, FaMapSigns, FaPlusCircle, FaTrash } from "react-icons/fa";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import PlanCard from "../../common/PlanCard";
 import { AppContext } from "../../../context/AppContext";
 import { postData } from "../../../helpers/postData";
@@ -37,21 +37,15 @@ export default function CreateProjects() {
 
   const [paid, setPaid] = React.useState(false);
 
-  const [freelance, setFreelance] = useState(false);
-
-  const [empresa, setEmpresa] = useState(false);
-
   const { user } = useContext(AppContext);
 
   const { project } = useParams();
 
   const history = useHistory();
 
-  const [checkout, setCheckout] = useState(false);
-
   const { socket } = useContext(SocketContext);
   
-  const [editMode, setEditMode] = useState(project ? true : false);
+  const [editMode] = useState(project ? true : false);
 
   console.log(originalInputList);
 
@@ -565,6 +559,7 @@ export default function CreateProjects() {
                 className="create-button"
                 variant="primary"
                 onClick={(e) => handleCreateProject(e)}
+                disabled={disabled}
               >
                 {editMode ? "GUARDAR" : "CREAR"}
               </Button>

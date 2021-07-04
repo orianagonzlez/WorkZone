@@ -5,7 +5,6 @@ import { useHistory } from "react-router";
 import { ProjectTable } from "./ProjectTable";
 
 export default function Projects() {
-  const { setUser, user } = useContext(AppContext);
 
   const history = useHistory();
 

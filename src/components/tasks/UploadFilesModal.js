@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Modal, Button, Form, Col, InputGroup, Alert } from "react-bootstrap";
-import Swal from "sweetalert2";
-import { useForm } from "../../hooks/useForm";
+import { Modal } from "react-bootstrap";
 import { storage } from "../../firebase/index";
 import { FcCheckmark } from "react-icons/fc";
 
