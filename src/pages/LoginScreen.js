@@ -33,7 +33,6 @@ export const LoginScreen = () => {
         "https://workzone-backend-mdb.herokuapp.com/api/auth/resetPassword",
         body
       ).then((r) => {
-        console.log("me respondio" + r);
         if (r.ok) {
           Swal.fire({
             icon: "info",
@@ -42,7 +41,6 @@ export const LoginScreen = () => {
             confirmButtonColor: "#22B4DE",
           });
         } else {
-          console.log("error");
           Swal.fire({
             icon: "error",
             title: "Oops...",
@@ -86,7 +84,6 @@ export const LoginScreen = () => {
           });
   
         } else {
-          console.log("error");
           Swal.fire({
             icon: "error",
             title: "Oops...",

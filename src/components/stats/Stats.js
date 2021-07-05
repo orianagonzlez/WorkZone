@@ -18,22 +18,16 @@ export default function Stats() {
   const { project } = useParams();
   const history = useHistory();
 
-  console.log(projectInfo);
-
-  //const {setUser, user} = useContext(AppContext);
-
   React.useEffect(() => {
     //Se busca la toda la informacion del proyecto con el plan elegido y miembros
     getData(
       `https://workzone-backend-mdb.herokuapp.com/api/projects/${project}`
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
         setProjectInfo(r.data);
         setMembers(r.data.miembros);
         setLoading(false);
 
-        console.log("miembros", members);
       } else {
         console.log("error");
       }
@@ -95,16 +89,3 @@ export default function Stats() {
   );
 }
 
-//<select
-//class=".form-select"
-//aria-label="Default select example"
-//onChange={(e) => {
-//  e.preventDefault();
-//  setUid(e.target.value);
-//}}>
-//{members.map((member) => (
-//    <option key={member._id} value={member._id}>
-//      {member.nombre}
-//    </option>
-//  ))}
-//</select>

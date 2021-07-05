@@ -11,8 +11,6 @@ export const UploadFilesModal = (props) => {
   const [showProgress, setShowProgress] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  console.log(props.fileNames)
-
   const getName = (i) => {
     const names = [];
     props.fileNames.map((name) => {
@@ -66,10 +64,6 @@ export const UploadFilesModal = (props) => {
       })
       .catch((err) => console.log(err));
   };
-
-  console.log("images: ", images);
-  console.log("urls", urls);
-  console.log("names", names);
 
   const handleClean = () => {
     setImages([]);

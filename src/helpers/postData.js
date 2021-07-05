@@ -14,7 +14,6 @@ export const postData = async (path, body) => {
 
   const result = await response.text();
 
-  console.log(result);
   const r = JSON.parse(result);
 
   return r;

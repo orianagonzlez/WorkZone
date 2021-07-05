@@ -14,7 +14,6 @@ export const useFetch = ( info ) => {
     useEffect( () => {
         if (get) {
             getData(path).then( r => {
-                console.log('respondioooo', r)
                 setState({
                     data: r,
                     loading: false

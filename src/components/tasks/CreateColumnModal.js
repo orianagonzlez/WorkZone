@@ -24,23 +24,15 @@ export const CreateColumnModal = (props) => {
       nombre: column_name,
     };
 
-    // currentColumns[`id${column_name}000`]=(newColumn)
-
-    console.log("creando");
-    console.log(newColumn);
-
     if (column_name) {
       //Creando la nueva lista en la base de datos
       postData(
         "https://workzone-backend-mdb.herokuapp.com/api/lists/create",
         newColumn
       ).then((r) => {
-        console.log("me respondio" + r);
-        console.log(socket, "SOCKETTT");
         socket.emit("refresh-project", { id_proyecto: newColumn.id_proyecto });
 
         if (r.ok) {
-          console.log("todo bien", r.data);
           reset();
 
           // Swal.fire({
@@ -51,7 +43,6 @@ export const CreateColumnModal = (props) => {
           // });
           props.onHide();
         } else {
-          console.log("error");
 
           Swal.fire({
             icon: "error",

@@ -9,7 +9,6 @@ import { getData } from "../../helpers/getData";
 import { ProjectAvatar } from "./ProjectAvatar";
 
 export default function Chat({ project }) {
-  // supongo que en vez de project podría recibir chat o algo así pero bueno
 
   const { chat, dispatch } = useContext(ChatContext);
 
@@ -70,6 +69,7 @@ export default function Chat({ project }) {
             onClick={() => {
               selectChat(project);
             }}
+            key={project._id}
           >
             <Button>
               <ProjectAvatar name={project.nombre} placement={"small"} />

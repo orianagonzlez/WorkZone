@@ -19,7 +19,6 @@ export default function ProfileDeets() {
       getData(
         `https://workzone-backend-mdb.herokuapp.com/api/auth/${user.id}`
       ).then((r) => {
-        console.log("me respondio" + r);
         if (r.ok) {
           setUsuario(r.data);
           setLoading(false);

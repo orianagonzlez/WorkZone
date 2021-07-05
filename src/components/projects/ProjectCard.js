@@ -5,14 +5,12 @@ import { useHistory } from "react-router";
 
 export default function ProjectCard(props) {
   const { project } = props;
-  console.log(project);
 
   const history = useHistory();
 
   const { _id, nombre, archivado, miembros, tareas } = project;
 
   const archive = () => {
-    console.log("ejecutandome");
     const p = {
       id_proyecto: _id,
       archivado: !archivado,
@@ -22,9 +20,7 @@ export default function ProjectCard(props) {
       "https://workzone-backend-mdb.herokuapp.com/api/projects/update",
       p
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
-        console.log("todo bien");
         props.getProjects();
       } else {
         console.log("error");

@@ -14,8 +14,6 @@ import ScrollToTop from "../hooks/ScrollToTop";
 export const AppRouter = () => {
   const { user, verifyToken } = useContext(AppContext);
 
-  console.log("prueba", user);
-
   useEffect(() => {
     verifyToken();
   }, []);

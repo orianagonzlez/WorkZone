@@ -44,10 +44,7 @@ export const UpdatePasswordModal = ({ show, onHide }) => {
       "https://workzone-backend-mdb.herokuapp.com/api/auth/updatePassword",
       body
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
-        console.log(r.data);
-
         Swal.fire({
           icon: "success",
           title: "Contraseña actualizada!",
@@ -58,7 +55,6 @@ export const UpdatePasswordModal = ({ show, onHide }) => {
 
         onHide();
       } else {
-        console.log("error");
         Swal.fire({
           icon: "error",
           title: "Oops...",

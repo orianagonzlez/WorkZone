@@ -30,16 +30,11 @@ export default function ProjectDeets() {
 
   const history = useHistory();
 
-  console.log(projectInfo);
-
-  //const {setUser, user} = useContext(AppContext);
-
   useEffect(() => {
     //Se busca la toda la informacion del proyecto con el plan elegido y miembros
     getData(
       `https://workzone-backend-mdb.herokuapp.com/api/projects/${project}`
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
         setProjectInfo(r.data);
         setMembers(r.data.miembros);
@@ -56,25 +51,18 @@ export default function ProjectDeets() {
       "https://workzone-backend-mdb.herokuapp.com/api/tasks/remove-member",
       body
     ).then((r) => {
-      console.log("me respondio" + r);
-      if (r.ok) {
-        console.log("todo bien", r.data);
-      } else {
+      if (!r.ok) {
         console.log("error");
       }
     });
   };
 
   const handleLeaveProject = () => {
-    console.log("me quiero salir");
-
     const body = {
       id_proyecto: projectInfo._id,
       miembros: projectInfo.miembros.filter((m) => m._id != user.id),
       lideres: projectInfo.lideres.filter((m) => m._id != user.id),
     };
-
-    console.log(body);
 
     Swal.fire({
       title: "Estás seguro?",
@@ -100,9 +88,7 @@ export default function ProjectDeets() {
           "https://workzone-backend-mdb.herokuapp.com/api/projects/update",
           body
         ).then((r) => {
-          console.log("me respondio" + r);
           if (r.ok) {
-            console.log("todo bien", r.data);
             Swal.fire({
               icon: "success",
               title: "Listo!",

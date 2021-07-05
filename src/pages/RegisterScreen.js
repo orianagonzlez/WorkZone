@@ -34,10 +34,8 @@ export const RegisterScreen = () => {
     setDisabled(true);
     e.preventDefault();
 
-    console.log(name, lastname, email, username, password, password2, birthday);
 
     if (isFormValid()) {
-      console.log("Formulario Valido");
 
       let body = {
         nombre: name[0].toUpperCase() + name.slice(1),
@@ -49,7 +47,6 @@ export const RegisterScreen = () => {
       };
       const url = "https://workzone-backend-mdb.herokuapp.com/api/auth/create";
       postData(url, body).then((r) => {
-        console.log("me respondio" + r);
         if (r.ok) {
           localStorage.setItem("token", r.token);
           const {
@@ -70,7 +67,6 @@ export const RegisterScreen = () => {
             isLogged: true,
           });
         } else {
-          console.log("error");
 
           Swal.fire({
             icon: "error",
@@ -90,7 +86,6 @@ export const RegisterScreen = () => {
     if (name.trim().length === 0 || lastname.trim().length === 0
        || email.trim().length === 0 || name.trim().length === 0
        || birthday.trim().length === 0 || username.trim().length === 0) {
-      console.log("Por favor ingrese todos los campos");
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -99,9 +94,6 @@ export const RegisterScreen = () => {
       });
       return false;
     } else if (password !== password2 || password.trim().length < 5) {
-      console.log(
-        "Por favor ingrese una clave mayor a 5 digitos y que coincida con la confirmación de clave."
-      );
       Swal.fire({
         icon: "error",
         title: "Oops...",

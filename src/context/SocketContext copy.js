@@ -16,8 +16,6 @@ export const SocketProvider = ({ children }) => {
 
   const { user } = useContext(AppContext);
 
-  console.log(chat, "socket context ");
-
   //Escuchar cuando se conecta
   useEffect(() => {
     if (user.isLogged) {
@@ -42,7 +40,6 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     socket?.on("mensaje", (msg) => {
-      console.log(chat, "A VER");
 
       // if (chat.activeChat === msg.para) {
       //   console.log(chat, "aqui debo tener al menos 1 ");

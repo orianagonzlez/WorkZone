@@ -149,13 +149,16 @@
     padding-right: 2rem;
     padding-left: 2rem;
     .task_container {
-      padding-right: 0rem;
-      padding-left: 0rem;
-      flex-direction: column;
-      flex-wrap: nowrap;
+      // padding-right: 0rem;
+      // padding-left: 0rem;
+      // flex-direction: column;
+      // flex-wrap: nowrap;
       .column_container {
         width: 300px;
         margin: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         .column {
           min-height: 150px;
           border-radius: 10px;

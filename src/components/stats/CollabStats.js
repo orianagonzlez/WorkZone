@@ -35,10 +35,8 @@ export default function CollabStats({ userId }) {
     getData(
       `https://workzone-backend-mdb.herokuapp.com/api/lists/from/${project}`
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
         let lists = r.data;
-        console.log(lists);
         let myList;
         lists.forEach((list) => {
           //AQUI ROCCO puedes sacar la info de tu grafica
@@ -61,7 +59,6 @@ export default function CollabStats({ userId }) {
     getData(
       `https://workzone-backend-mdb.herokuapp.com/api/auth/${userId}`
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
         setThisUser(r.data);
       } else {
@@ -74,7 +71,6 @@ export default function CollabStats({ userId }) {
     getData(
       `https://workzone-backend-mdb.herokuapp.com/api/tasks/from/${project}/${userId}`
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
         const data = r.data;
         let completed = 0;

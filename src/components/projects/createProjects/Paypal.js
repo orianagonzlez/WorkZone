@@ -19,7 +19,6 @@ export default function Paypal({
     window.paypal
       .Buttons({
         createOrder: (data, actions, err) => {
-          console.log(price);
           return actions.order.create({
             intent: "CAPTURE",
             purchase_units: [
@@ -35,7 +34,6 @@ export default function Paypal({
         },
         onApprove: async (data, actions) => {
           const order = await actions.order.capture();
-          console.log(order);
           setPaid(true);
           Swal.fire({
             icon: "success",
@@ -43,8 +41,6 @@ export default function Paypal({
             text: "Hemos recibido su pago.",
             confirmButtonColor: "#22B4DE",
           });
-          console.log(editMode, "AAAAAAAAA");
-          console.log(selectedPlan);
           if (editMode) {
             updateProject({
               id_plan: selectedPlan,

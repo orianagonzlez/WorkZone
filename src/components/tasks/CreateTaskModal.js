@@ -21,7 +21,6 @@ export const CreateTaskModal = (props) => {
 
   const handleCreate = (e) => {
     setDisabled(true);
-    console.log(task_name, task_content, task_status);
     e.preventDefault();
     const newColumns = props.columns;
     const newTask = {
@@ -35,28 +34,15 @@ export const CreateTaskModal = (props) => {
       newTask["miembro"] = task_member;
     }
 
-    console.log("creando");
-    console.log(newTask);
-
     if (task_name && task_content) {
       //Creando la tarea en la base de datos
       postData(
         "https://workzone-backend-mdb.herokuapp.com/api/tasks/create",
         newTask
       ).then((r) => {
-        console.log("me respondio" + r);
 
         if (r.ok) {
-          console.log("todo bien. CREE TAREAAAAAA");
-          console.log(r.data);
-          console.log(newColumns);
           newColumns[task_status].items.push(r.data);
-
-          console.log(newColumns[task_status].items);
-          console.log("ACTU LISTA");
-          console.log(newColumns[task_status].items.map((i) => i._id));
-
-          console.log(task_status);
 
           const body = {
             id_lista: task_status,
@@ -67,14 +53,12 @@ export const CreateTaskModal = (props) => {
             "https://workzone-backend-mdb.herokuapp.com/api/lists/update",
             body
           ).then((res) => {
-            console.log("me respondio" + res);
-            socket.emit("refresh-project", {
-              id_proyecto: newTask.id_proyecto,
-            });
+            
             if (res.ok) {
-              console.log("todo bien", res.data);
+              socket.emit("refresh-project", {
+              id_proyecto: newTask.id_proyecto,
+              });
             } else {
-              console.log("error");
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -96,7 +80,6 @@ export const CreateTaskModal = (props) => {
           //   confirmButtonColor: "#22B4DE",
           // });
         } else {
-          console.log("error");
           Swal.fire({
             icon: "error",
             title: "Oops...",

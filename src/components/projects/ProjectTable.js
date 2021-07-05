@@ -17,8 +17,6 @@ export const ProjectTable = ({ show }) => {
   const { user } = useContext(AppContext);
   const [loading, setLoading] = useState(true);
 
-  console.log("USER", user);
-
   const [projects, setProjects] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -32,7 +30,6 @@ export const ProjectTable = ({ show }) => {
       getData(
         `https://workzone-backend-mdb.herokuapp.com/api/projects/by/${user.id}`
       ).then((r) => {
-        console.log("me respondio" + r);
         if (r.ok) {
           setProjects(r.data);
           setLoading(false);

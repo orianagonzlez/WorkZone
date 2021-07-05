@@ -37,54 +37,12 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
     task_status: lista
   });
 
-  console.log('task', task)
-
   const {user} = useContext(AppContext);
-
-  console.log(miembro == user?.id);
-  console.log(user)
 
   const { timer, setTimer } = useContext(TimerContext);
 
   const { socket } = useContext(SocketContext);
 
-  console.log("ATENCION","timer.taskId", timer.taskId.length, "timer.running", timer.running)
-
-  // const {
-  //   data: thisTask,
-  //   loading,
-  //   error,
-  // } = useFetch2(
-  //   `https://workzone-backend-mdb.herokuapp.com/api/tasks/${props.task._id}`
-  // );
-
-  // const [formValues, handleInputChange, reset] = useForm(() => {
-  //   getData();
-  // });
-
-  // const getTask = () => {
-  //   getData(
-  //     `https://workzone-backend-mdb.herokuapp.com/api/tasks/${props.task._id}`
-  //   ).then((r) => {
-  //     console.log("me respondio" + r);
-  //     if (r.ok) {
-  //       return {
-  //         task_name: props.task.nombre,
-  //         task_content: props.task.descripcion,
-  //         task_member: props.task.miembro,
-  //         task_status: props.task.lista,
-  //       };
-  //     } else {
-  //       console.log("error");
-  //       return {
-  //         task_name: props.task.nombre,
-  //         task_content: props.task.descripcion,
-  //         task_member: props.task.miembro,
-  //         task_status: props.task.lista,
-  //       };
-  //     }
-  //   });
-  // };
 
   const { task_name, task_content, task_member, task_status } = formValues;
 
@@ -99,7 +57,6 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
   const [assigned, setAssigned] = useState();
 
   const onAssignedChange = async (e) => {
-    console.log(e.target.value);
     setAssigned(e.target.value);
   };
 
@@ -154,10 +111,8 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
   const handleCreate = (e) => {
     setDisabled(true);
     e.preventDefault();
-    console.log(formValues, assigned);
-    console.log(inputList);
 
-    //por is hay una subtask vacia
+    //por si hay una subtask vacia
     setInputList(inputList.filter((subtask) => subtask.nombre !== ""));
 
     if (
@@ -204,17 +159,14 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
   };
 
   const updateTask = (body) => {
-    console.log(body);
   
     postData(
       "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
       body
     ).then((r) => {
-      console.log("me respondio" + r);
       socket.emit("refresh-project", { id_proyecto: project._id });
 
       if (r.ok) {
-        console.log("todo bien", r.data);
         refreshList();
       } else {
         console.log("error");
@@ -245,11 +197,9 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
           "https://workzone-backend-mdb.herokuapp.com/api/tasks/delete",
           body
         ).then((r) => {
-          console.log("me respondio" + r);
           if (r.ok) {
             socket.emit("refresh-project", { id_proyecto: project._id });
             refreshList();
-            console.log("todo bien", r.data);
           } else {
             console.log("error");
           }
@@ -578,99 +528,3 @@ export const TaskDeetsModal = ({ task, project, refreshList, onHide, show, files
     </Modal>
   );
 };
-
-/*
- <button ><FaEdit /></button>
-            <Form.Control
-                className="input"
-                type="text"
-                name="task_name"
-                autoComplete="off"
-                placeholder={task_name}
-                value={task_name}
-                onChange={handleInputChange}
-                required
-              />
-*/
-
-/*
-<Form className="login_form" onSubmit={handleCreate}>
-          <Form.Row className="d-flex align-items-center justify-content-start my-3 mx-5 px-5">
-            <Form.Group as={Col}>
-              <Form.Label>Nombre</Form.Label>
-              <Form.Control
-                className="input"
-                type="text"
-                name="task_name"
-                autoComplete="off"
-                value={task_name}
-                onChange={handleInputChange}
-                required
-              />
-            </Form.Group>
-          </Form.Row>
-          <Form.Row className="d-flex align-items-center justify-content-start my-3 mx-5 px-5">
-            <Form.Group as={Col}>
-              <Form.Label>Descripción</Form.Label>
-              <Form.Control
-                className="input"
-                type="text"
-                autoComplete="off"
-                name="task_content"
-                value={task_content}
-                onChange={handleInputChange}
-                required
-              />
-            </Form.Group>
-          </Form.Row>
-          <Form.Row className="d-flex align-items-center justify-content-start my-3 mx-5 px-5">
-            <Form.Group as={Col}>
-              <Form.Label>Asignar a miembro</Form.Label>
-              <Form.Control
-                as="select"
-                className="input"
-                type="text"
-                name="task_member"
-                onChange={handleInputChange}
-              >
-                <option value="">Ninguno</option>
-                {props.project.miembros.map((column) => (
-                  <option value={column._id} key={column._id}>
-                    {column.nombre} {column.apellido}
-                  </option>
-                ))}
-              </Form.Control>
-              {props.project.miembros.length == 0 && (
-                <Form.Text className="text-muted">
-                  Agrega miembros en la configuración general del proyecto para
-                  asignarles una tarea.
-                </Form.Text>
-              )}
-            </Form.Group>
-          </Form.Row>
-          <Form.Row className="d-flex align-items-center justify-content-start my-3 mx-5 px-5">
-            <Form.Group as={Col}>
-              <Form.Label>Status</Form.Label>
-              <Form.Control
-                as="select"
-                className="input"
-                type="text"
-                name="task_status"
-                onChange={handleInputChange}
-              >
-                {props.lists.map((column) => (
-                  <option value={column._id} key={column._id}>
-                    {column.nombre}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-          </Form.Row>
-          <div className="button p-3 mx-5 mb-5">
-            <Button className="auth_button" type="submit">
-                {/* OJO, ESTE BOTóN DEBE BORRAR LA TAREA }
-                Eliminar Tarea
-                </Button>
-              </div>
-            </Form>
-*/

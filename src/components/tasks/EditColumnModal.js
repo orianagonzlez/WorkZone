@@ -5,7 +5,6 @@ import { postData } from "../../helpers/postData";
 import { useForm } from "../../hooks/useForm";
 
 export const EditColumnModal = (props) => {
-  console.log(props);
   const [disabled, setDisabled] = useState(false);
   const [formValues, handleInputChange, reset] = useForm({
     column_name: "",
@@ -17,28 +16,20 @@ export const EditColumnModal = (props) => {
   const handleEdit = (e) => {
     setDisabled(true);
     e.preventDefault();
-    console.log(task_status, column_name)
     if (task_status && column_name) {
-      console.log(column_name, task_status);
-
       const body = {
         id_lista: task_status,
         nombre: column_name,
       };
 
-      console.log(body);
-
       postData(
         "https://workzone-backend-mdb.herokuapp.com/api/lists/update",
         body
       ).then((r) => {
-        console.log("me respondio" + r);
         if (r.ok) {
-          console.log("todo bien", r.data);
           reset();
           props.onHide();
         } else {
-          console.log("error");
           Swal.fire({
             icon: "error",
             title: "Oops...",
@@ -49,7 +40,6 @@ export const EditColumnModal = (props) => {
         setDisabled(false);
       });
     } else {
-      console.log("ERROR");
       setDisabled(false);
     }
   };

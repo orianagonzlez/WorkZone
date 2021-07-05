@@ -47,8 +47,6 @@ export default function CreateProjects() {
   
   const [editMode] = useState(project ? true : false);
 
-  console.log(originalInputList);
-
   // aqui vienen los planes
   const {
     data: dataPlans,
@@ -80,7 +78,7 @@ export default function CreateProjects() {
           setSelectedPlan(r.data.id_plan);
           setOriginalInputList(r.data.miembros.map((u) => u._id));
           setPaid(true);
-          //console.log(selectedPlan, "pls ayuda");
+         
           let emails = [];
           //esto es para filtrar los emails y no puedas eliminar al lider y a los admins
           r.data.miembros.forEach((myUser) => {
@@ -115,7 +113,6 @@ export default function CreateProjects() {
     //Aqui se setean los planes
     if (!loadingPlans && planes.length === 0) {
       setPlanes(dataPlans);
-      console.log(dataPlans);
     }
   }, [dataPlans, dataUsers]);
 
@@ -124,9 +121,7 @@ export default function CreateProjects() {
       "https://workzone-backend-mdb.herokuapp.com/api/projects/create",
       body
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
-        console.log("todo bien", r.data);
         socket.emit("refresh-chat", { refresh: "refresh" });
 
         history.push("/projects");
@@ -159,10 +154,7 @@ export default function CreateProjects() {
         "https://workzone-backend-mdb.herokuapp.com/api/lists/create",
         list
       ).then((r) => {
-        console.log("me respondio" + r);
-        if (r.ok) {
-          console.log("todo bien", r.data);
-        } else {
+        if (!r.ok) {
           console.log("error");
         }
         setDisabled(false);
@@ -175,9 +167,7 @@ export default function CreateProjects() {
       "https://workzone-backend-mdb.herokuapp.com/api/projects/update",
       body
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
-        console.log("todo bien", r.data);
         if (body.newPlan) {
           //yolo
         } else {
@@ -196,10 +186,7 @@ export default function CreateProjects() {
       "https://workzone-backend-mdb.herokuapp.com/api/tasks/remove-member",
       body
     ).then((r) => {
-      console.log("me respondio" + r);
-      if (r.ok) {
-        console.log("todo bien", r.data);
-      } else {
+      if (!r.ok) {
         console.log("error");
       }
     });
@@ -210,7 +197,6 @@ export default function CreateProjects() {
     e.preventDefault();
     let invalid = false;
     let msg = "";
-    console.log("plan: ", selectedPlan);
     //en caso de que no haga falta hacer el pago
     if (selectedPlan.precio !== 0 && !paid) {
       msg = `Debes pagar antes de crear tu proyecto`;
@@ -238,7 +224,6 @@ export default function CreateProjects() {
     //validar que sean correos este tengo que dispare aqui porque sino se dispara el que esa persona no esta registrada
     //obvio no esta registrada porque eso no es un correo
     let invalidEmail = false;
-    console.log(inputList);
     inputList.forEach((item) => {
       if (!validator.isEmail(item.email) && !validator.isEmpty(item.email)) {
         invalidEmail = true;
@@ -275,11 +260,10 @@ export default function CreateProjects() {
       }
     });
 
-    //esto elimina los petidos
-    //es por si alguien es tarado y manda 2 correos iguales o mete su correo en la lista
+    //esto elimina los repetidos
+    //es por si alguien manda 2 correos iguales o mete su correo en la lista
     membersIds = [user.id, ...membersIds];
     membersIds = [...new Set(membersIds)];
-    console.log(membersIds);
 
     //no admitir mas miembros de los que el plan permite
     if (membersIds.length > selectedPlan.max_miembros) {
@@ -416,7 +400,7 @@ export default function CreateProjects() {
           </div>
           {inputList.map((item, i) => {
             return (
-              <div className="box">
+              <div className="box" key={i}>
                 <Form.Row className="emailInputRow">
                   <Form.Group as={Col} className="formGroup">
                     {!editMode ? (

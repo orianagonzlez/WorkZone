@@ -31,7 +31,6 @@ export const Messages = () => {
     if (msg.leght === 0 || validator.isEmpty(msg)) {
       return;
     }
-    console.log(msg);
 
     socket.emit("mensaje", {
       de: user.id,
@@ -52,7 +51,7 @@ export const Messages = () => {
             <OutgoingMessage key={msg._id} msg={msg} />
           )
         )}
-        <form className="d-flex" onSubmit="onSubmit">
+        <form className="d-flex">
           <div className="new-message-container">
             <input
               type="text"

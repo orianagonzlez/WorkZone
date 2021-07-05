@@ -29,13 +29,9 @@ export const Board = ({ project }) => {
     socket?.on("refresh", (event) => {
       if (event.id_proyecto == project._id) {
         refreshList();
-      } else {
-        console.log("no refrescas porque no es proyecto que se modifico");
-      }
+      } 
     });
   }, [socket]);
-
-  /*console.log(columns);*/
 
   const [modalShow, setModalShow] = useState(false);
 
@@ -51,19 +47,10 @@ export const Board = ({ project }) => {
     refreshList();
   }, [modalShow, columnModalShow, editColumnModalShow]);
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     console.log("me ejecute");
-  //     refreshList();
-  //   }, 80000);
-  //   return () => clearInterval(interval);
-  // }, []);
-
   const refreshList = () => {
     getData(
       `https://workzone-backend-mdb.herokuapp.com/api/lists/from/${project._id}`
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
         setLists(r.data);
         // setColumns(r.data);
@@ -76,7 +63,6 @@ export const Board = ({ project }) => {
               item.running &&
               new Date() - new Date(item.updatedAt) > 120000
             ) {
-              console.log("ya paso mucho tiempo");
               updateTask({ id_tarea: item._id, running: false });
               socket.emit("refresh-project", { id_proyecto: project._id });
               return;
@@ -85,7 +71,6 @@ export const Board = ({ project }) => {
           c[col._id] = col;
         });
 
-        console.log(c);
         setColumns(c);
       } else {
         console.log("error");
@@ -176,9 +161,6 @@ export const Board = ({ project }) => {
           console.log(error);
         });
     }
-
-    console.log("URLs", files);
-    console.log("Names", fileNames);
   };
 
   const [taskToShow, setTaskToShow] = useState({});
@@ -186,19 +168,10 @@ export const Board = ({ project }) => {
   const handleOpenTaskDeets = (item) => {
     getFiles(item);
     setTaskToShow(item._id);
-    console.log("Task", item);
     setTaskModalShow(true);
-    console.log("yes");
-    //console.log(taskModalShow);
-    //console.log(item);
-    //console.log(taskModalShow);
-    // console.log(taskToShow.nombre);
-
-    //console.log(item.nombre);
   };
 
   const onDragEnd = (result, columns, setColumns) => {
-    console.log("ARRASTRE");
     if (!result.destination) return;
     const { source, destination } = result;
 
@@ -227,7 +200,6 @@ export const Board = ({ project }) => {
         items: sourceItems.map((i) => i._id),
       };
 
-      console.log("SOURCE BODY", sourceBody);
       updateList(sourceBody);
 
       // se actualiza la lista destino
@@ -236,7 +208,6 @@ export const Board = ({ project }) => {
         items: destItems.map((i) => i._id),
       };
 
-      console.log("dest BODY", destBody);
       updateList(destBody);
 
       // se actualiza la tarea
@@ -245,7 +216,6 @@ export const Board = ({ project }) => {
         id_lista: destination.droppableId,
       };
 
-      console.log("tarei", newTask);
       updateTask(newTask);
     } else {
       const column = columns[source.droppableId];
@@ -266,7 +236,6 @@ export const Board = ({ project }) => {
         items: copiedItems.map((i) => i._id),
       };
 
-      console.log("BODY", body);
       updateList(body);
     }
   };
@@ -276,9 +245,7 @@ export const Board = ({ project }) => {
       "https://workzone-backend-mdb.herokuapp.com/api/lists/update",
       body
     ).then((res) => {
-      console.log("me respondio" + res);
       if (res.ok) {
-        console.log("todo bien", res.data);
         socket.emit("refresh-project", { id_proyecto: project._id });
       } else {
         console.log("error");
@@ -297,10 +264,7 @@ export const Board = ({ project }) => {
       "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
       body
     ).then((res) => {
-      console.log("me respondio" + res);
-      if (res.ok) {
-        console.log("todo bien", res.data);
-      } else {
+      if (!res.ok) {
         console.log("error");
         // Swal.fire({
         //   icon: "error",
@@ -425,7 +389,7 @@ export const Board = ({ project }) => {
                                                     item.miembro === miembro._id
                                                   ) {
                                                     return (
-                                                      <div>
+                                                      <div key={miembro._id}>
                                                         <Members
                                                           member={miembro}
                                                           placement={"small"}
@@ -440,7 +404,6 @@ export const Board = ({ project }) => {
                                         </div>
                                       </div>
                                       {item._id === taskToShow && (
-                                        //console.log("yeesyeyeyeyes", index)
                                         <TaskDeetsModal
                                           project={project}
                                           task={item}

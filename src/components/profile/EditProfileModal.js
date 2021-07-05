@@ -26,7 +26,6 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
     getData(
       'https://workzone-backend-mdb.herokuapp.com/api/auth/users'
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
         setUsers(r.data);
       } else {
@@ -37,7 +36,6 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
 
   const handleEdit = (e) => {
     setDisabled(true);
-    console.log(formValues);
     e.preventDefault();
     
     const newData = {
@@ -48,9 +46,6 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
       email: email,
       username: username
     };
-
-    console.log("actualizando");
-    console.log(newData);
 
     if (name && lastname && birthday && email && username) {
       let e, u;
@@ -63,16 +58,13 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
         if (e && u) {
           showError('correo y nombre de usuario');
         } else {
-          console.log('ambos dispo')
           updateUser(newData);
         }
       } else if (email != usuario.email) {
         e = users.find(u => u.email == email);
-        console.log(e)
         if (e) {
           showError('correo electrónico');
         } else {
-          console.log('correo disp')
           updateUser(newData);
         }
       } else if (username != usuario.username) {
@@ -80,7 +72,6 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
         if (u) {
           showError('nombre de usuario');
         } else {
-          console.log('username disp')
           updateUser(newData);
         }
       } else {
@@ -97,9 +88,7 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
       "https://workzone-backend-mdb.herokuapp.com/api/auth/update",
       body
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
-        console.log(r.data);
 
         setUser({
           ...user,
@@ -117,7 +106,6 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
         onHide();
         
       } else {
-        console.log("error");
         Swal.fire({
           icon: "error",
           title: "Oops...",
