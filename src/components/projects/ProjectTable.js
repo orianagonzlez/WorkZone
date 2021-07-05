@@ -48,7 +48,7 @@ export const ProjectTable = ({ show }) => {
     return project.nombre.toLowerCase().includes(search.toLowerCase());
   });
 
-  if (loading) return <Loader/>;
+  if (loading) return <Loader />;
 
   return (
     <div className="screen-container">
@@ -63,60 +63,61 @@ export const ProjectTable = ({ show }) => {
         <FaSearch />
       </div>
       <div className="Preview__container">
-
         {filteredProjects.length === 0 ? (
+          <div className="no-projects-container">
+            <h1>Todavía no tienes ningún proyecto...</h1>
+            <img src="/project-board-post-its.png" alt="project-board" />
+            <h2>
+              ¡Haz click en el botón 'Nuevo Proyecto' y ponte manos a la obra!
+            </h2>
+          </div>
+        ) : (
+          <ul className="Preview__responsive-table">
+            <li className="Preview__table-header">
+              <div className="column column-4 ">
+                <FaTag /> Nombre
+              </div>
+              <div className="column column-3 ">
+                <FaThList /> Tareas
+              </div>
+              <div className="column column-3">
+                <FaUsers /> Miembros
+              </div>
+              <div className="column column-3">
+                <FaArchive /> {show ? "Devolver" : "Archivar"}{" "}
+              </div>
+              <div className="column column-2 ">
+                <FaArrowCircleRight /> Detalles
+              </div>
+            </li>
 
-            <div className="no-projects-container">
-              <h1>
-                  Todavía no tienes ningún proyecto...
-              </h1>
-              <img src="/project-board-post-its.png" alt="project-board" />
-              <h2>
-                  ¡Haz click en el botón 'Nuevo Proyecto' y ponte manos a la obra!
-              </h2>
-            </div>
-
-          ) : 
-        (<ul className="Preview__responsive-table">
-          <li className="Preview__table-header">
-            <div className="column column-4 ">
-              <FaTag /> Nombre
-            </div>
-            <div className="column column-3 ">
-              <FaThList /> Tareas
-            </div>
-            <div className="column column-3">
-              <FaUsers /> Miembros
-            </div>
-            <div className="column column-3">
-              <FaArchive /> {show ? "Devolver" : "Archivar"}{" "}
-            </div>
-            <div className="column column-2 ">
-              <FaArrowCircleRight /> Detalles
-            </div>
-          </li>
-          
-          {filteredProjects.map((project) => {
-            if (!show && !project.archivado) {
-              return (
-                <li className="Preview__table-row" key={project._id}>
-                  <ProjectCard project={project} getProjects={getProjects} />
-                </li>
-              );
-            }
-            if (show && project.archivado) {
-              return (
-                <li className="Preview__table-row" key={project._id}>
-                  <ProjectCard
-                    project={project}
-                    setProjects={setProjects}
-                    getProjects={getProjects}
-                  />
-                </li>
-              );
-            }
-          })}
-        </ul>
+            {filteredProjects.map((project) => {
+              if (!show && !project.archivado) {
+                return (
+                  <li
+                    className="Preview__table-row animate__animated animate__fadeIn "
+                    key={project._id}
+                  >
+                    <ProjectCard project={project} getProjects={getProjects} />
+                  </li>
+                );
+              }
+              if (show && project.archivado) {
+                return (
+                  <li
+                    className="Preview__table-row animate__animated animate__fadeIn "
+                    key={project._id}
+                  >
+                    <ProjectCard
+                      project={project}
+                      setProjects={setProjects}
+                      getProjects={getProjects}
+                    />
+                  </li>
+                );
+              }
+            })}
+          </ul>
         )}
       </div>
     </div>

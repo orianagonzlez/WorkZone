@@ -9,6 +9,7 @@ import { AppContext } from "../context/AppContext";
 import { ProfileRouter } from "./ProfileRouter";
 import { ChatRouter } from "./ChatRouter";
 import { useEffect } from "react";
+import ScrollToTop from "../hooks/ScrollToTop";
 
 export const AppRouter = () => {
   const { user, verifyToken } = useContext(AppContext);
@@ -22,9 +23,11 @@ export const AppRouter = () => {
   if (user.checking) {
     return <div></div>;
   }
+
   return (
     <Router>
       <div>
+        <ScrollToTop />
         <Switch>
           <PrivateRoute
             isAuthenticated={user.isLogged}

@@ -113,7 +113,6 @@ export const Board = ({ project }) => {
         text: `Has alcanzado el máximo de tareas para el plan. Mejora tu plan para seguir trabajando! ${project.id_plan.nombre}.\nPara crear más tareas debes actualizar tu plan.`,
         confirmButtonColor: "#22B4DE",
       });
-
     } else if (project.id_plan.max_tareas - tasksNum <= 10) {
       Swal.fire({
         icon: "warning",
@@ -373,7 +372,7 @@ export const Board = ({ project }) => {
                     {(provided, snapshot) => {
                       return (
                         <div
-                          className="column"
+                          className="column animate__animated animate__fadeIn"
                           {...provided.droppableProps}
                           ref={provided.innerRef}
                           style={{
