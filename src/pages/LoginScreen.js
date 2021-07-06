@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Container, Form, Button, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import { TimerContext } from "../context/TimerContext";
 
 export const LoginScreen = () => {
+  const [disabled, setDisabled] = useState(false);
   const { setUser, user } = useContext(AppContext);
   const { setTimer } = useContext(TimerContext);
 
@@ -32,7 +33,6 @@ export const LoginScreen = () => {
         "https://workzone-backend-mdb.herokuapp.com/api/auth/resetPassword",
         body
       ).then((r) => {
-        console.log("me respondio" + r);
         if (r.ok) {
           Swal.fire({
             icon: "info",
@@ -41,7 +41,6 @@ export const LoginScreen = () => {
             confirmButtonColor: "#22B4DE",
           });
         } else {
-          console.log("error");
           Swal.fire({
             icon: "error",
             title: "Oops...",
@@ -54,45 +53,56 @@ export const LoginScreen = () => {
   };
 
   const handleLogin = (e) => {
+    setDisabled(true);
     e.preventDefault();
 
-    let body = {
-      email: email,
-      contrasena: password,
-    };
-
-    const url = "https://workzone-backend-mdb.herokuapp.com/api/auth/login";
-    postData(url, body).then((r) => {
-      if (r.ok) {
-        setTimer({
-          taskId: "",
-          running: false
-        });
-        
-        localStorage.setItem("token", r.token);
-        const { email, uid, nombre, apellido, fechaNacimiento, username } =
-          r.data;
-        setUser({
-          email: email,
-          id: uid,
-          nombre: `${nombre} ${apellido}`,
-          username: username,
-          fechaNacimiento: fechaNacimiento,
-          isLogged: true,
-          checking: false,
-        });
-        
-
-      } else {
-        console.log("error");
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Credenciales Invalidas!",
-          confirmButtonColor: "#22B4DE",
-        });
-      }
-    });
+    if (email && password) {
+      let body = {
+        email: email,
+        contrasena: password,
+      };
+  
+      const url = "https://workzone-backend-mdb.herokuapp.com/api/auth/login";
+      postData(url, body).then((r) => {
+        if (r.ok) {
+          setTimer({
+            taskId: "",
+            running: false
+          });
+          
+          localStorage.setItem("token", r.token);
+          const { email, uid, nombre, apellido, fechaNacimiento, username } =
+            r.data;
+          setUser({
+            email: email,
+            id: uid,
+            nombre: `${nombre} ${apellido}`,
+            username: username,
+            fechaNacimiento: fechaNacimiento,
+            isLogged: true,
+            checking: false,
+          });
+  
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Credenciales Invalidas!",
+            confirmButtonColor: "#22B4DE",
+          });
+        }
+        setDisabled(false);
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Completa todos los campos",
+        confirmButtonColor: "#22B4DE",
+      });
+      setDisabled(false);
+    }
+   
   };
   return (
     <div className="login_main">
@@ -141,7 +151,7 @@ export const LoginScreen = () => {
             </Form.Group>
 
             <div className="button">
-              <Button className="auth_button" variant="primary" type="submit">
+              <Button className="auth_button" variant="primary" type="submit" disabled={disabled}>
                 INGRESAR
               </Button>
             </div>

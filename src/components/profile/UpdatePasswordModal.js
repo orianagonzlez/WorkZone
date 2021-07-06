@@ -1,13 +1,14 @@
 import React from "react";
 import { useContext } from "react";
 import { useState } from "react";
-import { Modal, Form, Col, Alert } from "react-bootstrap";
+import { Modal, Form, Col } from "react-bootstrap";
 import { AppContext } from "../../context/AppContext";
 import { postData } from "../../helpers/postData";
 import { useForm } from "../../hooks/useForm";
 import Swal from "sweetalert2";
 
 export const UpdatePasswordModal = ({ show, onHide }) => {
+  const [disabled, setDisabled] = useState(false);
   const [formValues, handleInputChange, reset] = useForm({
     password1: "",
     password2: "",
@@ -17,17 +18,20 @@ export const UpdatePasswordModal = ({ show, onHide }) => {
 
   const { password1, password2 } = formValues;
 
-  const { setUser, user } = useContext(AppContext);
+  const { user } = useContext(AppContext);
 
   const handleUpdatePassword = (e) => {
+    setDisabled(true);
     e.preventDefault();
 
     if (password1 !== password2) {
       setErrorMsg("Las contraseñas no coinciden");
+      setDisabled(false);
       return;
     }
     if (password1.length < 6) {
-      setErrorMsg("La contraseñas debe tener al menos 6 carcateres");
+      setErrorMsg("La contraseña debe tener al menos 6 caracteres");
+      setDisabled(false);
       return;
     }
 
@@ -40,10 +44,7 @@ export const UpdatePasswordModal = ({ show, onHide }) => {
       "https://workzone-backend-mdb.herokuapp.com/api/auth/updatePassword",
       body
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
-        console.log(r.data);
-
         Swal.fire({
           icon: "success",
           title: "Contraseña actualizada!",
@@ -54,7 +55,6 @@ export const UpdatePasswordModal = ({ show, onHide }) => {
 
         onHide();
       } else {
-        console.log("error");
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -62,6 +62,7 @@ export const UpdatePasswordModal = ({ show, onHide }) => {
           confirmButtonColor: "#22B4DE",
         });
       }
+      setDisabled(false);
     });
   };
 
@@ -115,7 +116,7 @@ export const UpdatePasswordModal = ({ show, onHide }) => {
             )}
 
             <div className="button ">
-              <button className="button_modal" type="submit">
+              <button className="button_modal" type="submit" disabled={disabled}>
                 Guardar
               </button>
             </div>

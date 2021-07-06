@@ -3,7 +3,6 @@ export const postData = async (path, body) => {
   myHeaders.append("Content-Type", "application/json");
 
   const raw = JSON.stringify(body);
-
   const requestOptions = {
     method: "POST",
     headers: myHeaders,
@@ -15,7 +14,6 @@ export const postData = async (path, body) => {
 
   const result = await response.text();
 
-  console.log(result);
   const r = JSON.parse(result);
 
   return r;

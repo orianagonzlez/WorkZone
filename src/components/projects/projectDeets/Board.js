@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { Container, Row, Button } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import { useHistory } from "react-router";
 import Swal from "sweetalert2";
 import { getData } from "../../../helpers/getData";
@@ -11,126 +11,10 @@ import { BsThreeDots } from "react-icons/bs";
 import { TaskDeetsModal } from "../../tasks/TaskDeetsModal";
 import { Members } from "../../common/Member";
 import { postData } from "../../../helpers/postData";
-import { CgDetailsMore } from "react-icons/cg";
 import { storage } from "../../../firebase/index";
-import { useSocket } from "../../../hooks/useSocket";
 import { SocketContext } from "../../../context/SocketContext";
 import { useContext } from "react";
 import { TimerContext } from "../../../context/TimerContext";
-
-const onDragEnd = (result, columns, setColumns) => {
-  console.log("ARRASTRE");
-  if (!result.destination) return;
-  const { source, destination } = result;
-
-  if (source.droppableId !== destination.droppableId) {
-    const sourceColumn = columns[source.droppableId];
-    const destColumn = columns[destination.droppableId];
-    const sourceItems = [...sourceColumn.items];
-    const destItems = [...destColumn.items];
-    const [removed] = sourceItems.splice(source.index, 1);
-    destItems.splice(destination.index, 0, removed);
-    setColumns({
-      ...columns,
-      [source.droppableId]: {
-        ...sourceColumn,
-        items: sourceItems,
-      },
-      [destination.droppableId]: {
-        ...destColumn,
-        items: destItems,
-      },
-    });
-
-    // se actualiza la lista de origen
-    const sourceBody = {
-      id_lista: source.droppableId,
-      items: sourceItems.map((i) => i._id),
-    };
-
-    console.log("SOURCE BODY", sourceBody);
-    updateList(sourceBody);
-
-    // se actualiza la lista destino
-    const destBody = {
-      id_lista: destination.droppableId,
-      items: destItems.map((i) => i._id),
-    };
-
-    console.log("dest BODY", destBody);
-    updateList(destBody);
-
-    // se actualiza la tarea
-    const newTask = {
-      id_tarea: removed._id,
-      id_lista: destination.droppableId,
-    };
-
-    console.log("tarei", newTask);
-    updateTask(newTask);
-  } else {
-    const column = columns[source.droppableId];
-    const copiedItems = [...column.items];
-    const [removed] = copiedItems.splice(source.index, 1);
-    copiedItems.splice(destination.index, 0, removed);
-    setColumns({
-      ...columns,
-      [source.droppableId]: {
-        ...column,
-        items: copiedItems,
-      },
-    });
-
-    // solo hay que actualizar la lista para mantener el orden de los items
-    const body = {
-      id_lista: source.droppableId,
-      items: copiedItems.map((i) => i._id),
-    };
-
-    console.log("BODY", body);
-    updateList(body);
-  }
-};
-
-const updateList = (body) => {
-  postData(
-    "https://workzone-backend-mdb.herokuapp.com/api/lists/update",
-    body
-  ).then((res) => {
-    console.log("me respondio" + res);
-    if (res.ok) {
-      console.log("todo bien", res.data);
-    } else {
-      console.log("error");
-      // Swal.fire({
-      //   icon: "error",
-      //   title: "Oops...",
-      //   text: "Algo ha salido mal, intenta de nuevo",
-      //   confirmButtonColor: "#22B4DE",
-      // });
-    }
-  });
-};
-
-const updateTask = (body) => {
-  postData(
-    "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
-    body
-  ).then((res) => {
-    console.log("me respondio" + res);
-    if (res.ok) {
-      console.log("todo bien", res.data);
-    } else {
-      console.log("error");
-      // Swal.fire({
-      //   icon: "error",
-      //   title: "Oops...",
-      //   text: "Algo ha salido mal, intenta de nuevo",
-      //   confirmButtonColor: "#22B4DE",
-      // });
-    }
-  });
-};
 
 export const Board = ({ project }) => {
   const [columns, setColumns] = useState({});
@@ -145,13 +29,9 @@ export const Board = ({ project }) => {
     socket?.on("refresh", (event) => {
       if (event.id_proyecto == project._id) {
         refreshList();
-      } else {
-        console.log("no refrescas porque no es proyecto que se modifico");
-      }
+      } 
     });
   }, [socket]);
-
-  /*console.log(columns);*/
 
   const [modalShow, setModalShow] = useState(false);
 
@@ -167,19 +47,10 @@ export const Board = ({ project }) => {
     refreshList();
   }, [modalShow, columnModalShow, editColumnModalShow]);
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     console.log("me ejecute");
-  //     refreshList();
-  //   }, 80000);
-  //   return () => clearInterval(interval);
-  // }, []);
-
   const refreshList = () => {
     getData(
       `https://workzone-backend-mdb.herokuapp.com/api/lists/from/${project._id}`
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
         setLists(r.data);
         // setColumns(r.data);
@@ -192,7 +63,6 @@ export const Board = ({ project }) => {
               item.running &&
               new Date() - new Date(item.updatedAt) > 120000
             ) {
-              console.log("ya paso mucho tiempo");
               updateTask({ id_tarea: item._id, running: false });
               socket.emit("refresh-project", { id_proyecto: project._id });
               return;
@@ -201,7 +71,6 @@ export const Board = ({ project }) => {
           c[col._id] = col;
         });
 
-        console.log(c);
         setColumns(c);
       } else {
         console.log("error");
@@ -229,9 +98,6 @@ export const Board = ({ project }) => {
         text: `Has alcanzado el máximo de tareas para el plan. Mejora tu plan para seguir trabajando! ${project.id_plan.nombre}.\nPara crear más tareas debes actualizar tu plan.`,
         confirmButtonColor: "#22B4DE",
       });
-
-      //PONER AQUI LA RUTA A EDITAR PROYECTOOOOOOOOO
-      // history.push(`projects/update/${project._id}`)
     } else if (project.id_plan.max_tareas - tasksNum <= 10) {
       Swal.fire({
         icon: "warning",
@@ -259,7 +125,6 @@ export const Board = ({ project }) => {
 
   const [files, setFiles] = useState([]);
   const [fileNames, setFileNames] = useState([]);
-  const [view, setView] = useState(false);
 
   const getFiles = (item) => {
     const storageRef = storage.ref(`images/${project._id}/${item._id}`);
@@ -296,10 +161,6 @@ export const Board = ({ project }) => {
           console.log(error);
         });
     }
-
-    console.log("URLs", files);
-    console.log("Names", fileNames);
-    console.log("View", view);
   };
 
   const [taskToShow, setTaskToShow] = useState({});
@@ -307,19 +168,10 @@ export const Board = ({ project }) => {
   const handleOpenTaskDeets = (item) => {
     getFiles(item);
     setTaskToShow(item._id);
-    console.log("Task", item);
     setTaskModalShow(true);
-    console.log("yes");
-    //console.log(taskModalShow);
-    //console.log(item);
-    //console.log(taskModalShow);
-    // console.log(taskToShow.nombre);
-
-    //console.log(item.nombre);
   };
 
   const onDragEnd = (result, columns, setColumns) => {
-    console.log("ARRASTRE");
     if (!result.destination) return;
     const { source, destination } = result;
 
@@ -348,7 +200,6 @@ export const Board = ({ project }) => {
         items: sourceItems.map((i) => i._id),
       };
 
-      console.log("SOURCE BODY", sourceBody);
       updateList(sourceBody);
 
       // se actualiza la lista destino
@@ -357,7 +208,6 @@ export const Board = ({ project }) => {
         items: destItems.map((i) => i._id),
       };
 
-      console.log("dest BODY", destBody);
       updateList(destBody);
 
       // se actualiza la tarea
@@ -366,7 +216,6 @@ export const Board = ({ project }) => {
         id_lista: destination.droppableId,
       };
 
-      console.log("tarei", newTask);
       updateTask(newTask);
     } else {
       const column = columns[source.droppableId];
@@ -387,7 +236,6 @@ export const Board = ({ project }) => {
         items: copiedItems.map((i) => i._id),
       };
 
-      console.log("BODY", body);
       updateList(body);
     }
   };
@@ -397,9 +245,7 @@ export const Board = ({ project }) => {
       "https://workzone-backend-mdb.herokuapp.com/api/lists/update",
       body
     ).then((res) => {
-      console.log("me respondio" + res);
       if (res.ok) {
-        console.log("todo bien", res.data);
         socket.emit("refresh-project", { id_proyecto: project._id });
       } else {
         console.log("error");
@@ -418,10 +264,7 @@ export const Board = ({ project }) => {
       "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
       body
     ).then((res) => {
-      console.log("me respondio" + res);
-      if (res.ok) {
-        console.log("todo bien", res.data);
-      } else {
+      if (!res.ok) {
         console.log("error");
         // Swal.fire({
         //   icon: "error",
@@ -493,7 +336,7 @@ export const Board = ({ project }) => {
                     {(provided, snapshot) => {
                       return (
                         <div
-                          className="column"
+                          className="column animate__animated animate__fadeIn"
                           {...provided.droppableProps}
                           ref={provided.innerRef}
                           style={{
@@ -546,7 +389,7 @@ export const Board = ({ project }) => {
                                                     item.miembro === miembro._id
                                                   ) {
                                                     return (
-                                                      <div>
+                                                      <div key={miembro._id}>
                                                         <Members
                                                           member={miembro}
                                                           placement={"small"}
@@ -561,7 +404,6 @@ export const Board = ({ project }) => {
                                         </div>
                                       </div>
                                       {item._id === taskToShow && (
-                                        //console.log("yeesyeyeyeyes", index)
                                         <TaskDeetsModal
                                           project={project}
                                           task={item}

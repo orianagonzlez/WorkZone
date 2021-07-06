@@ -1,8 +1,5 @@
 import React from "react";
-import CollabStats from "./CollabStats";
 import ChartCard from "./templates/ChartCard";
-import PieChart from "./templates/PieChart";
-import BarChart from "./templates/BarChart";
 import Box from "./templates/Box";
 import { useEffect } from "react";
 import { getData } from "../../helpers/getData";
@@ -21,7 +18,6 @@ export default function OwnerStats() {
   const [membersTasks, setMembersTasks] = useState([]);
   const [totalTime, setTotalTime] = useState(0);
   const [totalTask, setTotalTask] = useState(0);
-  const [tasksPerListGlobal, setTasksPerListGlobal] = useState([]);
 
   useEffect(() => {
     getLists();
@@ -32,12 +28,8 @@ export default function OwnerStats() {
     getData(
       `https://workzone-backend-mdb.herokuapp.com/api/lists/from/${project}`
     ).then((r) => {
-      console.log("me respondio a" + r);
       if (r.ok) {
-        console.log(r.data);
-
         let lists = r.data;
-        console.log("eskere", lists);
         //let myList;
         lists.forEach((list) => {
           //myList = list.items
@@ -56,8 +48,6 @@ export default function OwnerStats() {
           tareas = [...tareas, ...l.items];
         });
 
-        console.log("tareas", tareas);
-
         // esta info se va a usar para calcular los valores de los boxes
         setTasks(tareas);
       } else {
@@ -70,9 +60,7 @@ export default function OwnerStats() {
     getData(
       `https://workzone-backend-mdb.herokuapp.com/api/tasks/from/${project}/by-member`
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
-        console.log("tbm b", r.data);
 
         let data = [];
         //Procesar para obtener la tarea con su tiempo en minutos
@@ -112,8 +100,8 @@ export default function OwnerStats() {
             },
           ];
         });
+        
         // esta info se va a usar para graficos de tareas y promedio de tiempo por miembro
-        console.log("TBM ", data);
         setMembersTasks(data);
         getTotalProjectTime(data);
         getTotalProjectTasks(data);

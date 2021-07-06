@@ -10,14 +10,11 @@ import {
   FaComments,
 } from "react-icons/fa";
 import { GoSignOut } from "react-icons/go";
-
-import { NavLink, Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AppContext } from "../../../context/AppContext";
 import { postData } from "../../../helpers/postData";
-
 import ContactModal from "../../contact/ContactModal";
-
 import { useStopwatch } from "react-timer-hook";
 import { useEffect } from "react";
 import { TimerContext } from "../../../context/TimerContext";
@@ -46,11 +43,6 @@ export default function Sidebar() {
 
   const [contactModalShow, setContactModalShow] = useState(false);
 
-  //Esto es por si le quieren mandar el tiempo en que debe iniciarse
-  // const stopwatchOffset = new Date();
-  // 300 segundos son 5 min
-  // stopwatchOffset.setSeconds(stopwatchOffset.getSeconds() + 300);
-
   const { seconds, minutes, hours, days, isRunning, start, pause, reset } =
     useStopwatch({
       autoStart: false,
@@ -63,9 +55,6 @@ export default function Sidebar() {
     t.current = `${days}:${hours}:${minutes}:${seconds}`;
   }, [seconds, minutes, hours, days]);
 
-  console.log(`${days}:${hours}:${minutes}:${seconds}`, new Date())
-  console.log(t.current, new Date())
-  
   useEffect(() => {
     if (user && taskId) {
       //Si otra tarea esta corriendo, guardo el valor antes del cambio
@@ -77,11 +66,8 @@ export default function Sidebar() {
           running: false,
         };
 
-        console.log("aqui");
         updateTask(body);
       }
-
-      console.log(taskId);
 
       //busco el ultimo tiempo guardado
       getData(
@@ -91,11 +77,9 @@ export default function Sidebar() {
         if (r.ok) {
           // si se encontro la tarea
           if (r.data) {
-            console.log(r.data.miembro, user.id);
             if (!r.data.miembro || r.data.miembro._id == user.id) {
               const newTime = new Date();
               let time = r.data.cronometro;
-              console.log("esto recibo", time);
 
               setCurrentTask(taskId);
               setTaskName(r.data.nombre);
@@ -107,8 +91,6 @@ export default function Sidebar() {
 
                 const newTime = getNewTime(time);
 
-                console.log("esto envio", newTime);
-                setInitialTime(time);
                 running ? reset(newTime, true) : reset(newTime, false);
               } else {
                 time = time.split(":");
@@ -122,7 +104,6 @@ export default function Sidebar() {
                 text: "Esta tarea fue reasignada y ya no puede ser cronometrada por usted.",
                 confirmButtonColor: "#22B4DE",
               });
-              console.log("LA TAREA FUE REASIGNADA");
               reset(new Date(), false);
               clearInterval(saveTimeInterval);
               setTimer({
@@ -148,7 +129,6 @@ export default function Sidebar() {
               text: "Esta tarea ya no existe, probablemente haya sido eliminada.",
               confirmButtonColor: "#22B4DE",
             });
-            console.log("2 NO SE ENCONTRO LA TAREA, SEGURO FUE ELIMINADA");
             setTimer({
               ...timer,
               taskId: "",
@@ -167,7 +147,6 @@ export default function Sidebar() {
 
   useEffect(() => {
     if (user && taskId) {
-      console.log("YA TENGO EL TASK");
       setTimer({ ...timer, running: isRunning });
 
       const body = {
@@ -176,13 +155,11 @@ export default function Sidebar() {
       };
 
       if (isRunning) {
-        console.log("empiezo", body);
         updateTask({ id_tarea: taskId, running: true });
 
         // como empezo el cronometro, se empieza a guardar el tiempo cada cierto tiempo
         setSaveTimeInterval(setInterval(updateTaskInterval, 30000));
       } else if (initialTime.length > 0) {
-        console.log("me pare");
 
         // como se pauso el cronometro, se deja de guardar por intervalos y
         //se guarda el tiempo donde quedo
@@ -199,8 +176,6 @@ export default function Sidebar() {
       running: true.valueOf,
     };
 
-    console.log(b, "acaaaaaaaaaaa");
-
     updateTask(b);
   };
 
@@ -214,7 +189,6 @@ export default function Sidebar() {
         running: false,
       };
 
-      console.log("aqui");
       updateTask(body);
     }
 
@@ -246,7 +220,6 @@ export default function Sidebar() {
           isLogged: false,
         });
       } else {
-        console.log("error");
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -274,7 +247,6 @@ export default function Sidebar() {
   };
 
   const updateTask = (body) => {
-    console.log("voy a guardar esto", body);
     postData(
       "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
       body
@@ -284,7 +256,6 @@ export default function Sidebar() {
         if (r.data) {
           // si la tarea sigue estando asignada al usuario o a ninguno
           if (r.data.miembro == user.id || !r.data.miembro) {
-            console.log("guarde nuevo tiempo", r.data);
             socket.emit("refresh-project", { id_proyecto: projectId });
 
             // si el nombre de la tarea cambio, se actualiza
@@ -298,7 +269,6 @@ export default function Sidebar() {
               text: "Esta tarea fue reasignada y ya no puede ser cronometrada por usted.",
               confirmButtonColor: "#22B4DE",
             });
-            console.log("LA TAREA FUE REASIGNADA");
             reset(new Date(), false);
             clearInterval(saveTimeInterval);
             setTimer({ ...timer, taskId: "", projectId: "", running: false });
@@ -317,9 +287,6 @@ export default function Sidebar() {
             text: "Esta tarea ya no existe, probablemente haya sido eliminada.",
             confirmButtonColor: "#22B4DE",
           });
-          console.log(
-            "4 NO SE ENCONTRO LA TAREA INTENTANDO EDITAR, SEGURO FUE ELIMINADA"
-          );
           reset(new Date(), false);
           clearInterval(saveTimeInterval);
           setTimer({ ...timer, taskId: "", projectId: "", running: false });
@@ -336,12 +303,9 @@ export default function Sidebar() {
       "https://workzone-backend-mdb.herokuapp.com/api/tasks/update",
       body
     ).then((r) => {
-      console.log("como reasignaron deje de correr y reinicie cronom", r.data);
       socket.emit("refresh-project", { id_proyecto: projectId });
 
-      if (r.ok) {
-        console.log("todo bien", r.data);
-      } else {
+      if (!r.ok) {
         console.log("error");
       }
     });

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Container, Form, Button, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -7,6 +7,7 @@ import { postData } from "../helpers/postData";
 import { useForm } from "../hooks/useForm";
 
 export const RegisterScreen = () => {
+  const [disabled, setDisabled] = useState(false);
   const { setUser, user } = useContext(AppContext);
 
   const [formValues, handleInputChange] = useForm({
@@ -19,15 +20,22 @@ export const RegisterScreen = () => {
     birthday: "",
   });
 
-  const { name, lastname, email, username, password, password2, birthday } =
-    formValues;
+  const {
+    name,
+    lastname,
+    email,
+    username,
+    password,
+    password2,
+    birthday,
+  } = formValues;
 
   const handleRegister = (e) => {
+    setDisabled(true);
     e.preventDefault();
-    console.log(name, lastname, email, username, password, password2, birthday);
+
 
     if (isFormValid()) {
-      console.log("Formulario Valido");
 
       let body = {
         nombre: name[0].toUpperCase() + name.slice(1),
@@ -39,11 +47,16 @@ export const RegisterScreen = () => {
       };
       const url = "https://workzone-backend-mdb.herokuapp.com/api/auth/create";
       postData(url, body).then((r) => {
-        console.log("me respondio" + r);
         if (r.ok) {
           localStorage.setItem("token", r.token);
-          const { email, uid, nombre, apellido, fechaNacimiento, username } =
-            r.data;
+          const {
+            email,
+            uid,
+            nombre,
+            apellido,
+            fechaNacimiento,
+            username,
+          } = r.data;
           setUser({
             ...user,
             email: email,
@@ -54,29 +67,39 @@ export const RegisterScreen = () => {
             isLogged: true,
           });
         } else {
-          console.log("error");
 
           Swal.fire({
             icon: "error",
             title: "Oops...",
-            text: "Credenciales Invalidad",
+            text: "Credenciales Invalidas",
             confirmButtonColor: "#22B4DE",
           });
         }
       });
     }
+    setDisabled(false);
   };
 
   const isFormValid = () => {
     //TODO Falta verificar todos los campos
 
-    if (name.trim().length === 0) {
-      console.log("Por favor ingrese su Nombre y su Apellido");
+    if (name.trim().length === 0 || lastname.trim().length === 0
+       || email.trim().length === 0 || name.trim().length === 0
+       || birthday.trim().length === 0 || username.trim().length === 0) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Por favor ingrese todos los campos",
+        confirmButtonColor: "#22B4DE",
+      });
       return false;
-    } else if (password !== password2 || password.length < 5) {
-      console.log(
-        "Por favor ingrese una clave mayor a 5 digitos y que coincida con la confirmación de clave."
-      );
+    } else if (password !== password2 || password.trim().length < 5) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Por favor ingrese una clave mayor a 5 digitos y que coincida con la confirmación de clave.",
+        confirmButtonColor: "#22B4DE",
+      });
       return false;
     }
     return true;
@@ -194,7 +217,7 @@ export const RegisterScreen = () => {
             </div>
           </Form.Group>
           <div className="button">
-            <Button className="auth_button" variant="primary" type="submit">
+            <Button className="auth_button" variant="primary" type="submit" disabled={disabled}>
               REGISTRAR
             </Button>
           </div>

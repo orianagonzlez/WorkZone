@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Modal, Button, Form, Col, InputGroup, Alert } from "react-bootstrap";
-import Swal from "sweetalert2";
-import { useForm } from "../../hooks/useForm";
+import { Modal } from "react-bootstrap";
 import { storage } from "../../firebase/index";
 import { FcCheckmark } from "react-icons/fc";
 
@@ -12,8 +10,6 @@ export const UploadFilesModal = (props) => {
   const [progress, setProgress] = useState(0);
   const [showProgress, setShowProgress] = useState(false);
   const [success, setSuccess] = useState(false);
-
-  console.log(props.fileNames)
 
   const getName = (i) => {
     const names = [];
@@ -68,10 +64,6 @@ export const UploadFilesModal = (props) => {
       })
       .catch((err) => console.log(err));
   };
-
-  console.log("images: ", images);
-  console.log("urls", urls);
-  console.log("names", names);
 
   const handleClean = () => {
     setImages([]);

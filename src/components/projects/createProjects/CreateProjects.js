@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { Container, Form, Button, Col } from "react-bootstrap";
 import { FaUsers, FaMapSigns, FaPlusCircle, FaTrash } from "react-icons/fa";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import PlanCard from "../../common/PlanCard";
 import { AppContext } from "../../../context/AppContext";
 import { postData } from "../../../helpers/postData";
@@ -12,8 +12,11 @@ import validator from "validator";
 import { useFetch2 } from "../../../hooks/useFetch2";
 import Paypal from "./Paypal";
 import { SocketContext } from "../../../context/SocketContext";
+import { Loader } from "../../common/Loader";
 
 export default function CreateProjects() {
+  const [loading, setLoading] = useState(true);
+  const [disabled, setDisabled] = useState(false);
   const [name, setName] = React.useState("");
 
   const [descripcion, setDescripcion] = React.useState("");
@@ -28,17 +31,11 @@ export default function CreateProjects() {
 
   const [planes, setPlanes] = useState([]);
 
-  const [editMode, setEditMode] = useState(false);
-
   const [projectEdit, setprojectEdit] = useState();
 
   const [selectedPlan, setSelectedPlan] = useState("");
 
   const [paid, setPaid] = React.useState(false);
-
-  const [freelance, setFreelance] = useState(false);
-
-  const [empresa, setEmpresa] = useState(false);
 
   const { user } = useContext(AppContext);
 
@@ -46,11 +43,9 @@ export default function CreateProjects() {
 
   const history = useHistory();
 
-  const [checkout, setCheckout] = useState(false);
-
   const { socket } = useContext(SocketContext);
-
-  console.log(originalInputList);
+  
+  const [editMode] = useState(project ? true : false);
 
   // aqui vienen los planes
   const {
@@ -74,7 +69,6 @@ export default function CreateProjects() {
       ).then((r) => {
         if (r.ok) {
           //indico que estoy en modo editor de un proyecto
-          setEditMode(true);
           if (r.data.owner !== user.id) {
             history.push(`/projects/details/${r.data._id}`);
           }
@@ -84,7 +78,7 @@ export default function CreateProjects() {
           setSelectedPlan(r.data.id_plan);
           setOriginalInputList(r.data.miembros.map((u) => u._id));
           setPaid(true);
-          //console.log(selectedPlan, "pls ayuda");
+         
           let emails = [];
           //esto es para filtrar los emails y no puedas eliminar al lider y a los admins
           r.data.miembros.forEach((myUser) => {
@@ -104,11 +98,14 @@ export default function CreateProjects() {
 
           setName(r.data.nombre);
           setDescripcion(r.data.descripcion);
+          setLoading(false);
         } else {
           console.log("error");
         }
       });
     }
+    setLoading(false);
+
     // se piden todos los usuarios para validar que los correo que el ingrese estan registrados
     if (!loadingUsers && users.length === 0) {
       setUsers(dataUsers);
@@ -116,7 +113,6 @@ export default function CreateProjects() {
     //Aqui se setean los planes
     if (!loadingPlans && planes.length === 0) {
       setPlanes(dataPlans);
-      console.log(dataPlans);
     }
   }, [dataPlans, dataUsers]);
 
@@ -125,9 +121,7 @@ export default function CreateProjects() {
       "https://workzone-backend-mdb.herokuapp.com/api/projects/create",
       body
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
-        console.log("todo bien", r.data);
         socket.emit("refresh-chat", { refresh: "refresh" });
 
         history.push("/projects");
@@ -149,6 +143,7 @@ export default function CreateProjects() {
         createList(bodyList);
       } else {
         console.log("error");
+        setDisabled(false);
       }
     });
   };
@@ -159,12 +154,10 @@ export default function CreateProjects() {
         "https://workzone-backend-mdb.herokuapp.com/api/lists/create",
         list
       ).then((r) => {
-        console.log("me respondio" + r);
-        if (r.ok) {
-          console.log("todo bien", r.data);
-        } else {
+        if (!r.ok) {
           console.log("error");
         }
+        setDisabled(false);
       });
     });
   };
@@ -174,9 +167,7 @@ export default function CreateProjects() {
       "https://workzone-backend-mdb.herokuapp.com/api/projects/update",
       body
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
-        console.log("todo bien", r.data);
         if (body.newPlan) {
           //yolo
         } else {
@@ -185,6 +176,7 @@ export default function CreateProjects() {
       } else {
         console.log("error");
       }
+      setDisabled(false);
     });
   };
 
@@ -194,20 +186,17 @@ export default function CreateProjects() {
       "https://workzone-backend-mdb.herokuapp.com/api/tasks/remove-member",
       body
     ).then((r) => {
-      console.log("me respondio" + r);
-      if (r.ok) {
-        console.log("todo bien", r.data);
-      } else {
+      if (!r.ok) {
         console.log("error");
       }
     });
   };
 
   const handleCreateProject = (e) => {
+    setDisabled(true);
     e.preventDefault();
     let invalid = false;
     let msg = "";
-    console.log("plan: ", selectedPlan);
     //en caso de que no haga falta hacer el pago
     if (selectedPlan.precio !== 0 && !paid) {
       msg = `Debes pagar antes de crear tu proyecto`;
@@ -235,7 +224,6 @@ export default function CreateProjects() {
     //validar que sean correos este tengo que dispare aqui porque sino se dispara el que esa persona no esta registrada
     //obvio no esta registrada porque eso no es un correo
     let invalidEmail = false;
-    console.log(inputList);
     inputList.forEach((item) => {
       if (!validator.isEmail(item.email) && !validator.isEmpty(item.email)) {
         invalidEmail = true;
@@ -272,11 +260,10 @@ export default function CreateProjects() {
       }
     });
 
-    //esto elimina los petidos
-    //es por si alguien es tarado y manda 2 correos iguales o mete su correo en la lista
+    //esto elimina los repetidos
+    //es por si alguien manda 2 correos iguales o mete su correo en la lista
     membersIds = [user.id, ...membersIds];
     membersIds = [...new Set(membersIds)];
-    console.log(membersIds);
 
     //no admitir mas miembros de los que el plan permite
     if (membersIds.length > selectedPlan.max_miembros) {
@@ -291,6 +278,7 @@ export default function CreateProjects() {
         text: msg,
         confirmButtonColor: "#22B4DE",
       });
+      setDisabled(false);
       return;
     }
 
@@ -342,15 +330,19 @@ export default function CreateProjects() {
     setInputList([...inputList, { email: "", canDelete: true }]);
   };
 
-  if (loadingPlans || !planes)
-    return <div className="componentContainer"></div>;
+  // if (loadingPlans || !planes)
+  //   return <div className="componentContainer"></div>;
 
-  if (editMode && !selectedPlan) {
-    return <div className="componentContainer"></div>;
-  }
+  // if (editMode && !selectedPlan) {
+  //   return <div className="componentContainer"></div>;
+  // }
+
 
   return (
     <div className="componentContainer">
+      {(loading || loadingPlans || !planes || (editMode && !selectedPlan)) ? <Loader/>
+      : 
+      <>
       <div className="divArrowLeft">
         <div>
           <Button
@@ -408,7 +400,7 @@ export default function CreateProjects() {
           </div>
           {inputList.map((item, i) => {
             return (
-              <div className="box">
+              <div className="box" key={i}>
                 <Form.Row className="emailInputRow">
                   <Form.Group as={Col} className="formGroup">
                     {!editMode ? (
@@ -551,6 +543,7 @@ export default function CreateProjects() {
                 className="create-button"
                 variant="primary"
                 onClick={(e) => handleCreateProject(e)}
+                disabled={disabled}
               >
                 {editMode ? "GUARDAR" : "CREAR"}
               </Button>
@@ -558,6 +551,7 @@ export default function CreateProjects() {
           </Container>
         </Form>
       </div>
+      </>}
     </div>
   );
 }

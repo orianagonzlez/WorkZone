@@ -21,7 +21,6 @@ export default function PlanCard({
   };
 
   const [selectedClass, setSelectedClass] = useState(() => {
-    console.log(selectedPlan, "vs", plan);
     if (plan._id === selectedPlan._id) {
       return "selectedCardContainer";
     } else {
@@ -31,7 +30,6 @@ export default function PlanCard({
 
   const selectPlan = (plan) => {
     if (editMode === true && plan._id !== selectedPlan._id) {
-      console.log(selectedPlan.max_miembros, plan.max_miembros);
       if (selectedPlan.max_miembros > plan.max_miembros) {
         Swal.fire({
           icon: "error",
@@ -84,9 +82,9 @@ export default function PlanCard({
           </div>
           <div>{plan.descripcion}</div>
           <div className="featuresContainer">
-            {plan.features.map((feature) => {
+            {plan.features.map((feature, i) => {
               return (
-                <div>
+                <div key={i}>
                   <span className="checkIcon">
                     <FaCheckCircle />
                   </span>{" "}

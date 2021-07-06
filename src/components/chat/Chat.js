@@ -1,7 +1,6 @@
 import React from "react";
 import { Messages } from "./Messages";
-import { ButtonGroup } from "react-bootstrap";
-import { FaPaperPlane, FaComments, FaCircle } from "react-icons/fa";
+import { FaComments } from "react-icons/fa";
 import { Button } from "react-bootstrap";
 import { useContext } from "react";
 import { ChatContext } from "../../context/ChatContext";
@@ -10,7 +9,6 @@ import { getData } from "../../helpers/getData";
 import { ProjectAvatar } from "./ProjectAvatar";
 
 export default function Chat({ project }) {
-  // supongo que en vez de project podría recibir chat o algo así pero bueno
 
   const { chat, dispatch } = useContext(ChatContext);
 
@@ -51,8 +49,10 @@ export default function Chat({ project }) {
             <Messages />
           </>
         ) : (
-          <div className="overview-container">
-            <h2 className="overview-title">¡Mantente conectado con tu equipo!</h2>
+          <div className="overview-container animate__animated animate__fadeIn">
+            <h2 className="overview-title">
+              ¡Mantente conectado con tu equipo!
+            </h2>
             <img src="/undraw_Work_chat_re_qes4 1.png" alt="" />
             <h3 className="overview-subtitle">
               Una mayor comunicación asegura el éxito en un proyecto
@@ -64,13 +64,15 @@ export default function Chat({ project }) {
         <h1>Salas de proyectos</h1>
         {chat.projects.map((project) => (
           <div
-            className="chat-individual"
+            className="chat-individual animate__animated animate__fadeIn
+              "
             onClick={() => {
               selectChat(project);
             }}
+            key={project._id}
           >
             <Button>
-              <ProjectAvatar name={project.nombre} placement={'small'}/>
+              <ProjectAvatar name={project.nombre} placement={"small"} />
               <h2>{project.nombre}</h2>
               <FaComments className="chat-icon-right" size="25px" />
             </Button>

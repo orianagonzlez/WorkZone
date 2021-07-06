@@ -4,13 +4,13 @@ import Swal from "sweetalert2";
 import { AppContext } from "../../context/AppContext";
 import { getData } from "../../helpers/getData";
 import { postData } from "../../helpers/postData";
-import { useFetch2 } from "../../hooks/useFetch2";
 import { useForm } from "../../hooks/useForm";
 
 export const EditProfileModal = ({ usuario, onHide, show }) => {
+  const [disabled, setDisabled] = useState(false);
   const { setUser, user } = useContext(AppContext);
 
-  const [formValues, handleInputChange, reset] = useForm({
+  const [formValues, handleInputChange] = useForm({
     name: usuario.nombre,
     lastname: usuario.apellido,
     email: usuario.email,
@@ -26,7 +26,6 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
     getData(
       'https://workzone-backend-mdb.herokuapp.com/api/auth/users'
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
         setUsers(r.data);
       } else {
@@ -36,7 +35,7 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
   }, [show]);
 
   const handleEdit = (e) => {
-    console.log(formValues);
+    setDisabled(true);
     e.preventDefault();
     
     const newData = {
@@ -47,9 +46,6 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
       email: email,
       username: username
     };
-
-    console.log("actualizando");
-    console.log(newData);
 
     if (name && lastname && birthday && email && username) {
       let e, u;
@@ -62,16 +58,13 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
         if (e && u) {
           showError('correo y nombre de usuario');
         } else {
-          console.log('ambos dispo')
           updateUser(newData);
         }
       } else if (email != usuario.email) {
         e = users.find(u => u.email == email);
-        console.log(e)
         if (e) {
           showError('correo electrónico');
         } else {
-          console.log('correo disp')
           updateUser(newData);
         }
       } else if (username != usuario.username) {
@@ -79,12 +72,13 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
         if (u) {
           showError('nombre de usuario');
         } else {
-          console.log('username disp')
           updateUser(newData);
         }
       } else {
         updateUser(newData);
       }
+    } else {
+      setDisabled(false);
     }
   };
 
@@ -94,9 +88,7 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
       "https://workzone-backend-mdb.herokuapp.com/api/auth/update",
       body
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
-        console.log(r.data);
 
         setUser({
           ...user,
@@ -114,7 +106,6 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
         onHide();
         
       } else {
-        console.log("error");
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -122,6 +113,7 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
           confirmButtonColor: "#22B4DE",
         });
       }
+      setDisabled(false);
     });  
   };
 
@@ -132,6 +124,7 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
       text: `Ya hay un usuario registrado con ese ${field}`,
       confirmButtonColor: "#22B4DE",
     });
+    setDisabled(false);
   }
 
   return (
@@ -222,7 +215,7 @@ export const EditProfileModal = ({ usuario, onHide, show }) => {
           </Form.Row>
           
           <div className="button p-3 mx-5 mb-5">
-            <Button className="auth_button" type="submit">
+            <Button className="auth_button" type="submit" disabled={disabled}>
               Guardar
             </Button>
           </div>

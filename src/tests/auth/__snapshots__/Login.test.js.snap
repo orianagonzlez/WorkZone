@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Probando login Debe mostrarse correctamente 1`] = `
+<div
+  className="login_main"
+>
+  <div
+    className="login_container container"
+  >
+    <h2
+      className="auth_title"
+    >
+      ¡WorkZone!
+    </h2>
+    <h3
+      className="auth_subtitle"
+    >
+      Trabajar a distancia nunca había sido tan fácil
+    </h3>
+    <form
+      className="login_form"
+      onSubmit={[Function]}
+    >
+      <div
+        className="d-flex align-items-center justify-content-start form-row"
+      >
+        <div
+          className="form-group col"
+        >
+          <label
+            className="form-label"
+          >
+            Correo electrónico
+          </label>
+          <input
+            autoComplete="off"
+            className="input form-control"
+            name="email"
+            onChange={[Function]}
+            placeholder="example@gmail.com"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        className="d-flex align-items-center justify-content-start form-row"
+      >
+        <div
+          className="form-group col"
+        >
+          <label
+            className="form-label"
+          >
+            Contraseña
+          </label>
+          <input
+            className="input form-control"
+            name="password"
+            onChange={[Function]}
+            placeholder="**********"
+            type="password"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        className="justify-content-center container"
+      >
+        <div
+          className="form-group"
+        >
+          <div
+            className="auth_link"
+          >
+            <a
+              className="link"
+              href="/register"
+              onClick={[Function]}
+            >
+              ¿Todavía no tienes cuenta? ¡Registrate!
+            </a>
+          </div>
+        </div>
+        <div
+          className="button"
+        >
+          <button
+            className="auth_button btn btn-primary"
+            disabled={false}
+            type="submit"
+          >
+            INGRESAR
+          </button>
+        </div>
+        <div
+          className="form-group"
+        >
+          <div
+            className="auth_link"
+            onClick={[Function]}
+          >
+             
+            ¿Olvidaste tu contraseña?
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+`;

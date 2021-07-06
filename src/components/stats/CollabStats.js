@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import ChartCard from "./templates/ChartCard";
-import PieChart from "./templates/PieChart";
-import BarChart from "./templates/BarChart";
 import Box from "./templates/Box";
 import { useEffect } from "react";
 import { getData } from "../../helpers/getData";
@@ -17,7 +15,6 @@ export default function CollabStats({ userId }) {
   const [subTasksChart, setSubTasksChart] = useState(null);
   const [timePerTask, setTimePerTask] = useState([]);
   const [tasksPerList, setTasksPerList] = useState([]);
-  const [tasksPerListProject, setTasksPerListProject] = useState([]);
   const [thisUser, setThisUser] = useState();
   const [totalTime, setTotalTime] = useState(0);
   const [totalTask, setTotalTask] = useState(0);
@@ -38,10 +35,8 @@ export default function CollabStats({ userId }) {
     getData(
       `https://workzone-backend-mdb.herokuapp.com/api/lists/from/${project}`
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
         let lists = r.data;
-        console.log(lists);
         let myList;
         lists.forEach((list) => {
           //AQUI ROCCO puedes sacar la info de tu grafica
@@ -64,7 +59,6 @@ export default function CollabStats({ userId }) {
     getData(
       `https://workzone-backend-mdb.herokuapp.com/api/auth/${userId}`
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
         setThisUser(r.data);
       } else {
@@ -77,7 +71,6 @@ export default function CollabStats({ userId }) {
     getData(
       `https://workzone-backend-mdb.herokuapp.com/api/tasks/from/${project}/${userId}`
     ).then((r) => {
-      console.log("me respondio" + r);
       if (r.ok) {
         const data = r.data;
         let completed = 0;
