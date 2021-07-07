@@ -5,11 +5,11 @@ export default function CreateTaskModal({infoProyecto, mostrar}) {
 
   const a = infoProyecto;
 
-  const pene = mostrar;
+  const show = mostrar;
 
   return (
     <Modal
-      show={pene}
+      show={show}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
