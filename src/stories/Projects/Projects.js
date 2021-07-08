@@ -10,8 +10,7 @@ import {
   FaSearch,
 } from "react-icons/fa";
 
-export default function Projects({archivado, vacio}) {
-
+export default function Projects({ archivado, vacio }) {
   const archived = archivado;
   const empty = vacio;
 
@@ -51,424 +50,305 @@ export default function Projects({archivado, vacio}) {
       >
         Tus proyectos
       </h1>
-      {archived == true ?(
-      <div className="screen-container">
-        <div
-          className="search-container"
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            width: "100%",
-            paddingRight: "16px",
-            margin: "16px 0px",
-          }}
-        >
-          <input
-            type="text"
-            placeholder="Buscar proyecto"
-            className="search-input"
-            style={{
-              borderRadius: "10px",
-              padding: "5px",
-              margin: "5px",
-              border: "none",
-            }}
-          />
-          <FaSearch />
-        </div>
-
-        <div
-          className="Preview__container"
-          style={{
-            maxWidth: "1200px",
-            marginLeft: "auto",
-            marginRight: "auto",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-          }}
-        >
-          <ul className="Preview__responsive-table">
-            <li
-              className="Preview__table-header"
-              style={{
-                borderRadius: "15px",
-                padding: "15px",
-                display: "flex",
-                justifyContent: "space-around",
-                marginBottom: "25px",
-                textAlign: "center",
-                fontSize: "15px",
-                fontWeight: 700,
-                color: "#22b4de",
-              }}
-            >
-              <div
-                className="column column-4 "
-                style={{
-                  display: "flex",
-                  flexBasis: "25%",
-                  maxWidth: "1200px",
-                  marginLeft: "0px",
-                  marginRight: "auto",
-                  paddingLeft: "0px",
-                  paddingRight: "10px",
-                }}
-              >
-                <FaTag /> Nombre
-              </div>
-              <div
-                className="column column-3 "
-                style={{
-                  display: "flex",
-                  flexBasis: "20%",
-                  maxWidth: "1200px",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  paddingLeft: "10px",
-                  paddingRight: "10px",
-                }}
-              >
-                <FaThList /> Tareas
-              </div>
-              <div
-                className="column column-3"
-                style={{
-                  display: "flex",
-                  flexBasis: "20%",
-                  maxWidth: "1200px",
-                  marginLeft: "5px",
-                  marginRight: "auto",
-                  paddingLeft: "5px",
-                  paddingRight: "10px",
-                }}
-              >
-                <FaUsers /> Miembros
-              </div>
-              <div
-                className="column column-3"
-                style={{
-                  display: "flex",
-                  flexBasis: "20%",
-                  maxWidth: "1200px",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  paddingLeft: "10px",
-                  paddingRight: "10px",
-                }}
-                hover={{
-                  boxShadow: '0px 4px 20px 5px rgba(60, 60, 60, 0.06)',
-                  transition: 'all 0.5s ease',
-                }}
-
-              >
-                <FaArchive />       
-                {archived
-                ? "Devolver"
-                : "Archivar"}
-              </div>
-              <div
-                className="column column-2 "
-                style={{
-                  display: "flex",
-                  flexBasis: "15%",
-                  maxWidth: "1200px",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  paddingLeft: "10px",
-                  paddingRight: "10px",
-                }}
-              >
-                <FaArrowCircleRight /> Detalles
-              </div>
-            </li>
-
-            <li
-              className="Preview__table-row"
-              style={{
-                borderRadius: "15px",
-                padding: "15px",
-                display: "flex",
-                justifyContent: "space-around",
-                marginBottom: "25px",
-                textAlign: "center",
-                fontSize: "14px",
-                backgroundColor: "#f8f9fa",
-                marginLeft: "auto",
-                transition: "all 0.5s ease",
-                boxShadow: "0px 0px 5px 0px rgba(0, 0, 0, 0.1)",
-              }}
-            >
-              <>
-                <div
-                  className="column column-4"
-                  data-label="Nombre"
-                  style={{
-                    display: "flex",
-                    flexBasis: "25%",
-                    maxWidth: "1200px",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    paddingLeft: "10px",
-                    paddingRight: "10px",
-                  }}
-                >
-                  WorkZone Viejo
-                </div>
-                <div
-                  className="column column-3"
-                  data-label="Tareas"
-                  style={{
-                    display: "flex",
-                    flexBasis: "20%",
-                    maxWidth: "1200px",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    paddingLeft: "10px",
-                    paddingRight: "10px",
-                  }}
-                >
-                  7
-                </div>
-
-                <div
-                  className="column column-3"
-                  data-label="Miembros"
-                  style={{
-                    display: "flex",
-                    flexBasis: "20%",
-                    maxWidth: "1200px",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    paddingLeft: "10px",
-                    paddingRight: "10px",
-                  }}
-                >
-                  3
-                </div>
-                <div
-                  className="column column-3"
-                  id="archiveIcon"
-                  data-label="Archive"
-                  style={{
-                    display: "flex",
-                    flexBasis: "20%",
-                    maxWidth: "1200px",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    paddingLeft: "10px",
-                    paddingRight: "10px",
-                  }}
-                >
-                  <FaArchive size={15} />
-                </div>
-                <div
-                  className="column column-2"
-                  data-label="Detalles"
-                  id="archiveIcon"
-                  style={{
-                    display: "flex",
-                    flexBasis: "15%",
-                    maxWidth: "1200px",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    paddingLeft: "10px",
-                    paddingRight: "10px",
-                  }}
-                >
-                  <FaArrowCircleRight size={20} />
-                </div>
-              </>
-            </li>
-          </ul>
-        </div>
-        <Button className="archivedProjects" style={{
-              display: 'flex',
-              backgroundColor: '#6487a5',
-              border: '0rem',
-              borderRadius: '1rem',
-              padding: '0.5rem 1rem',
-              width: '25vw',
-              alignSelf: 'center',
-              textAlign: 'center',
-              margin: '2rem 0',
-              color: '#f8f9fa',
-              fontSize: '0.8rem',
-        }}>
-          {archived
-            ? "Ocultar proyectos archivados"
-            : "Mostrar proyectos archivados"}
-        </Button>
-      </div>
-      ):(
+      {archived == true ? (
         <div className="screen-container">
-        <div
-          className="search-container"
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            width: "100%",
-            paddingRight: "16px",
-            margin: "16px 0px",
-          }}
-        >
-          <input
-            type="text"
-            placeholder="Buscar proyecto"
-            className="search-input"
+          <div
+            className="search-container"
             style={{
-              borderRadius: "10px",
-              padding: "5px",
-              margin: "5px",
-              border: "none",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              width: "100%",
+              paddingRight: "16px",
+              margin: "16px 0px",
             }}
-          />
-          <FaSearch />
-        </div>
-        <div
-          className="Preview__container"
-          style={{
-            maxWidth: "1200px",
-            marginLeft: "auto",
-            marginRight: "auto",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-          }}
-        >
-          <ul className="Preview__responsive-table">
-            <li
-              className="Preview__table-header"
+          >
+            <input
+              type="text"
+              placeholder="Buscar proyecto"
+              className="search-input"
               style={{
-                borderRadius: "15px",
-                padding: "15px",
-                display: "flex",
-                justifyContent: "space-around",
-                marginBottom: "25px",
-                textAlign: "center",
-                fontSize: "15px",
-                fontWeight: 700,
-                color: "#22b4de",
+                borderRadius: "10px",
+                padding: "5px",
+                margin: "5px",
+                border: "none",
               }}
-            >
-              <div
-                className="column column-4 "
-                style={{
-                  display: "flex",
-                  flexBasis: "25%",
-                  maxWidth: "1200px",
-                  marginLeft: "0px",
-                  marginRight: "auto",
-                  paddingLeft: "0px",
-                  paddingRight: "10px",
-                }}
-              >
-                <FaTag /> Nombre
-              </div>
-              <div
-                className="column column-3 "
-                style={{
-                  display: "flex",
-                  flexBasis: "20%",
-                  maxWidth: "1200px",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  paddingLeft: "10px",
-                  paddingRight: "10px",
-                }}
-              >
-                <FaThList /> Tareas
-              </div>
-              <div
-                className="column column-3"
-                style={{
-                  display: "flex",
-                  flexBasis: "20%",
-                  maxWidth: "1200px",
-                  marginLeft: "5px",
-                  marginRight: "auto",
-                  paddingLeft: "5px",
-                  paddingRight: "10px",
-                }}
-              >
-                <FaUsers /> Miembros
-              </div>
-              <div
-                className="column column-3"
-                style={{
-                  display: "flex",
-                  flexBasis: "20%",
-                  maxWidth: "1200px",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  paddingLeft: "10px",
-                  paddingRight: "10px",
-                }}
-                hover={{
-                  boxShadow: '0px 4px 20px 5px rgba(60, 60, 60, 0.06)',
-                  transition: 'all 0.5s ease',
-                }}
-
-              >
-                <FaArchive />       
-                {archived
-                ? "Devolver"
-                : "Archivar"}
-              </div>
-              <div
-                className="column column-2 "
-                style={{
-                  display: "flex",
-                  flexBasis: "15%",
-                  maxWidth: "1200px",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  paddingLeft: "10px",
-                  paddingRight: "10px",
-                }}
-              >
-                <FaArrowCircleRight /> Detalles
-              </div>
-            </li>
-
-
-            <li
-              className="Preview__table-row"
+            />
+            <FaSearch />
+          </div>
+          <div>
+            <div
+              className="Preview__container"
               style={{
-                borderRadius: "15px",
-                padding: "15px",
-                display: "flex",
-                justifyContent: "space-around",
-                marginBottom: "25px",
-                textAlign: "center",
-                fontSize: "14px",
-                backgroundColor: "#f8f9fa",
+                maxWidth: "1200px",
                 marginLeft: "auto",
-                transition: "all 0.5s ease",
-                boxShadow: "0px 0px 5px 0px rgba(0, 0, 0, 0.1)",
+                marginRight: "auto",
+                paddingLeft: "10px",
+                paddingRight: "10px",
               }}
             >
-              <>
+              <ul className="Preview__responsive-table">
+                <li
+                  className="Preview__table-header"
+                  style={{
+                    borderRadius: "15px",
+                    padding: "15px",
+                    display: "flex",
+                    justifyContent: "space-around",
+                    marginBottom: "25px",
+                    textAlign: "center",
+                    fontSize: "15px",
+                    fontWeight: 700,
+                    color: "#22b4de",
+                  }}
+                >
+                  <div
+                    className="column column-4 "
+                    style={{
+                      display: "flex",
+                      flexBasis: "25%",
+                      maxWidth: "1200px",
+                      marginLeft: "0px",
+                      marginRight: "auto",
+                      paddingLeft: "0px",
+                      paddingRight: "10px",
+                    }}
+                  >
+                    <FaTag /> Nombre
+                  </div>
+                  <div
+                    className="column column-3 "
+                    style={{
+                      display: "flex",
+                      flexBasis: "20%",
+                      maxWidth: "1200px",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      paddingLeft: "10px",
+                      paddingRight: "10px",
+                    }}
+                  >
+                    <FaThList /> Tareas
+                  </div>
+                  <div
+                    className="column column-3"
+                    style={{
+                      display: "flex",
+                      flexBasis: "20%",
+                      maxWidth: "1200px",
+                      marginLeft: "5px",
+                      marginRight: "auto",
+                      paddingLeft: "5px",
+                      paddingRight: "10px",
+                    }}
+                  >
+                    <FaUsers /> Miembros
+                  </div>
+                  <div
+                    className="column column-3"
+                    style={{
+                      display: "flex",
+                      flexBasis: "20%",
+                      maxWidth: "1200px",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      paddingLeft: "10px",
+                      paddingRight: "10px",
+                    }}
+                    hover={{
+                      boxShadow: "0px 4px 20px 5px rgba(60, 60, 60, 0.06)",
+                      transition: "all 0.5s ease",
+                    }}
+                  >
+                    <FaArchive />
+                    {archived ? "Devolver" : "Archivar"}
+                  </div>
+                  <div
+                    className="column column-2 "
+                    style={{
+                      display: "flex",
+                      flexBasis: "15%",
+                      maxWidth: "1200px",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      paddingLeft: "10px",
+                      paddingRight: "10px",
+                    }}
+                  >
+                    <FaArrowCircleRight /> Detalles
+                  </div>
+                </li>
+
+                <li
+                  className="Preview__table-row"
+                  style={{
+                    borderRadius: "15px",
+                    padding: "15px",
+                    display: "flex",
+                    justifyContent: "space-around",
+                    marginBottom: "25px",
+                    textAlign: "center",
+                    fontSize: "14px",
+                    backgroundColor: "#f8f9fa",
+                    marginLeft: "auto",
+                    transition: "all 0.5s ease",
+                    boxShadow: "0px 0px 5px 0px rgba(0, 0, 0, 0.1)",
+                  }}
+                >
+                  <>
+                    <div
+                      className="column column-4"
+                      data-label="Nombre"
+                      style={{
+                        display: "flex",
+                        flexBasis: "25%",
+                        maxWidth: "1200px",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        paddingLeft: "10px",
+                        paddingRight: "10px",
+                      }}
+                    >
+                      WorkZone Viejo
+                    </div>
+                    <div
+                      className="column column-3"
+                      data-label="Tareas"
+                      style={{
+                        display: "flex",
+                        flexBasis: "20%",
+                        maxWidth: "1200px",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        paddingLeft: "10px",
+                        paddingRight: "10px",
+                      }}
+                    >
+                      7
+                    </div>
+
+                    <div
+                      className="column column-3"
+                      data-label="Miembros"
+                      style={{
+                        display: "flex",
+                        flexBasis: "20%",
+                        maxWidth: "1200px",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        paddingLeft: "10px",
+                        paddingRight: "10px",
+                      }}
+                    >
+                      3
+                    </div>
+                    <div
+                      className="column column-3"
+                      id="archiveIcon"
+                      data-label="Archive"
+                      style={{
+                        display: "flex",
+                        flexBasis: "20%",
+                        maxWidth: "1200px",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        paddingLeft: "10px",
+                        paddingRight: "10px",
+                      }}
+                    >
+                      <FaArchive size={15} />
+                    </div>
+                    <div
+                      className="column column-2"
+                      data-label="Detalles"
+                      id="archiveIcon"
+                      style={{
+                        display: "flex",
+                        flexBasis: "15%",
+                        maxWidth: "1200px",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        paddingLeft: "10px",
+                        paddingRight: "10px",
+                      }}
+                    >
+                      <FaArrowCircleRight size={20} />
+                    </div>
+                  </>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="screen-container">
+          <div
+            className="search-container"
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              width: "100%",
+              paddingRight: "16px",
+              margin: "16px 0px",
+            }}
+          >
+            <input
+              type="text"
+              placeholder="Buscar proyecto"
+              className="search-input"
+              style={{
+                borderRadius: "10px",
+                padding: "5px",
+                margin: "5px",
+                border: "none",
+              }}
+            />
+            <FaSearch />
+          </div>
+          <div
+            className="Preview__container"
+            style={{
+              maxWidth: "1200px",
+              marginLeft: "auto",
+              marginRight: "auto",
+              paddingLeft: "10px",
+              paddingRight: "10px",
+            }}
+          >
+            <ul className="Preview__responsive-table">
+              <li
+                className="Preview__table-header"
+                style={{
+                  borderRadius: "15px",
+                  padding: "15px",
+                  display: "flex",
+                  justifyContent: "space-around",
+                  marginBottom: "25px",
+                  textAlign: "center",
+                  fontSize: "15px",
+                  fontWeight: 700,
+                  color: "#22b4de",
+                }}
+              >
                 <div
-                  className="column column-4"
-                  data-label="Nombre"
+                  className="column column-4 "
                   style={{
                     display: "flex",
                     flexBasis: "25%",
                     maxWidth: "1200px",
-                    marginLeft: "auto",
+                    marginLeft: "0px",
                     marginRight: "auto",
-                    paddingLeft: "10px",
+                    paddingLeft: "0px",
                     paddingRight: "10px",
                   }}
                 >
-                  WorkZone
+                  <FaTag /> Nombre
                 </div>
                 <div
-                  className="column column-3"
-                  data-label="Tareas"
+                  className="column column-3 "
                   style={{
                     display: "flex",
                     flexBasis: "20%",
@@ -479,12 +359,24 @@ export default function Projects({archivado, vacio}) {
                     paddingRight: "10px",
                   }}
                 >
-                  16
+                  <FaThList /> Tareas
                 </div>
-
                 <div
                   className="column column-3"
-                  data-label="Miembros"
+                  style={{
+                    display: "flex",
+                    flexBasis: "20%",
+                    maxWidth: "1200px",
+                    marginLeft: "5px",
+                    marginRight: "auto",
+                    paddingLeft: "5px",
+                    paddingRight: "10px",
+                  }}
+                >
+                  <FaUsers /> Miembros
+                </div>
+                <div
+                  className="column column-3"
                   style={{
                     display: "flex",
                     flexBasis: "20%",
@@ -494,29 +386,16 @@ export default function Projects({archivado, vacio}) {
                     paddingLeft: "10px",
                     paddingRight: "10px",
                   }}
-                >
-                  5
-                </div>
-                <div
-                  className="column column-3"
-                  id="archiveIcon"
-                  data-label="Archive"
-                  style={{
-                    display: "flex",
-                    flexBasis: "20%",
-                    maxWidth: "1200px",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    paddingLeft: "10px",
-                    paddingRight: "10px",
+                  hover={{
+                    boxShadow: "0px 4px 20px 5px rgba(60, 60, 60, 0.06)",
+                    transition: "all 0.5s ease",
                   }}
                 >
-                  <FaArchive size={15} />
+                  <FaArchive />
+                  {archived ? "Devolver" : "Archivar"}
                 </div>
                 <div
-                  className="column column-2"
-                  data-label="Detalles"
-                  id="archiveIcon"
+                  className="column column-2 "
                   style={{
                     display: "flex",
                     flexBasis: "15%",
@@ -527,32 +406,133 @@ export default function Projects({archivado, vacio}) {
                     paddingRight: "10px",
                   }}
                 >
-                  <FaArrowCircleRight size={20} />
+                  <FaArrowCircleRight /> Detalles
                 </div>
-              </>
-            </li>
-          </ul>
+              </li>
+
+              <li
+                className="Preview__table-row"
+                style={{
+                  borderRadius: "15px",
+                  padding: "15px",
+                  display: "flex",
+                  justifyContent: "space-around",
+                  marginBottom: "25px",
+                  textAlign: "center",
+                  fontSize: "14px",
+                  backgroundColor: "#f8f9fa",
+                  marginLeft: "auto",
+                  transition: "all 0.5s ease",
+                  boxShadow: "0px 0px 5px 0px rgba(0, 0, 0, 0.1)",
+                }}
+              >
+                <>
+                  <div
+                    className="column column-4"
+                    data-label="Nombre"
+                    style={{
+                      display: "flex",
+                      flexBasis: "25%",
+                      maxWidth: "1200px",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      paddingLeft: "10px",
+                      paddingRight: "10px",
+                    }}
+                  >
+                    WorkZone
+                  </div>
+                  <div
+                    className="column column-3"
+                    data-label="Tareas"
+                    style={{
+                      display: "flex",
+                      flexBasis: "20%",
+                      maxWidth: "1200px",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      paddingLeft: "10px",
+                      paddingRight: "10px",
+                    }}
+                  >
+                    16
+                  </div>
+
+                  <div
+                    className="column column-3"
+                    data-label="Miembros"
+                    style={{
+                      display: "flex",
+                      flexBasis: "20%",
+                      maxWidth: "1200px",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      paddingLeft: "10px",
+                      paddingRight: "10px",
+                    }}
+                  >
+                    5
+                  </div>
+                  <div
+                    className="column column-3"
+                    id="archiveIcon"
+                    data-label="Archive"
+                    style={{
+                      display: "flex",
+                      flexBasis: "20%",
+                      maxWidth: "1200px",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      paddingLeft: "10px",
+                      paddingRight: "10px",
+                    }}
+                  >
+                    <FaArchive size={15} />
+                  </div>
+                  <div
+                    className="column column-2"
+                    data-label="Detalles"
+                    id="archiveIcon"
+                    style={{
+                      display: "flex",
+                      flexBasis: "15%",
+                      maxWidth: "1200px",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      paddingLeft: "10px",
+                      paddingRight: "10px",
+                    }}
+                  >
+                    <FaArrowCircleRight size={20} />
+                  </div>
+                </>
+              </li>
+            </ul>
+          </div>
         </div>
-        <Button className="archivedProjects" style={{
-              display: 'flex',
-              backgroundColor: '#6487a5',
-              border: '0rem',
-              borderRadius: '1rem',
-              padding: '0.5rem 1rem',
-              width: '25vw',
-              alignSelf: 'center',
-              textAlign: 'center',
-              margin: '2rem 0',
-              color: '#f8f9fa',
-              fontSize: '0.8rem',
-        }} >
-          {archived
-            ? "Ocultar proyectos archivados"
-            : "Mostrar proyectos archivados"}
-        </Button>
-      </div>
       )}
-      
+      <Button
+        className="archivedProjects"
+        style={{
+          display: "flex",
+          backgroundColor: "#6487a5",
+          border: "0rem",
+          borderRadius: "1rem",
+          padding: "0.5rem 1rem",
+          width: "25vw",
+          alignSelf: "center",
+          justifySelf: "center",
+          justifyContent: 'center',
+          textAlign: "center",
+          margin: "2rem 0",
+          color: "#f8f9fa",
+          fontSize: "0.8rem",
+        }}
+      >
+        {archived
+          ? "Ocultar proyectos archivados"
+          : "Mostrar proyectos archivados"}
+      </Button>
     </Container>
   );
 }

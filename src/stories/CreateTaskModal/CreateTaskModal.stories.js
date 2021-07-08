@@ -12,7 +12,7 @@ export default {
         },
         mostrar: {
             description: 
-                'aq',
+                'Determina si se muestra el modal o no',
         },
       },
 };
